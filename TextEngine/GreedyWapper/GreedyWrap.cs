@@ -1,51 +1,70 @@
 ﻿/*
- *   GreedyWrap: GreedyWrap.cs
- *   Copyright (C) 2020 Kyle Givler
- * 
- *   This program is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- * 
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *   GNU General Public License for more details.
- * 
- *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
- * 
- */
+MIT License
 
-/**
- * @file GreedyWrap.cs
- * @author Kyle Givler
- * 
- * Greedy word wrapping class
- * Ported from my C++ version
- */
+Copyright(c) 2020 Kyle Givler
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 
 using System;
 using System.Text;
 
-namespace Kgivler
+namespace Kgivler.GreedyWrap
 {
+    /// <summary>
+    /// A class for line wrapping, using the GreedyWrap algorithm
+    /// </summary>
     public class GreedyWrap
     {
+        /// <summary>
+        /// The line width to wrap to
+        /// </summary>
         public int LineWidth { get; set; }
+        /// <summary>
+        /// The width of tabs in spaces
+        /// </summary>
         public ushort TabWidth { get; set; } = 4;
-        public bool WrapWordsLongerThanLineWidth { get; set; } = false; // If true will split words with a length greater than lineWidth value
+        /// <summary>
+        /// If true will split words with a length greater than lineWidth value
+        /// </summary>
+        public bool WrapWordsLongerThanLineWidth { get; set; } = false;
 
         private int spaceLeft;
         private StringBuilder text;
         private const ushort SPACE_WIDTH = 1;
 
+        /// <summary>
+        /// Construct a GreedyWrapper
+        /// </summary>
+        /// <param name="lineWidth">The line width to wrap to</param>
+        /// <param name="wrapWordsLongerThanLineWidth">If true will split words with a length greater than lineWidth value</param>
         public GreedyWrap(int lineWidth = 80, bool wrapWordsLongerThanLineWidth = false)
         {
             LineWidth = lineWidth;
             WrapWordsLongerThanLineWidth = wrapWordsLongerThanLineWidth;
         }
 
+        /// <summary>
+        /// Wrap some text
+        /// </summary>
+        /// <param name="input">the text to wrap</param>
+        /// <returns>The text line wrapped</returns>
         public string LineWrap(string input)
         {
             if (input == null || input.Length <= 0)
@@ -58,8 +77,8 @@ namespace Kgivler
 
             while (text.Length != 0)
             {
-                word = getNextWord();
-                if(word.Length + SPACE_WIDTH > spaceLeft)
+                word = GetNextWord();
+                if (word.Length + SPACE_WIDTH > spaceLeft)
                 {
                     output.Append(Environment.NewLine + word + " ");
                     spaceLeft = LineWidth - (word.Length + SPACE_WIDTH);
@@ -76,7 +95,7 @@ namespace Kgivler
         }
 
         // Returns the next word in the text
-        private string getNextWord()
+        private string GetNextWord()
         {
             StringBuilder word = new StringBuilder();
             char letter;
@@ -89,7 +108,7 @@ namespace Kgivler
                     spaceLeft = LineWidth;
 
                 if (letter == '\t')
-                { 
+                {
                     for (ushort i = 1; i < TabWidth; i++)
                         word.Append(' ');
 
@@ -104,9 +123,9 @@ namespace Kgivler
                 }
 
                 // word is longer than the LineWidth, AND we want to insert a '-' and wrap it
-                if (word.Length == LineWidth -1 && WrapWordsLongerThanLineWidth)
+                if (word.Length == LineWidth - 1 && WrapWordsLongerThanLineWidth)
                 {
-                    if (!char.IsPunctuation(text[pos +1]) && !char.IsWhiteSpace(text[pos + 1]))
+                    if (!char.IsPunctuation(text[pos + 1]) && !char.IsWhiteSpace(text[pos + 1]))
                         word.Append('-');
                     else
                     {

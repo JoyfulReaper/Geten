@@ -19,7 +19,7 @@
 using System;
 
 
-namespace TextEngine
+namespace TextEngine.MapSites
 {
     public class Roof : MapSite
     {
