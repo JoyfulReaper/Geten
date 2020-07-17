@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using TextEngine.Parsing.Text;
 
 namespace TextEngine.Parsing
@@ -10,6 +11,35 @@ namespace TextEngine.Parsing
     {
         public ScriptLexer(SourceText src) : base (src)
         {
+        }
+
+        public IEnumerable<Token<SyntaxKind>> GetAllTokens()
+        {
+            Token<SyntaxKind> token;
+            do
+            {
+                token = Lex();
+
+                if (token.Kind != SyntaxKind.Whitespace &&
+                    token.Kind != SyntaxKind.BadToken)
+                {
+                    yield return token;
+                }
+            } while (token.Kind != SyntaxKind.EOF);
+        }
+
+        private char Current => Peek(0);
+
+        private char Lookahead => Peek(1);
+
+        private char Peek(int offset)
+        {
+            var index = _position + offset;
+
+            if (index >= _text.Length)
+                return '\0';
+
+            return _text[index];
         }
 
         public override Token<SyntaxKind> Lex()
