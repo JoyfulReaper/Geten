@@ -1,0 +1,58 @@
+include "weapons.script"
+include "characters.script"
+
+weapon "sword" with 
+    mindamage 10 and 
+    maxdamage 35
+end
+
+key "chest_in_castle" with 
+    maxusage 1
+end
+
+character "leo" with 
+    health 100 
+    and money 150 
+    and dialog "welcome dude"
+end
+
+tell "hello world"
+
+memory "name" equals "Tombo"
+
+on "setup" 
+    ask for "Please Tell me your name: " to "name"
+end
+
+on "exit" 
+    tell "goodbye"
+end
+
+
+
+
+
+money "Gulden" and "Silver" and "Bronce""
+    100 "Silver" match "Gulden" and
+    10 "Bronce" match "Silver"
+
+openable "Chest" open with "chest_in_castle"
+    on "use"
+        tell "Thanks for opening"
+    end
+end
+
+
+dialog "welcome dude" based on "intro"
+      "hello $(name). would you get a free weapon?"
+          on "yes" add "sword" to inventory
+          on "no" open dialog "first mission"
+
+verbs for direction
+          "w" or "west" is left
+           "e" or "east" is right
+
+on "start"
+     dialog "intro"
+     play "introsound"
+end
