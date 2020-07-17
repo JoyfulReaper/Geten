@@ -1,20 +1,26 @@
 ﻿/*
- TextEngine: Inventory.cs
- Copyright (C) 2020 Kyle Givler
- 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+MIT License
+
+Copyright(c) 2020 Kyle Givler
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 
 using System;
 using System.Collections.Generic;
@@ -22,6 +28,9 @@ using System.Linq;
 
 namespace TextEngine
 {
+    /// <summary>
+    /// Represents an Inventory of Items
+    /// </summary>
     public class Inventory
     {
         /// <summary>
@@ -47,9 +56,13 @@ namespace TextEngine
         /// <summary>
         /// A list containing all of the items in the inventory
         /// </summary>
-        private Dictionary<Item, int> items;
+        private readonly Dictionary<Item, int> items;
         private int capacity;
 
+        /// <summary>
+        /// Construct an Inventory
+        /// </summary>
+        /// <param name="capacity">initial capacity</param>
         public Inventory(int capacity = 1)
         {
             items = new Dictionary<Item, int>();
@@ -82,11 +95,22 @@ namespace TextEngine
             Count += quantity;
         }
 
+        /// <summary>
+        /// Add Item to Inventory
+        /// </summary>
+        /// <param name="item">The Item to add</param>
+        /// <param name="quantity">The quantity to add</param>
+        /// <returns>throws an exception for now :(</returns>
         public bool AddItem(String item, int quantity = 1)
         {
             throw new NotImplementedException("Later, when we can load items from files, I promise!");
         }
 
+        /// <summary>
+        /// Remove an Item from the Inventory
+        /// </summary>
+        /// <param name="item">The Item to remove</param>
+        /// <param name="quantity">The quantity to remove</param>
         public void RemoveItem(Item item, int quantity = 1)
         {
             if (!items.ContainsKey(item))
@@ -104,6 +128,11 @@ namespace TextEngine
                 throw new DebugException(item.Name + " quantity is 0, but it wasn't removed!");
         }
 
+        /// <summary>
+        /// Remove an item from the Inventory
+        /// </summary>
+        /// <param name="itemName">The name of the item to remove</param>
+        /// <param name="quantity">The quantity to remove</param>
         public void RemoveItem(String itemName, int quantity = 1)
         {
             if (!HasItem(itemName))
@@ -112,10 +141,25 @@ namespace TextEngine
             RemoveItem(GetItem(itemName));
         }
 
+        /// <summary>
+        /// Check if the Iventory contains an item
+        /// </summary>
+        /// <param name="item">The item to check for</param>
+        /// <returns>true if the item is contained, false if not</returns>
         public bool HasItem(Item item) => items.ContainsKey(item);
 
+        /// <summary>
+        /// Check if the Inventory contains an Item
+        /// </summary>
+        /// <param name="itemName">The Item to check for</param>
+        /// <returns>True if contained, false otherwise</returns>
         public bool HasItem(String itemName) => items.Keys.Any(key => key.Name == itemName);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">Item to get</param>
+        /// <returns>The Item</returns>
         public Item GetItem(string name)
         {
             if (!HasItem(name))
@@ -124,8 +168,18 @@ namespace TextEngine
             return items.Keys.First(key => key.Name == name);
         }
 
+        /// <summary>
+        /// Check how many of an Item are in the Inventory
+        /// </summary>
+        /// <param name="item">The item to check for</param>
+        /// <returns>The number of that item in the Inventory</returns>
         public int ItemQuantity(Item item) => items[item];
 
+        /// <summary>
+        /// Check how many of an Item are in the Inventory
+        /// </summary>
+        /// <param name="itemName">The name of the Item to check</param>
+        /// <returns>The number of that item in the Inventory</returns>
         public int ItemQuantity(string itemName)
         {
             if (!HasItem(itemName))
