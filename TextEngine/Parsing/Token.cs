@@ -5,7 +5,7 @@ namespace TextEngine.Parsing
     /// <summary>
     ///  A class to represent a Token
     /// </summary>
-    public sealed class Token : SyntaxNode
+    public sealed class Token<TokenType> : SyntaxNode
     {
         /// <summary>
         ///  initialize Token
@@ -14,7 +14,7 @@ namespace TextEngine.Parsing
         /// <param name="position">The startposition of the Token</param>
         /// <param name="text">The resulting Text</param>
         /// <param name="value">The Value. Can be Null</param>
-        public Token(SyntaxKind kind, int position, string text, object value)
+        public Token(TokenType kind, int position, string text, object value)
         {
             Kind = kind;
             Position = position;
@@ -26,7 +26,7 @@ namespace TextEngine.Parsing
         /// <summary>
         ///  The TokenType
         /// </summary>
-        public SyntaxKind Kind { get; }
+        public TokenType Kind { get; }
 
         /// <summary>
         ///  The Startposition

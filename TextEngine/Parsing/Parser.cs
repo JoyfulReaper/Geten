@@ -9,14 +9,26 @@ namespace TextEngine.Parsing
 {
     public class Parser
     {
-        private ImmutableArray<Token> _tokens;
+        private ImmutableArray<Token<SyntaxKind>> _tokens;
         private int _position;
 
         public SyntaxNode Parse(string src, string filename = "default.script")
         {
-            var lexer = new Lexer(SourceText.From(src, filename));
-           
-            _tokens = lexer.GetAllTokens().ToImmutableArray();
+            var lexer = new ScriptLexer(SourceText.From(src, filename));
+            var tokensBuilder = ImmutableArray.CreateBuilder<Token<SyntaxKind>>();
+
+            Token<SyntaxKind> token;
+            do
+            {
+                token = lexer.Lex();
+
+                if (token.Kind != SyntaxKind.Whitespace &&
+                    token.Kind != SyntaxKind.BadToken)
+                {
+                    tokensBuilder.Add(token);
+                }
+            } while (token.Kind != SyntaxKind.EOF);
+            _tokens = tokensBuilder.ToImmutable();
 
             return InternalParse();
         }
@@ -29,7 +41,7 @@ namespace TextEngine.Parsing
             return value;
         }
 
-        private Token Peek(int offset)
+        private Token<SyntaxKind> Peek(int offset)
         {
             var index = _position + offset;
             if (index >= _tokens.Length)
@@ -38,9 +50,9 @@ namespace TextEngine.Parsing
             return _tokens[index];
         }
 
-        public Token MatchUntil(SyntaxKind kind)
+        public Token<SyntaxKind> MatchUntil(SyntaxKind kind)
         {
-            Token token;
+            Token<SyntaxKind> token;
             do
             {
                 token = MatchToken(kind);
@@ -237,7 +249,7 @@ namespace TextEngine.Parsing
 
 
 
-        public bool AcceptKeyword(string keyword, out Token token)
+        public bool AcceptKeyword(string keyword, out Token<SyntaxKind> token)
         {
             try
             {
@@ -246,7 +258,7 @@ namespace TextEngine.Parsing
             }
             catch
             {
-                token = new Token(SyntaxKind.BadToken, -1, null, null);
+                token = new Token<SyntaxKind>(SyntaxKind.BadToken, -1, null, null);
                 return false;
             }
         }
@@ -259,7 +271,7 @@ namespace TextEngine.Parsing
             return (name.Text, new LiteralNode(int.Parse(value.Text)));
         }
 
-        public Token MatchKeyword(string keyword)
+        public Token<SyntaxKind> MatchKeyword(string keyword)
         {
             var keywordToken = MatchToken(SyntaxKind.Keyword);
             if(keywordToken.Text == keyword)
@@ -270,23 +282,23 @@ namespace TextEngine.Parsing
             throw new Exception($"expected '{keyword}' got '{keywordToken.Text}'");
         }
 
-        private Token Current => Peek(0);
+        private Token<SyntaxKind> Current => Peek(0);
 
-        private Token NextToken()
+        private Token<SyntaxKind> NextToken()
         {
             var current = Current;
             _position++;
             return current;
         }
 
-        private Token MatchToken(SyntaxKind kind)
+        private Token<SyntaxKind> MatchToken(SyntaxKind kind)
         {
             if (Current.Kind == kind)
                 return NextToken();
 
             if (Current.Kind != kind) throw new Exception($"Expected '{kind}' got '{Current.Kind}'");
 
-            return new Token(kind, Current.Position, null, null);
+            return new Token<SyntaxKind>(kind, Current.Position, null, null);
         }
     }
 }

@@ -64,9 +64,9 @@ namespace TextEngine.Parsing
             return result;
         }
 
-        public Token GetLastToken()
+        public Token<SyntaxKind> GetLastToken()
         {
-            if (this is Token token)
+            if (this is Token<SyntaxKind> token)
                 return token;
 
             // A syntax node should always contain at least 1 token.
@@ -82,11 +82,11 @@ namespace TextEngine.Parsing
             Console.Write(indent);
             Console.Write(marker);
 
-            Console.ForegroundColor = node is Token ? ConsoleColor.Blue : ConsoleColor.Cyan;
+            Console.ForegroundColor = node is Token<SyntaxKind> ? ConsoleColor.Blue : ConsoleColor.Cyan;
 
             Console.Write(node.GetType().Name);
 
-            if (node is Token t && t.Value != null)
+            if (node is Token<SyntaxKind> t && t.Value != null)
             {
                 Console.Write(" ");
                 Console.Write(t.Value);

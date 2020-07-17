@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using TextEngine.Parsing.Text;
 
 namespace TextEngine.Parsing
@@ -8,50 +6,13 @@ namespace TextEngine.Parsing
     /// <summary>
     ///  A Tokenizer
     /// </summary>
-    public sealed class Lexer
+    public sealed class ScriptLexer : BaseLexer<SyntaxKind>
     {
-        private readonly SourceText _text;
-        private int _position;
-
-        private int _start;
-        private SyntaxKind _kind;
-        private object _value;
-
-        public Lexer(SourceText src)
+        public ScriptLexer(SourceText src) : base (src)
         {
-            _text = src;
         }
 
-        public IEnumerable<Token> GetAllTokens()
-        {
-            Token token;
-            do
-            {
-                token = Lex();
-
-                if (token.Kind != SyntaxKind.Whitespace &&
-                    token.Kind != SyntaxKind.BadToken)
-                {
-                    yield return token;
-                }
-            } while (token.Kind != SyntaxKind.EOF);
-        }
-
-        private char Current => Peek(0);
-
-        private char Lookahead => Peek(1);
-
-        private char Peek(int offset)
-        {
-            var index = _position + offset;
-
-            if (index >= _text.Length)
-                return '\0';
-
-            return _text[index];
-        }
-
-        public Token Lex()
+        public override Token<SyntaxKind> Lex()
         {
             _start = _position;
             _kind = SyntaxKind.BadToken;
@@ -102,7 +63,7 @@ namespace TextEngine.Parsing
             var length = _position - _start;
             var text = _text.ToString(_start, length);
 
-            return new Token(_kind, _start, text, _value);
+            return new Token<SyntaxKind>(_kind, _start, text, _value);
         }
 
         private void ReadKeyword()
@@ -113,7 +74,7 @@ namespace TextEngine.Parsing
             var length = _position - _start;
             var text = _text.ToString(_start, length);
 
-            if(text == "end")
+            if (text == "end")
             {
                 _kind = SyntaxKind.EndToken;
                 return;
@@ -219,7 +180,7 @@ namespace TextEngine.Parsing
             var text = _text.ToString(_start, length);
             if (!int.TryParse(text, out var value))
             {
-                
+
             }
 
             _value = value;

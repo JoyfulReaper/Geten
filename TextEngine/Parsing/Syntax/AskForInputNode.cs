@@ -5,7 +5,7 @@ namespace TextEngine.Parsing.Syntax
     public class AskForInputNode : SyntaxNode
     {
 
-        public AskForInputNode(Token askKeyword, Token forKeyword, Token message, Token toKeyword, Token slotname)
+        public AskForInputNode(Token<SyntaxKind> askKeyword, Token<SyntaxKind> forKeyword, Token<SyntaxKind> message, Token<SyntaxKind> toKeyword, Token<SyntaxKind> slotname)
         {
             AskKeyword = askKeyword;
             ForKeyword = forKeyword;
@@ -14,10 +14,10 @@ namespace TextEngine.Parsing.Syntax
             Message = message;
         }
 
-        public Token AskKeyword { get; }
-        public Token ForKeyword { get; }
-        public Token ToKeyword { get; }
-        public Token Slotname { get; }
-        public Token Message { get; }
+        public Token<SyntaxKind> AskKeyword { get; }
+        public Token<SyntaxKind> ForKeyword { get; }
+        public Token<SyntaxKind> ToKeyword { get; }
+        public Token<SyntaxKind> Slotname { get; }
+        public Token<SyntaxKind> Message { get; }
     }
 }

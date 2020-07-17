@@ -12,7 +12,7 @@ namespace LibraryTests
         public void Lexer_Should_Pass()
         {
             var src = "memoryslot \"name\"\non \"setup\" ask for \"Please Tell me your name: \" to \"name\"";
-            var lexer = new Lexer(SourceText.From(src, "tests.script"));
+            var lexer = new ScriptLexer(SourceText.From(src, "tests.script"));
 
             var tokens = lexer.GetAllTokens();
 
