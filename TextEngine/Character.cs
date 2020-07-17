@@ -76,7 +76,7 @@ namespace TextEngine
         /// <summary>
         /// The amount of local currence that the character has
         /// </summary>
-        public Wallet CharacterWallet { get; set; }
+        public Money CharacterMoney { get; set; }
 
         /// <summary>
         /// The room that the Character is in
@@ -107,7 +107,7 @@ namespace TextEngine
             Name = name;
             Health = health;
             MaxHealth = maxHealth;
-            CharacterWallet = new Wallet();
+            CharacterMoney = new Money(null, 0);
             Inventory = new Inventory();
         }
         /// <summary>
