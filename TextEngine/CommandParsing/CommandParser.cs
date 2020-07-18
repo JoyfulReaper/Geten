@@ -34,8 +34,9 @@ namespace TextEngine.CommandParsing
             {
                 if(_commandParsers.ContainsKey(Current.Text))
                 {
-                    NextToken(); //consume the current token
-                    return _commandParsers[Current.Text]();
+                    var handler = _commandParsers[Current.Text];
+                    NextToken(); // consume token before invoke handler
+                    return handler();
                 }
                 else
                 {
