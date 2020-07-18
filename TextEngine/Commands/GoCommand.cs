@@ -1,11 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TextEngine.Commands
+﻿namespace TextEngine.Commands
 {
-    class GoCommand
+    class GoCommand : ITextCommand
     {
+        public GoCommand(Direction direction)
+        {
+            Direction = direction;
+        }
 
+        public Direction Direction { get; }
+
+        public void Invoke()
+        {
+            //ToDo: move the Player
+        }
     }
 }

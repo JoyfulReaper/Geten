@@ -18,16 +18,6 @@ namespace TextEngine.CommandParsing
         {
         }
 
-        public IEnumerable<Token<CommandKind>> getAllTokens()
-        {
-            Token<CommandKind> token;
-            do
-            {
-                token = Lex();
-                if(token.Kind != CommandKind.WhiteSpace && token.Kind != CommandKind.EOF)
-                    yield return token;
-            } while (token.Kind != CommandKind.EOF);
-        }
 
         public override Token<CommandKind> Lex()
         {
@@ -133,6 +123,17 @@ namespace TextEngine.CommandParsing
             }
 
             return _kind;
+        }
+
+        public override IEnumerable<Token<CommandKind>> GetAllTokens()
+        {
+            Token<CommandKind> token;
+            do
+            {
+                token = Lex();
+                if (token.Kind != CommandKind.WhiteSpace && token.Kind != CommandKind.EOF)
+                    yield return token;
+            } while (token.Kind != CommandKind.EOF);
         }
     }
 }
