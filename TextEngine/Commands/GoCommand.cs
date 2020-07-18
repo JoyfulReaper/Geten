@@ -1,4 +1,6 @@
-﻿namespace TextEngine.Commands
+﻿using TextEngine.CommandParsing;
+
+namespace TextEngine.Commands
 {
     class GoCommand : ITextCommand
     {
@@ -12,6 +14,12 @@
         public void Invoke()
         {
             //ToDo: move the Player
+        }
+
+        public ITextCommand Parse(CommandParser parser)
+        {
+            //ToDo: parse the go command
+            throw new System.NotImplementedException();
         }
     }
 }
