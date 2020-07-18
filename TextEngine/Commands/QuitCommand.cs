@@ -8,13 +8,8 @@ namespace TextEngine.Commands
     {
         public void Invoke()
         {
-            // TODO Save gamesate?
+            // TODO Save gamestate?
             Environment.Exit(0);
-        }
-
-        public ITextCommand Parse(CommandParser parser)
-        {
-            return new QuitCommand();
         }
     }
 }
