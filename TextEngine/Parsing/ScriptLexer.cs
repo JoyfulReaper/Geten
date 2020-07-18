@@ -109,8 +109,15 @@ namespace TextEngine.Parsing
                 _kind = SyntaxKind.EndToken;
                 return;
             }
-
-            _kind = SyntaxKind.Keyword;
+            else if (text == "true" || text == "false")
+            {
+                _kind = SyntaxKind.Boolean;
+                return;
+            }
+            else
+            {
+                _kind = SyntaxKind.Keyword;
+            }
         }
 
         private void ReadSingleQuotedString()

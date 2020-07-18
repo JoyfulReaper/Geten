@@ -57,16 +57,28 @@ item "apple"
     end
 end
 
+item "Chest" 
+    with
+        color "brown" and
+        isLocked true
+    end
+
+    on "use"
+       if isLocked
+            if inventory of "player" contains "open_chest_in_kitchen_key"
+                setProperty isLocked false
+                tell "The Chest was empty"
+                remove item "open_chest_in_kitchen_key" from "player"
+            end
+       end
+    end
+end
+
 
 money "Gulden" and "Silver" and "Bronce""
     100 "Silver" match "Gulden" and
     10 "Bronce" match "Silver"
 
-openable "Chest" open with "chest_in_castle"
-    on "use"
-        tell "Thanks for opening"
-    end
-end
 
 
 dialog "welcome dude" based on "intro"

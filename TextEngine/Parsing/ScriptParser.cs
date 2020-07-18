@@ -276,6 +276,9 @@ namespace TextEngine.Parsing
                 case SyntaxKind.Number:
                     result = new LiteralNode(int.Parse(Current.Text));
                     break;
+                case SyntaxKind.Boolean:
+                    result = new LiteralNode(bool.Parse(Current.Text));
+                    break;
                 default:
                     throw new Exception("Only String and Number as Literal accepted");
             }

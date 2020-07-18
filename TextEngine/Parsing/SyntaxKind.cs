@@ -27,5 +27,6 @@
         BadToken,
         Whitespace,
         EndToken,
+        Boolean,
     }
 }
