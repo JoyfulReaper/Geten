@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -178,16 +178,21 @@ namespace TextEngine.Parsing
             var name = MatchToken(SyntaxKind.String);
             MatchKeyword("with");
             var properties = ParsePropertyList();
+            BlockNode body = new BlockNode(null);
 
-            var result = (T)Activator.CreateInstance(typeof(T), name.Text, properties);
-            MatchToken(SyntaxKind.EndToken);
+            if (Current.Kind != SyntaxKind.EndToken && Current.Kind != SyntaxKind.EOF) //optional procedure block
+            {
+                body = ParseProcedureBlock();
+            }
+
+            var result = (T)Activator.CreateInstance(typeof(T), name.Text, properties, body);
 
             return result;
         }
 
-        private Dictionary<string, object> ParsePropertyList()
+        private PropertyList ParsePropertyList()
         {
-            var result = new Dictionary<string, object>();
+            var result = new PropertyList();
 
             var parseNextArgument = true;
             while (parseNextArgument &&
@@ -203,7 +208,7 @@ namespace TextEngine.Parsing
                 }
             }
 
-
+            MatchToken(SyntaxKind.EndToken);
             return result;
         }
 
