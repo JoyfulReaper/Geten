@@ -22,10 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System.Collections.Generic;
 using TextEngine.CommandParsing;
-using TextEngine.Parsing;
-using TextEngine.Parsing.Text;
 
 namespace TextEngine
 {
@@ -33,13 +30,9 @@ namespace TextEngine
     {
         public static void ProcessCommand(string command)
         {
-            CommandLexer lexer = new CommandLexer(SourceText.From(command));
-            IEnumerable<Token<CommandKind>> tokens = lexer.getAllTokens();
-
-        }
-
-        private static void ProcessGo()
-        {
+            var parser = new CommandParser();
+            var result = parser.Parse(command);
+            result.Invoke();
         }
     }
 }
