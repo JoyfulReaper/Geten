@@ -10,10 +10,12 @@ key "chest_in_castle" with
     maxusage 1
 end
 
-character "leo" with 
-    health 100 
-    and money 150 
-    and dialog "welcome dude"
+character "leo" as npc 
+    with 
+        health 100 
+        and money 150 
+        and dialog "welcome dude"
+    end
 end
 
 character \"sarah\" 
@@ -82,7 +84,7 @@ money "Gulden" and "Silver" and "Bronce""
 
 
 dialog "welcome dude" based on "intro"
-      "hello $(name). would you get a free weapon?"
+      "hello @name. would you get a free weapon?"
           on "yes" add "sword" to inventory
           on "no" open dialog "first mission"
 
@@ -93,4 +95,19 @@ verbs for direction
 on "start"
      dialog "intro"
      play "kitchensound" in loop
+     start print with
+        text "hello world"
+     end
+end
+
+make routine print with
+    text string
+    end
+    body
+        tell @text
+    end
+end
+
+loop until isLocked
+    start print "hello world"
 end
