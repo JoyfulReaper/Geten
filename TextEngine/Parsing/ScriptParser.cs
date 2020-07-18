@@ -326,7 +326,7 @@ namespace TextEngine.Parsing
             }
 
             var result = (T)Activator.CreateInstance(typeof(T), name.Text, properties, body);
-            MatchToken(SyntaxKind.EndToken);
+            //MatchToken(SyntaxKind.EndToken);
 
             return result;
         }

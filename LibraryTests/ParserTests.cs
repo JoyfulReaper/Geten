@@ -8,6 +8,14 @@ namespace LibraryTests
     public class ParserTests
     {
         [TestMethod]
+        public void Parse_Include_Should_Pass()
+        {
+            var src = "include \"base.script\"";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
         public void Parse_Character_Should_Pass()
         {
             var src = "character \"leo\" with health 100 and money 150 end end";
@@ -18,8 +26,12 @@ namespace LibraryTests
         [TestMethod]
         public void Parse_Character_Event_Should_Pass()
         {
-            var src = @"character ""leo"" 
-                with health 100 and money 150 end 
+            var src = 
+            @"character ""leo"" 
+                with 
+                    health 100 and 
+                    money 150 
+                end 
                 on ""move"" 
                     tell ""blub"" 
                 end 
