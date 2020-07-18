@@ -1,40 +1,66 @@
 ﻿/*
- TextEngine: Room.cs
- Copyright (C) 2020 Kyle Givler
- 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+MIT License
 
-using System;
+Copyright(c) 2020 Kyle Givler
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
-namespace TextEngine
+namespace TextEngine.MapItems
 {
     /// <summary>
     /// Represents a room with 6 sides, one for each Direction
     /// </summary>
     public class Room : MapSite
     {
+        /// <summary>
+        /// The Short Name for this room. May possible show this when the room is entered, have not decided.
+        /// </summary>
         public string ShortName { get; set; }
+        /// <summary>
+        /// The Room's description, to be shown when the room is Entered
+        /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// The desciption shows when the LOOK command is given
+        /// </summary>
         public string LookDescription { get; set; }
-        public bool Visisted { get; set; }
+        /// <summary>
+        /// True if the Character has been in the room before, false is not
+        /// </summary>
+        public bool Visisted { get; private set; }
 
-        public Inventory Inventory { get; }
-        private Dictionary<Direction, MapSite> sides;
+        /// <summary>
+        /// The Items contained in the Room's Inventory
+        /// </summary>
+        public Inventory Inventory { get; } // Should we allow this to be set as well?
+        private readonly Dictionary<Direction, MapSite> sides;
 
+        /// <summary>
+        /// Construct a Room
+        /// </summary>
+        /// <param name="name">The Room's name</param>
+        /// <param name="shortName">The Room's short name</param>
+        /// <param name="desc">The description shown when entering the room</param>
+        /// <param name="lookDesc">The description shown when issuing the LOOK command</param>
         public Room(string name, string shortName, string desc, string lookDesc)
         {
             Name = name;
@@ -53,14 +79,30 @@ namespace TextEngine
             Inventory = new Inventory();
             sides = new Dictionary<Direction, MapSite>();
         }
+        /// <summary>
+        /// Construct a Room
+        /// </summary>
+        /// <param name="name">The name of the Room</param>
         public Room(string name) : this(name, "", "", "") { }
 
+        /// <summary>
+        /// Construct a Rooom
+        /// </summary>
+        /// <param name="name">The Name of the room</param>
+        /// <param name="shortName">The short name of the room</param>
         public Room(string name, string shortName) : this(name, shortName, "", "") { }
 
-        public override void Enter(Character character, Direction dir)
+        /// <summary>
+        /// Enter the room
+        /// </summary>
+        /// <param name="character">The Character entering the room</param>
+        /// <param name="heading">The Character's heading</param>
+        public override void Enter(Character character, Direction heading)
         {
-            Visisted = true;
-            TextEngine.Player.Move(this);
+            if(character == TextEngine.Player)
+                Visisted = true;
+
+            character.Move(this);
             TextEngine.AddMessage(Description);
         }
         /// <summary>
@@ -73,11 +115,20 @@ namespace TextEngine
             return sides[dir];
         }
 
+        /// <summary>
+        /// Set the MapSite on the side of the room at the given Direction
+        /// </summary>
+        /// <param name="dir">The Direction of the room to add the side at (ex: Add a wall to the east)</param>
+        /// <param name="site">The MapSite to add at the given Direction</param>
         public void SetSide(Direction dir, MapSite site)
         {
             sides[dir] = site;
         }
 
+        /// <summary>
+        /// A String representation of this Room
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return base.ToString() + $", ShortName: {ShortName}, Description {Description}, LookDescription: {LookDescription}, Visited: {Visisted}";
