@@ -10,7 +10,15 @@ namespace LibraryTests
         [TestMethod]
         public void Parse_Character_Should_Pass()
         {
-            var src = "character \"leo\" with health 100 and money 150";
+            var src = "character \"leo\" with health 100 and money 150 end";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Character_Event_Should_Pass()
+        {
+            var src = "character \"leo\" with health 100 and money 150 end on \"move\" tell \"blub\" end end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
         }

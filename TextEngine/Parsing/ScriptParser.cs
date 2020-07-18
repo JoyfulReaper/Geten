@@ -1,10 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
-using System.Runtime.CompilerServices;
 using TextEngine.Parsing.Syntax;
-using TextEngine.Parsing.Text;
 
 namespace TextEngine.Parsing
 {
@@ -128,7 +125,7 @@ namespace TextEngine.Parsing
         {
             var members = new List<SyntaxNode>();
 
-            while(Current.Kind != SyntaxKind.EndToken)
+            while(Current.Kind != SyntaxKind.EndToken && Current.Kind != SyntaxKind.EOF)
             {
                 members.Add(ParseMember());
             }

@@ -16,6 +16,16 @@ character "leo" with
     and dialog "welcome dude"
 end
 
+character \"sarah\" 
+    with 
+        health 100 
+        and money 150
+    end 
+    on \"move\"
+        tell \"blub\" 
+    end 
+end
+
 tell "hello world"
 
 memory "name" equals "Tombo"
