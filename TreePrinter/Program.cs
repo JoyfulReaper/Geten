@@ -11,7 +11,7 @@ namespace TreePrinter
             {
                 Console.Write(">> ");
                 var input = Console.ReadLine();
-                var parser = new Parser();
+                var parser = new ScriptParser();
                 var tree = parser.Parse(input);
                 SyntaxNode.PrettyPrint(tree);
             }

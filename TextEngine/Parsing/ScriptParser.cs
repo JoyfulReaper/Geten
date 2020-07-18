@@ -8,7 +8,7 @@ using TextEngine.Parsing.Text;
 
 namespace TextEngine.Parsing
 {
-    public class Parser : BaseParser<SyntaxKind, ScriptLexer, SyntaxNode>
+    public class ScriptParser : BaseParser<SyntaxKind, ScriptLexer, SyntaxNode>
     {
 
         protected override SyntaxNode InternalParse()
@@ -165,7 +165,7 @@ namespace TextEngine.Parsing
             MatchKeyword("include");
             var filename = MatchToken(SyntaxKind.String);
 
-            var p = new Parser();
+            var p = new ScriptParser();
             var tree = p.Parse(File.ReadAllText(filename.Value.ToString()));
 
             return tree;
