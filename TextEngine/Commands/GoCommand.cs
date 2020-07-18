@@ -23,8 +23,9 @@ namespace TextEngine.Commands
 
         public ITextCommand Parse(CommandParser parser)
         {
-            //ToDo: parse the go command
-            throw new System.NotImplementedException();
+            var direction = parser.MatchToken(CommandKind.Direction);
+
+            return new GoCommand((Direction)direction.Value);
         }
     }
 }

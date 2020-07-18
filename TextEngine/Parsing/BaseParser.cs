@@ -11,7 +11,7 @@ namespace TextEngine.Parsing
         protected ImmutableArray<Token<TokenType>> _tokens;
         protected int _position;
 
-        protected Token<TokenType> Peek(int offset)
+        public Token<TokenType> Peek(int offset)
         {
             var index = _position + offset;
             if (index >= _tokens.Length)
@@ -20,16 +20,16 @@ namespace TextEngine.Parsing
             return _tokens[index];
         }
 
-        protected Token<TokenType> Current => Peek(0);
+        public Token<TokenType> Current => Peek(0);
 
-        protected Token<TokenType> NextToken()
+        public Token<TokenType> NextToken()
         {
             var current = Current;
             _position++;
             return current;
         }
 
-        protected Token<TokenType> MatchToken(TokenType kind)
+        public Token<TokenType> MatchToken(TokenType kind)
         {
             if (Current.Kind.CompareTo(kind) == 0)
                 return NextToken();
