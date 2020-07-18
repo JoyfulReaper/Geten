@@ -153,9 +153,16 @@ namespace TextEngine
 
         public static bool IsCommand(string name)
         {
-            var commands = CommandParser._commandParsers.Keys.ToList();
+            var cmds = new List<string>
+            {
+                "quit",
+                "go",
+                "look",
+                "pickup",
+                "take",
+            };
 
-            return commands.Contains(name.ToLower());
+            return cmds.Contains(name);
         }
 
         /// <summary>
