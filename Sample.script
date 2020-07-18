@@ -29,7 +29,15 @@ on "exit"
 end
 
 
+item "apple" 
+    with
+        color "green"
+    end
 
+    on "use"
+        increase health of player by 15
+    end
+end
 
 
 money "Gulden" and "Silver" and "Bronce""

@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace TextEngine.Parsing.Syntax
+﻿namespace TextEngine.Parsing.Syntax
 {
     public class CharacterDefinitionNode : PropertyOnlyBasedCommand
     {
-        public CharacterDefinitionNode(string name, PropertyList properties) : base(name, properties)
+        public CharacterDefinitionNode(string name, PropertyList properties, BlockNode body) : base(name, properties, body)
         {
         }
     }
