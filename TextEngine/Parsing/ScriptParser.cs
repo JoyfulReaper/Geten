@@ -23,6 +23,11 @@ namespace TextEngine.Parsing
             return Current.Kind == SyntaxKind.Keyword && Current.Text == keyword;
         }
 
+        public bool MatchNextKeyword(string keyword)
+        {
+            return Peek(1).Kind == SyntaxKind.Keyword && Peek(1).Text == keyword;
+        }
+
         public SyntaxNode ParseBlock()
         {
             var members = ParseMembers();
@@ -109,8 +114,73 @@ namespace TextEngine.Parsing
             {
                 return ParseIncrease();
             }
+            else if (MatchCurrentKeyword("decrease"))
+            {
+                return ParseDecrease();
+            }
+            else if (MatchCurrentKeyword("setProperty"))
+            {
+                return ParseSetProperty();
+            }
+            else if (MatchCurrentKeyword("add"))
+            {
+                return ParseAdd();
+            }
+            else if (MatchCurrentKeyword("remove"))
+            {
+                return ParseRemove();
+            }
 
             return null;
+        }
+
+        private T ParseTargeted<T>(string first, string second)
+            where T : TargetedNode
+        {
+            Token<SyntaxKind> target = null;
+
+            var action = MatchKeyword(first);
+            var argument = MatchKeyword(second);
+            var name = MatchToken(SyntaxKind.String);
+            Token<SyntaxKind> fromkeyword = null;
+            if  (MatchNextKeyword("from"))
+            {
+                fromkeyword = NextToken(); 
+                target = MatchToken(SyntaxKind.String);
+            }
+
+            var result = (T)Activator.CreateInstance(typeof(T), action, argument, name, fromkeyword, target);
+
+            return result;
+        }
+
+        private SyntaxNode ParseRemove()
+        {
+            return ParseTargeted<RemoveItemNode>("remove", "item");
+        }
+
+        private SyntaxNode ParseAdd()
+        {
+            return ParseTargeted<AddItemNode>("add", "item");
+        }
+
+        private SyntaxNode ParseDecrease()
+        {
+            throw new NotImplementedException();
+        }
+
+        private SyntaxNode ParseSetProperty()
+        {
+            var setPropertykeyword = MatchKeyword("setProperty");
+            Token<SyntaxKind> target = null;
+            if (MatchNextKeyword("of"))
+            {
+                target = MatchToken(SyntaxKind.String);
+            }
+            var property = MatchToken(SyntaxKind.Keyword);
+            var value = ParseLiteral();
+
+            return new SetPropertyNode(setPropertykeyword, target, property, value);
         }
 
         private SyntaxNode ParseIncrease()

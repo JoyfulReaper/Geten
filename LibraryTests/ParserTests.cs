@@ -102,5 +102,53 @@ namespace LibraryTests
             var parser = new ScriptParser();
             var result = parser.Parse(src);
         }
+
+        [TestMethod]
+        public void Parse_setProperty_No_Target_Should_Pass()
+        {
+            var src = "setProperty isLocked false";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_setProperty_with_Target_Should_Pass()
+        {
+            var src = "setProperty of \"Chest\" isLocked false";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Remove_Item_Should_Pass()
+        {
+            var src = "remove item \"apple\"";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Remove_Item_With_Target_Should_Pass()
+        {
+            var src = "remove item \"apple\" from \"chest\"";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Add_Item_Should_Pass()
+        {
+            var src = "add item \"apple\"";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Add_Item_With_Target_Should_Pass()
+        {
+            var src = "add item \"apple\" from \"chest\"";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
     }
 }
