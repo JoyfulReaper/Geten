@@ -24,7 +24,7 @@ namespace DumbTests
 
             Console.WriteLine("--------------------------------------------------");
 
-            Parser p = new Parser();
+            ScriptParser p = new ScriptParser();
             BlockNode bn = (BlockNode)p.Parse("weapon \"sword\" with mindamage 10 and maxdamage 35 end");
             VistChildNode(bn);
         }
