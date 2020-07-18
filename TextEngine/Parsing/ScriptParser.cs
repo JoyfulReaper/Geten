@@ -97,8 +97,24 @@ namespace TextEngine.Parsing
             {
                 return ParseAskFor();
             }
+            else if (MatchCurrentKeyword("room"))
+            {
+                return ParsePropertyOnly<KeyDefinitionNode>("room");
+            }
+            else if(MatchCurrentKeyword("command"))
+            {
+                return ParseCommand();
+            }
 
             return null;
+        }
+
+        private SyntaxNode ParseCommand()
+        {
+            var commandkeyword = MatchKeyword("command");
+            var commandString = MatchToken(SyntaxKind.String);
+
+            return new CommandNode((string)commandString.Value);
         }
 
         private SyntaxNode ParseAskFor()
@@ -228,9 +244,22 @@ namespace TextEngine.Parsing
         private (string name, SyntaxNode value) ParseProperty()
         {
             var name = MatchToken(SyntaxKind.Keyword);
-            var value = MatchToken(SyntaxKind.Number);
+            var value = ParseLiteral();
 
-            return (name.Text, new LiteralNode(int.Parse(value.Text)));
+            return (name.Text, value);
+        }
+
+        private SyntaxNode ParseLiteral()
+        {
+            switch (NextToken().Kind)
+            {
+                case SyntaxKind.String:
+                    return new LiteralNode(Current.Text);
+                case SyntaxKind.Number:
+                    return new LiteralNode(int.Parse(Current.Text));
+                default:
+                    throw new Exception("Only String and Number as Literal accepted");
+            }
         }
 
         public Token<SyntaxKind> MatchKeyword(string keyword)

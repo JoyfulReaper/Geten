@@ -39,6 +39,15 @@ on "exit"
 end
 
 
+room "kitchen" with 
+    shortName "kitchen" and
+    lookDescription "Uhh. It smells very tasty"
+
+    on "enter"
+        command "look chest"
+    end
+end
+
 item "apple" 
     with
         color "green"

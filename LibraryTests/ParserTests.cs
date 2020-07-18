@@ -70,5 +70,21 @@ namespace LibraryTests
             var parser = new ScriptParser();
             var result = parser.Parse(src);
         }
+
+        [TestMethod]
+        public void Parse_Command_Should_Pass()
+        {
+            var src = "command 'look'";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Room_Should_Pass()
+        {
+            var src = "room \"kitchen\" with shortName \"kitchen\" and lookDescription \"Uhh. It smells very tasty\" end";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
     }
 }
