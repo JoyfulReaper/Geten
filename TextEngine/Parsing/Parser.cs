@@ -2,38 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Runtime.CompilerServices;
 using TextEngine.Parsing.Syntax;
 using TextEngine.Parsing.Text;
 
 namespace TextEngine.Parsing
 {
-    public class Parser
+    public class Parser : BaseParser<SyntaxKind, ScriptLexer, SyntaxNode>
     {
-        private ImmutableArray<Token<SyntaxKind>> _tokens;
-        private int _position;
 
-        public SyntaxNode Parse(string src, string filename = "default.script")
-        {
-            var lexer = new ScriptLexer(SourceText.From(src, filename));
-            var tokensBuilder = ImmutableArray.CreateBuilder<Token<SyntaxKind>>();
-
-            Token<SyntaxKind> token;
-            do
-            {
-                token = lexer.Lex();
-
-                if (token.Kind != SyntaxKind.Whitespace &&
-                    token.Kind != SyntaxKind.BadToken)
-                {
-                    tokensBuilder.Add(token);
-                }
-            } while (token.Kind != SyntaxKind.EOF);
-            _tokens = tokensBuilder.ToImmutable();
-
-            return InternalParse();
-        }
-
-        private SyntaxNode InternalParse()
+        protected override SyntaxNode InternalParse()
         {
             var value = ParseBlock();
             MatchToken(SyntaxKind.EOF);
@@ -41,25 +19,7 @@ namespace TextEngine.Parsing
             return value;
         }
 
-        private Token<SyntaxKind> Peek(int offset)
-        {
-            var index = _position + offset;
-            if (index >= _tokens.Length)
-                return _tokens[^1];
 
-            return _tokens[index];
-        }
-
-        public Token<SyntaxKind> MatchUntil(SyntaxKind kind)
-        {
-            Token<SyntaxKind> token;
-            do
-            {
-                token = MatchToken(kind);
-            } while (token.Kind != SyntaxKind.EOF && token.Kind == kind);
-
-            return token;
-        }
 
         public bool MatchCurrentKeyword(string keyword)
         {
@@ -280,25 +240,6 @@ namespace TextEngine.Parsing
             }
 
             throw new Exception($"expected '{keyword}' got '{keywordToken.Text}'");
-        }
-
-        private Token<SyntaxKind> Current => Peek(0);
-
-        private Token<SyntaxKind> NextToken()
-        {
-            var current = Current;
-            _position++;
-            return current;
-        }
-
-        private Token<SyntaxKind> MatchToken(SyntaxKind kind)
-        {
-            if (Current.Kind == kind)
-                return NextToken();
-
-            if (Current.Kind != kind) throw new Exception($"Expected '{kind}' got '{Current.Kind}'");
-
-            return new Token<SyntaxKind>(kind, Current.Position, null, null);
         }
     }
 }
