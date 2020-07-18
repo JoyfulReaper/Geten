@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using TextEngine.Parsing.Text;
 
 namespace TextEngine.Parsing
@@ -19,6 +20,7 @@ namespace TextEngine.Parsing
         }
 
         public abstract Token<TokenType> Lex();
+        public abstract IEnumerable<Token<TokenType>> GetAllTokens();
 
         protected char Current => Peek(0);
 

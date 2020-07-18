@@ -13,7 +13,7 @@ namespace TextEngine.Parsing
         {
         }
 
-        public IEnumerable<Token<SyntaxKind>> GetAllTokens()
+        public override IEnumerable<Token<SyntaxKind>> GetAllTokens()
         {
             Token<SyntaxKind> token;
             do
