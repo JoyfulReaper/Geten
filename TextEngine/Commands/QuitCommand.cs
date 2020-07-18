@@ -1,4 +1,5 @@
-﻿using TextEngine.CommandParsing;
+﻿using System;
+using TextEngine.CommandParsing;
 
 namespace TextEngine.Commands
 {
@@ -8,7 +9,7 @@ namespace TextEngine.Commands
         public void Invoke()
         {
             // TODO Save gamesate?
-            System.Environment.Exit(0);
+            Environment.Exit(0);
         }
 
         public ITextCommand Parse(CommandParser parser)

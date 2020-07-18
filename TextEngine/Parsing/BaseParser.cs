@@ -34,7 +34,7 @@ namespace TextEngine.Parsing
             if (Current.Kind.CompareTo(kind) == 0)
                 return NextToken();
 
-            if (Current.Kind.CompareTo(kind) != 0) throw new Exception($"Expected '{kind}' got '{Current.Kind}'");
+            if (Current.Kind.CompareTo(kind) != 0) throw new Exception($"Expected '{kind}' got '{Current.Kind}' with text '{Current.Text}'");
 
             return new Token<TokenType>(kind, Current.Position, null, null);
         }

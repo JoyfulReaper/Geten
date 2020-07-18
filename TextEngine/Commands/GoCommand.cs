@@ -22,12 +22,5 @@ namespace TextEngine.Commands
             MapSite location = TextEngine.Player.Location.GetSide(Direction);
             location.Enter(TextEngine.Player, Direction);
         }
-
-        public ITextCommand Parse(CommandParser parser)
-        {
-            var direction = parser.MatchToken(CommandKind.Direction);
-
-            return new GoCommand((Direction)direction.Value);
-        }
     }
 }

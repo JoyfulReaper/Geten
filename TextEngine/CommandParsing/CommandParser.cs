@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using TextEngine.Commands;
 using TextEngine.Parsing;
 
@@ -9,50 +6,61 @@ namespace TextEngine.CommandParsing
 {
     public class CommandParser : BaseParser<CommandKind, CommandLexer, ITextCommand>
     {
-        private static Dictionary<string, Func<ITextCommand>> _commandParsers = new Dictionary<string, Func<ITextCommand>>();
-
-        public CommandParser()
-        {
-            if (_commandParsers.Count == 0)
-            {
-                var types = Assembly.GetExecutingAssembly().GetTypes();
-                var commandTypes = types.Where(_ => typeof(ITextCommand).IsAssignableFrom(_));
-
-                foreach (var t in commandTypes)
-                {
-                    var attr = t.GetCustomAttributes<CommandNameAttribute>();
-                    if (attr.Any())
-                    {
-                        foreach (var a in attr)
-                        {
-                            var instance = (ITextCommand)Activator.CreateInstance(t);
-
-                            _commandParsers.Add(a.Name, () => instance.Parse(this));
-                        }
-                    }
-                }
-            }
-        }
-
         protected override ITextCommand InternalParse()
         {
             if(Current.Kind == CommandKind.Command)
             {
-                if(_commandParsers.ContainsKey(Current.Text))
+                NextToken();
+
+                switch (Peek(-1).Text)
                 {
-                    var handler = _commandParsers[Current.Text];
-                    NextToken(); // consume token before invoke handler
-                    return handler();
-                }
-                else
-                {
-                    throw new Exception($"Command '{Current.Kind}' not found");
+                    case "go":
+                        return ParseGoCommand();
+                    case "look":
+                        return ParseLookAt();
+                    case "pickup":
+                        return ParsePickup();
+                    case "quit":
+                        return ParseQuit();
+                    default:
+                        return null;
                 }
             }
             else
             {
                 throw new Exception($"'{Current.Kind}' is not a valid Command");
             }
+        }
+
+        private ITextCommand ParseQuit()
+        {
+           return new QuitCommand();
+        }
+
+        private ITextCommand ParsePickup()
+        {
+            return new PickupCommand();
+        }
+
+        private ITextCommand ParseLookAt()
+        {
+            if (Peek(1).Kind != CommandKind.Identifier)
+            {
+                return new LookCommand(null);
+            }
+            else
+            {
+                var id = MatchToken(CommandKind.Identifier);
+
+                return new LookCommand(id.Text);
+            }
+        }
+
+        private ITextCommand ParseGoCommand()
+        {
+            var direction = MatchToken(CommandKind.Direction);
+
+            return new GoCommand((Direction)direction.Value);
         }
     }
 }
