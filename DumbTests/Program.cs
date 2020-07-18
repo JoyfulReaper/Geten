@@ -17,7 +17,7 @@ namespace DumbTests
 
             var input = "Go Up";
             CommandLexer l = new CommandLexer(SourceText.From(input));
-            var r = l.getAllTokens();
+            var r = l.GetAllTokens();
 
             foreach (var t in r)
                 Console.WriteLine(t);
