@@ -9,20 +9,24 @@ namespace TextEngine.CommandParsing
 {
     public class CommandParser : BaseParser<CommandKind, CommandLexer, ITextCommand>
     {
-        private Dictionary<string, Func<ITextCommand>> _commandParsers = new Dictionary<string, Func<ITextCommand>>();
+        private static Dictionary<string, Func<ITextCommand>> _commandParsers = new Dictionary<string, Func<ITextCommand>>();
 
         public CommandParser()
         {
-            var types = Assembly.GetExecutingAssembly().GetTypes();
-            var commandTypes = types.Where(_ => typeof(ITextCommand).IsAssignableFrom(_));
-
-            foreach (var t in commandTypes)
+            if (_commandParsers.Count == 0)
             {
-                var attr = t.GetCustomAttribute<CommandNameAttribute>();
-                if(attr != null)
+                var types = Assembly.GetExecutingAssembly().GetTypes();
+                var commandTypes = types.Where(_ => typeof(ITextCommand).IsAssignableFrom(_));
+
+                foreach (var t in commandTypes)
                 {
-                    var instance = (ITextCommand)Activator.CreateInstance(t);
-                    _commandParsers.Add(attr.Name, () => instance.Parse(this));
+                    var attr = t.GetCustomAttribute<CommandNameAttribute>();
+                    if (attr != null)
+                    {
+                        var instance = (ITextCommand)Activator.CreateInstance(t);
+
+                        _commandParsers.Add(attr.Name, () => instance.Parse(this));
+                    }
                 }
             }
         }
