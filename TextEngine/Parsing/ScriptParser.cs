@@ -267,15 +267,22 @@ namespace TextEngine.Parsing
 
         private SyntaxNode ParseLiteral()
         {
-            switch (NextToken().Kind)
+            SyntaxNode result = null;
+            switch (Current.Kind)
             {
                 case SyntaxKind.String:
-                    return new LiteralNode(Current.Text);
+                    result = new LiteralNode(Current.Text);
+                    break;
                 case SyntaxKind.Number:
-                    return new LiteralNode(int.Parse(Current.Text));
+                    result = new LiteralNode(int.Parse(Current.Text));
+                    break;
                 default:
                     throw new Exception("Only String and Number as Literal accepted");
             }
+
+            NextToken();
+
+            return result;
         }
 
         public Token<SyntaxKind> MatchKeyword(string keyword)
