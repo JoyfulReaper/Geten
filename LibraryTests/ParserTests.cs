@@ -86,5 +86,13 @@ namespace LibraryTests
             var parser = new ScriptParser();
             var result = parser.Parse(src);
         }
+
+        [TestMethod]
+        public void Parse_Increase_Should_Pass()
+        {
+            var src = "increase health of \"sarah\" by 15";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
     }
 }

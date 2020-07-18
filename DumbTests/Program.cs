@@ -15,8 +15,8 @@ namespace DumbTests
             //Console.WriteLine("Enter Command: ");
             //var input = Console.ReadLine();
 
-            var input = "Go Up";
-            CommandLexer l = new CommandLexer(SourceText.From(input));
+            var input = "weapon \"sword\" with mindamage 10 and maxdamage 35 end";
+            ScriptLexer l = new ScriptLexer(SourceText.From(input));
             var r = l.GetAllTokens();
 
             foreach (var t in r)

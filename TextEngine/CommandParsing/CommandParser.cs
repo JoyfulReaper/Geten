@@ -2,6 +2,8 @@
 using TextEngine.Commands;
 using TextEngine.Parsing;
 
+//N"orth, "S"outh, "E"ast, "W"est, Up, Down, look, go, self, get, inv, drop, say, use (as well as synonyms.) 
+
 namespace TextEngine.CommandParsing
 {
     public class CommandParser : BaseParser<CommandKind, CommandLexer, ITextCommand>

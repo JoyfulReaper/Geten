@@ -38,7 +38,6 @@ on "exit"
     tell "goodbye"
 end
 
-
 room "kitchen" with 
     shortName "kitchen" and
     lookDescription "Uhh. It smells very tasty"
@@ -54,7 +53,7 @@ item "apple"
     end
 
     on "use"
-        increase health of player by 15
+        increase health of "sarah" by 15
     end
 end
 

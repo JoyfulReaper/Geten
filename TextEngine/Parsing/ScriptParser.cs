@@ -99,14 +99,30 @@ namespace TextEngine.Parsing
             }
             else if (MatchCurrentKeyword("room"))
             {
-                return ParsePropertyOnly<KeyDefinitionNode>("room");
+                return ParsePropertyOnly<RoomDefinitionNode>("room");
             }
             else if(MatchCurrentKeyword("command"))
             {
                 return ParseCommand();
             }
+            else if (MatchCurrentKeyword("increase"))
+            {
+                return ParseIncrease();
+            }
 
             return null;
+        }
+
+        private SyntaxNode ParseIncrease()
+        {
+            var increasekeyword = MatchKeyword("increase");
+            var target = MatchToken(SyntaxKind.Keyword);
+            var ofkeyword = MatchKeyword("of");
+            var instance = MatchToken(SyntaxKind.String);
+            var bykeyword = MatchKeyword("by");
+            var increaseAmount = MatchToken(SyntaxKind.Number);
+
+            return new IncreaseNode(increasekeyword, target, ofkeyword, instance, bykeyword, increaseAmount);
         }
 
         private SyntaxNode ParseCommand()
