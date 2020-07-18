@@ -4,7 +4,7 @@ using TextEngine.CommandParsing;
 namespace TextEngine.Commands
 {
 
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class CommandNameAttribute : Attribute
     {
         public CommandNameAttribute(string name)

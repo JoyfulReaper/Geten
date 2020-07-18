@@ -20,12 +20,15 @@ namespace TextEngine.CommandParsing
 
                 foreach (var t in commandTypes)
                 {
-                    var attr = t.GetCustomAttribute<CommandNameAttribute>();
-                    if (attr != null)
+                    var attr = t.GetCustomAttributes<CommandNameAttribute>();
+                    if (attr.Any())
                     {
-                        var instance = (ITextCommand)Activator.CreateInstance(t);
+                        foreach (var a in attr)
+                        {
+                            var instance = (ITextCommand)Activator.CreateInstance(t);
 
-                        _commandParsers.Add(attr.Name, () => instance.Parse(this));
+                            _commandParsers.Add(a.Name, () => instance.Parse(this));
+                        }
                     }
                 }
             }
