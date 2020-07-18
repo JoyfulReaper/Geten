@@ -92,5 +92,5 @@ verbs for direction
 
 on "start"
      dialog "intro"
-     play "introsound"
+     play "kitchensound" in loop
 end

@@ -130,8 +130,40 @@ namespace TextEngine.Parsing
             {
                 return ParseRemove();
             }
+            else if (MatchCurrentKeyword("dialog"))
+            {
+                return ParseDialog();
+            }
+            else if (MatchCurrentKeyword("play"))
+            {
+                return ParsePlay();
+            }
 
             return null;
+        }
+
+        private SyntaxNode ParsePlay()
+        {
+            var playkeyword = MatchKeyword("play");
+            var target = MatchToken(SyntaxKind.String);
+            Token<SyntaxKind> inkeyword = null;
+            Token<SyntaxKind> loop = null;
+
+            if(MatchNextKeyword("in"))
+            {
+                inkeyword = MatchKeyword("in");
+                loop = MatchKeyword("loop");
+            }
+
+            return new PlayNode(playkeyword, target, inkeyword, loop);
+        }
+
+        private SyntaxNode ParseDialog()
+        {
+            var dialogkeyword = MatchKeyword("dialog");
+            var target = MatchToken(SyntaxKind.String);
+
+            return new DialogCallNode(dialogkeyword, target);
         }
 
         private T ParseTargeted<T>(string first, string second)
@@ -168,7 +200,14 @@ namespace TextEngine.Parsing
 
         private SyntaxNode ParseDecrease()
         {
-            throw new NotImplementedException();
+            var decreasekeyword = MatchKeyword("decrease");
+            var target = MatchToken(SyntaxKind.Keyword);
+            var ofkeyword = MatchKeyword("of");
+            var instance = MatchToken(SyntaxKind.String);
+            var bykeyword = MatchKeyword("by");
+            var increaseAmount = MatchToken(SyntaxKind.Number);
+
+            return new DecreaseNode(decreasekeyword, target, ofkeyword, instance, bykeyword, increaseAmount);
         }
 
         private SyntaxNode ParseSetProperty()

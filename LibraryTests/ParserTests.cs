@@ -96,6 +96,14 @@ namespace LibraryTests
         }
 
         [TestMethod]
+        public void Parse_Decrease_Should_Pass()
+        {
+            var src = "decrease health of \"sarah\" by 15";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
         public void Parse_Item_With_Boolean_Should_Pass()
         {
             var src = "item 'hello' with isLocked true end";
@@ -147,6 +155,30 @@ namespace LibraryTests
         public void Parse_Add_Item_With_Target_Should_Pass()
         {
             var src = "add item \"apple\" to \"chest\"";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Dialog_Should_Pass()
+        {
+            var src = "dialog \"apple_Monolog\"";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Play_Should_Pass()
+        {
+            var src = "play \"something.wav\"";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+        }
+
+        [TestMethod]
+        public void Parse_Play_in_loop_Should_Pass()
+        {
+            var src = "play \"something.wav\" in loop";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
         }
