@@ -81,18 +81,4 @@ namespace TextEngine
         public InvalidItemException(string message, Exception inner)
             : base(message, inner) { }
     }
-
-    /// <summary>
-    /// Don't know if I should use this or ArgumentException...
-    /// </summary>
-    public class CurrencyException : Exception
-    {
-        public CurrencyException() { }
-
-        public CurrencyException(string message)
-            : base(message) { }
-
-        public CurrencyException(string message, Exception inner)
-            : base(message, inner) { }
-    }
 }

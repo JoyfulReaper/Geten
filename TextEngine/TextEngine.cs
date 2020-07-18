@@ -162,7 +162,7 @@ namespace TextEngine
                 "take",
             };
 
-            return cmds.Contains(name);
+            return cmds.Contains(name.ToLower());
         }
 
         /// <summary>
