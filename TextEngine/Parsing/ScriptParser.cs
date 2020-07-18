@@ -143,7 +143,9 @@ namespace TextEngine.Parsing
             var argument = MatchKeyword(second);
             var name = MatchToken(SyntaxKind.String);
             Token<SyntaxKind> fromkeyword = null;
-            if  (MatchNextKeyword("from"))
+
+            string targetnameToken = first == "add" ? "to" : "from";
+            if  (MatchNextKeyword(targetnameToken))
             {
                 fromkeyword = NextToken(); 
                 target = MatchToken(SyntaxKind.String);
