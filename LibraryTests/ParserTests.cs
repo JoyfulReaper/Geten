@@ -26,7 +26,7 @@ namespace LibraryTests
         [TestMethod]
         public void Parse_Weapon_Should_Pass()
         {
-            var src = "weapon \"sword\" with mindamage 10 and maxdamage 35";
+            var src = "weapon \"sword\" with mindamage 10 and maxdamage 35 end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
         }
@@ -34,7 +34,7 @@ namespace LibraryTests
         [TestMethod]
         public void Parse_Many_Should_Pass()
         {
-            var src = "include \"base.script\"\nkey \"blub\" with maxusage 10 end\nweapon \"sword\" with mindamage 10 and maxdamage 35 end character \"leo\" with health 100 and money 150 end";
+            var src = "include \"base.script\"\nkey \"blub\" with maxusage 10 end end\nweapon \"sword\" with mindamage 10 and maxdamage 35 end character \"leo\" with health 100 and money 150 end end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
         }
