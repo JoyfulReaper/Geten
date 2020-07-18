@@ -5,9 +5,134 @@
 //4. consume the next token and build the GoCommand
 //5. otherwise throw error
 
+using System;
+using System.Collections.Generic;
+using TextEngine.Parsing;
+using TextEngine.Parsing.Text;
+
 namespace TextEngine.CommandParsing
 {
-    class CommandLexer
+    public class CommandLexer : BaseLexer<CommandKind>
     {
+        public CommandLexer(SourceText src) : base (src)
+        {
+        }
+
+        public IEnumerable<Token<CommandKind>> getAllTokens()
+        {
+            Token<CommandKind> token;
+            do
+            {
+                token = Lex();
+                if(token.Kind != CommandKind.WhiteSpace && token.Kind != CommandKind.EOF)
+                    yield return token;
+            } while (token.Kind != CommandKind.EOF);
+        }
+
+        public override Token<CommandKind> Lex()
+        {
+            _start = _position;
+            switch (Current)
+            {
+                case '\0':
+                    _kind = CommandKind.EOF;
+                    break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    readNumberToken();
+                    break;
+                case ' ':
+                case '\t':
+                case '\n':
+                case '\r':
+                    ReadWhiteSpace();
+                    break;
+                default:
+                    if (char.IsLetter(Current))
+                        ReadCommand();
+                    else if (char.IsWhiteSpace(Current))
+                        ReadWhiteSpace();
+
+                    break;
+            }
+            var length = _position - _start;
+            var text = _text.ToString(_start, length);
+
+            return new Token<CommandKind>(_kind, _start, text, _value);
+        }
+
+        private void ReadCommand()
+        {
+            while (char.IsLetter(Current))
+                 _position++;
+
+            var length = _position - _start;
+            var text = _text.ToString(_start, length);
+
+            GetCommandKind(text);
+        }
+
+        private void ReadWhiteSpace()
+        {
+            while (char.IsWhiteSpace(Current))
+                _position++;
+
+            _kind = CommandKind.WhiteSpace;
+        }
+
+        private void readNumberToken()
+        {
+            while (char.IsDigit(Current))
+                _position++;
+
+            var length = _position - _start;
+            var text = _text.ToString(_start, length);
+            var value = int.Parse(text);
+
+            _value = value;
+            _kind = CommandKind.Number;
+        }
+
+        private CommandKind GetCommandKind(string text)
+        {
+            switch (text)
+            {
+                case "n":
+                case "north":
+                case "w":
+                case "west":
+                case "s":
+                case "south":
+                case "e":
+                case "east":
+                case "u":
+                case "up":
+                case "d":
+                case "down":
+                    _kind = CommandKind.Direction;
+                    _value = TextEngine.GetDirectionFromChar(char.ToUpper(text[0]));
+                    break;
+                default:
+                    if (TextEngine.IsCommand(text))
+                    {
+                        _kind = CommandKind.Command;
+                    }
+                    else
+                    {
+                        _kind = CommandKind.Identifier;
+                    }
+                    break;
+            }
+
+            return _kind;
+        }
     }
 }
