@@ -156,6 +156,8 @@ namespace TextEngine
                 "go",
                 "take",
                 "pickup",
+                "look",
+                "quit",
             };
 
             return commands.Contains(name.ToLower());

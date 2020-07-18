@@ -1,4 +1,5 @@
 ﻿using TextEngine.CommandParsing;
+using TextEngine.MapItems;
 
 namespace TextEngine.Commands
 {
@@ -18,7 +19,8 @@ namespace TextEngine.Commands
 
         public void Invoke()
         {
-            //ToDo: move the Player
+            MapSite location = TextEngine.Player.Location.GetSide(Direction);
+            location.Enter(TextEngine.Player, Direction);
         }
 
         public ITextCommand Parse(CommandParser parser)

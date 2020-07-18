@@ -122,8 +122,6 @@ namespace TextEngine
                 Console.Write("Enter command: ");
                 string input = Console.ReadLine();
                 TextEngine.ProccessCommand(input);
-                if (input.ToUpper() == "QUIT")
-                    Environment.Exit(0);
             }
         }
         public static void TestingSetup()

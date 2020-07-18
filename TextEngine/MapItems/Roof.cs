@@ -42,7 +42,7 @@ namespace TextEngine.MapItems
         /// <param name="heading">The Character's heading</param>
         public override void Enter(Character character, Direction heading)
         {
-            TextEngine.AddMessage("You try to go " + TextEngine.DirectionName(heading) + ", buy you just bump your head on the " + Name);
+            TextEngine.AddMessage($"You try to go {TextEngine.DirectionName(heading).ToLower()}, buy you just bump your head on the {Name}");
         }
     }
 }
