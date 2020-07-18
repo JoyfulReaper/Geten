@@ -25,6 +25,8 @@ SOFTWARE.
 using System.Collections.Generic;
 using System;
 using TextEngine.MapItems;
+using TextEngine.CommandParsing;
+using System.Linq;
 
 namespace TextEngine
 {
@@ -151,14 +153,7 @@ namespace TextEngine
 
         public static bool IsCommand(string name)
         {
-            List<string> commands = new List<String>
-            {
-                "go",
-                "take",
-                "pickup",
-                "look",
-                "quit",
-            };
+            var commands = CommandParser._commandParsers.Keys.ToList();
 
             return commands.Contains(name.ToLower());
         }
