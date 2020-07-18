@@ -9,7 +9,7 @@ namespace TextEngine.CommandParsing
 {
     public class CommandParser : BaseParser<CommandKind, CommandLexer, ITextCommand>
     {
-        private static Dictionary<string, Func<ITextCommand>> _commandParsers = new Dictionary<string, Func<ITextCommand>>();
+        internal static Dictionary<string, Func<ITextCommand>> _commandParsers = new Dictionary<string, Func<ITextCommand>>();
 
         public CommandParser()
         {
