@@ -33,5 +33,10 @@ namespace TextEngine
         /// Determine if an NPC can be killed
         /// </summary>
         private bool Killable { get; set; }
+
+        public NPC(string name="NPC", string desc ="", int maxHealth=100, int health=100) : base(name, desc, maxHealth, health)
+        {
+
+        }
     }
 }

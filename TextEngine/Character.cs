@@ -102,11 +102,12 @@ namespace TextEngine
         /// <param name="name">The Character's name</param>
         /// <param name="health">The Character's initial health</param>
         /// <param name="maxHealth">The Character's maximum health</param>
-        public Character(string name = "Character", int health = 100, int maxHealth = 1000)
+        public Character(string name = "Character", string desc ="" , int health = 100, int maxHealth = 100)
         {
             Name = name;
             Health = health;
             MaxHealth = maxHealth;
+            Description = desc;
             CharacterMoney = new Money(null, 0);
             Inventory = new Inventory();
         }

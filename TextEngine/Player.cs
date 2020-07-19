@@ -38,6 +38,6 @@ namespace TextEngine
         /// <param name="name">Player's name</param>
         /// <param name="health">Staring health (any int > 0)</param>
         /// <param name="maxHealth">Player's Maximum Health</param>
-        public Player(string name = "Player", int health = 100, int maxHealth = 100) : base(name, health, maxHealth) { }
+        public Player(string name = "Player", string desc="", int health = 100, int maxHealth = 100) : base(name, desc, health, maxHealth) { }
     }
 }
