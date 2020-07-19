@@ -50,8 +50,11 @@ room "kitchen" with
     end
 end
 
-exit "toKitchen" with
-    
+exit "toDiningRoom" from "kitchen" with
+    locked false and
+    visible true and
+    toRoom 'diningRoom'
+    end
 end
 
 item "apple" 

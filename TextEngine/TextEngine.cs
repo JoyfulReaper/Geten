@@ -185,6 +185,7 @@ namespace TextEngine
         /// <returns>true on success, false on failure</returns>
         public static bool RoomExists(Room room) => map.Contains(room);
 
+        public static Room GetRoom(string shortName) => (Room)map.Where(_ => _ is Room).FirstOrDefault(_ => ((Room)_).ShortName == shortName);
 
         public static void ProccessCommand(string command)
         {

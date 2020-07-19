@@ -96,6 +96,18 @@ namespace TextEngine.Parsing
             TextEngine.AddRoom(r);
         }
 
+        public void Visit(ExitDefinitionNode node)
+        {
+            var name = node.NameToken.Value.ToString();
+            var locked = (bool)node.Properties["locked"];
+            var visible = (bool)node.Properties["visible"];
+            var toRoom = node.Properties["toRoom"].ToString();
+
+            Room r = TextEngine.GetRoom(toRoom);
+
+            Exit e = new Exit(name, r, locked, visible);
+        }
+
         public void Visit(SetPropertyNode node)
         {
             throw new NotImplementedException();
