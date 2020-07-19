@@ -31,20 +31,25 @@ namespace TextEngine.Parsing
         {
 
             // need to add token for as player or as npc
+            var asWhat = node.AsWhatToken.Text?.ToString();
             var name = node.NameToken.Value?.ToString();
-            var desciption = node.Properties["description"]?.ToString();
+            var description = node.Properties["description"]?.ToString();
             var maxHealth = (int)(node.Properties["maxHealth"] ?? 100);
             var health = (int)(node.Properties["health"] ?? 100);
             var money = (int)(node.Properties["money"] ?? 0); // not used right now
 
-            if(false) // It's the player
+            if(asWhat == "player") // It's the player
             {
-                Player player = new Player(name, desciption, health, maxHealth);
+                Player player = new Player(name, description, health, maxHealth);
                 TextEngine.Player = player;
-            } else // It's an NPC
+            } else if(asWhat == "npc") // It's an NPC
             {
-                NPC npc = new NPC(name, desciption, maxHealth, health);
+                NPC npc = new NPC(name, description, maxHealth, health);
                 TextEngine.AddNPC(npc);
+            }
+            else
+            {
+                throw new DebugException("Character must be player or npc");
             }
 
         }

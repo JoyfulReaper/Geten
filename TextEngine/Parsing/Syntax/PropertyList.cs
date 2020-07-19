@@ -10,7 +10,7 @@ namespace TextEngine.Parsing.Syntax
             {
                 foreach (var kvp in this)
                 {
-                    if(kvp.Key.Text.ToLower().ToString() == key.ToLower())
+                    if(kvp.Key.Text.ToString().ToLower() == key.ToLower())
                     {
                         return ((LiteralNode)kvp.Value).ValueToken.Value;
                     }
