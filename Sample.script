@@ -42,11 +42,16 @@ end
 
 room "kitchen" with 
     shortName "kitchen" and
+    description "It looks modren" and
     lookDescription "Uhh. It smells very tasty"
 
     on "enter"
         command "look chest"
     end
+end
+
+exit "toKitchen" with
+    
 end
 
 item "apple" 

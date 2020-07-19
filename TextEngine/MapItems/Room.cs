@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace TextEngine.MapItems
 {
@@ -78,6 +79,7 @@ namespace TextEngine.MapItems
             Visisted = false;
             Inventory = new Inventory();
             sides = new Dictionary<Direction, MapSite>();
+            InitializeSides();
         }
         /// <summary>
         /// Construct a Room
@@ -91,6 +93,16 @@ namespace TextEngine.MapItems
         /// <param name="name">The Name of the room</param>
         /// <param name="shortName">The short name of the room</param>
         public Room(string name, string shortName) : this(name, shortName, "", "") { }
+
+        private void InitializeSides()
+        {
+            SetSide(Direction.Up, new Roof());
+            SetSide(Direction.Down, new Floor());
+            SetSide(Direction.North, new Wall());
+            SetSide(Direction.South, new Wall());
+            SetSide(Direction.East, new Wall());
+            SetSide(Direction.West, new Wall());
+        }
 
         /// <summary>
         /// Enter the room

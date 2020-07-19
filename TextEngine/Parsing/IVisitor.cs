@@ -40,5 +40,6 @@ namespace TextEngine.Parsing
         void Visit(TellNode node);
 
         void Visit(WeaponDefinitionNode node);
+
     }
 }
