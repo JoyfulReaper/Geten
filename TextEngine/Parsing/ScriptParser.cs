@@ -166,6 +166,7 @@ namespace TextEngine.Parsing
             {
                 // Log?
                 // thow exception?
+                Diagnostics.ReportUnexpectedKeyword(Current.Span, asWhat, "npc or player");
             }
 
             var withToken = MatchKeyword("with");
