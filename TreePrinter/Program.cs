@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using TextEngine.MapItems;
 using TextEngine.Parsing;
 
 namespace TreePrinter
@@ -12,6 +13,10 @@ namespace TreePrinter
             {
                 Console.Write(">> ");
                 var input = Console.ReadLine();
+
+                if (input.ToLower() == "quit")
+                    Environment.Exit(0);
+
                 var parser = new ScriptParser();
                 var tree = parser.Parse(input);
                 if(parser.Diagnostics.Any())
