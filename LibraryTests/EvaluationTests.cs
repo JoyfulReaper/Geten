@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TextEngine.Parsing;
+using TextEngine.Parsing.Diagnostics;
 
 namespace LibraryTests
 {
@@ -19,7 +20,7 @@ namespace LibraryTests
 
             var p = new ScriptParser();
             var r = p.Parse(room);
-            r.Accept(new EvaluationVisitor(null));
+            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
         }
 
         [TestMethod]
@@ -34,7 +35,16 @@ namespace LibraryTests
 
             var p = new ScriptParser();
             var r = p.Parse(room);
-            r.Accept(new EvaluationVisitor(null));
+            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+        }
+
+        [TestMethod]
+        public void Evaluate_Exit_Should_Pass()
+        {
+            var src = "exit 'DiningRoom' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
         }
     }
 }

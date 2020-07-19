@@ -109,11 +109,16 @@ namespace TextEngine.Parsing
             var name = node.NameToken.Value.ToString();
             var locked = (bool)node.Properties["locked"];
             var visible = (bool)node.Properties["visible"];
+            var side = node.Properties["side"].ToString();
             var toRoom = node.Properties["toRoom"].ToString();
+            var fromRoom = node.Properties["fromRoom"].ToString();
 
-            Room r = TextEngine.GetRoom(toRoom);
+            Direction dirSide = TextEngine.GetDirectionFromChar(Char.ToUpper(side[0])); 
+            Room to = TextEngine.GetRoom(toRoom);
+            Room from = TextEngine.GetRoom(fromRoom);
 
-            Exit e = new Exit(name, r, locked, visible);
+            Exit exit = new Exit(name, to, locked, visible);
+            to.SetSide(dirSide, exit);
         }
 
         public void Visit(SetPropertyNode node)
