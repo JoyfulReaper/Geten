@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System.Collections.Generic;
 using System;
-using TextEngine.MapItems;
-using TextEngine.CommandParsing;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using TextEngine.MapItems;
 
 namespace TextEngine
 {
@@ -73,6 +73,7 @@ namespace TextEngine
         /// List containing all rooms on the map
         /// </summary>
         private static readonly List<MapSite> map = new List<MapSite>();
+        private static readonly List<NPC> npcs = new List<NPC>();
 
         private static readonly Queue<string> messages = new Queue<string>();
         private static Room startRoom = null;
@@ -164,6 +165,19 @@ namespace TextEngine
 
             return cmds.Contains(name.ToLower());
         }
+
+        public static void AddNPC(NPC npc)
+        {
+            if(NpcExists(npc))
+                throw new ArgumentException ($"NPC {npc.Name} has already been added");
+
+            npcs.Add(npc);
+        }
+
+        public static bool NpcExists(NPC npc) => npcs.Contains(npc);
+
+        public static NPC GetNPC(string name) => npcs.FirstOrDefault(_ => _.Name == name);
+
 
         /// <summary>
         /// Add a room to the map
