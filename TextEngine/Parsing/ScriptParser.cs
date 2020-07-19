@@ -337,7 +337,7 @@ namespace TextEngine.Parsing
             }
 
             var result = (T)Activator.CreateInstance(typeof(T), keywordToken, nameToken, withToken, properties, body);
-            //MatchToken(SyntaxKind.EndToken);
+            MatchToken(SyntaxKind.EndToken);
 
             return result;
         }
@@ -368,6 +368,17 @@ namespace TextEngine.Parsing
 
         public bool AcceptKeyword(string keyword, out Token<SyntaxKind> token)
         {
+            token = Peek(0);
+            if (token.Kind == SyntaxKind.Keyword && token.Text == keyword)
+            {
+                token = MatchKeyword(keyword);
+                return true;
+            }
+
+            token = new Token<SyntaxKind>(SyntaxKind.BadToken, -1, null, null);
+            return false;
+
+            /*
             try
             {
                 token = MatchKeyword(keyword);
@@ -378,6 +389,7 @@ namespace TextEngine.Parsing
                 token = new Token<SyntaxKind>(SyntaxKind.BadToken, -1, null, null);
                 return false;
             }
+            */
         }
 
         private (Token<SyntaxKind> name, SyntaxNode value) ParseProperty()
