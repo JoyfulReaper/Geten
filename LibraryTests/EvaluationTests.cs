@@ -19,7 +19,7 @@ namespace LibraryTests
 
             var p = new ScriptParser();
             var r = p.Parse(room);
-            r.Accept(new EvaluationVisitor());
+            r.Accept(new EvaluationVisitor(null));
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace LibraryTests
 
             var p = new ScriptParser();
             var r = p.Parse(room);
-            r.Accept(new EvaluationVisitor());
+            r.Accept(new EvaluationVisitor(null));
         }
     }
 }
