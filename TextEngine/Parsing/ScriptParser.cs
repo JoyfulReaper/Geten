@@ -72,7 +72,8 @@ namespace TextEngine.Parsing
             //ToDo: refactor ParseMember to a Dictionary to reduce branches
             if(MatchCurrentKeyword("character"))
             {
-                return ParsePropertyOnly<CharacterDefinitionNode>("character");
+                //return ParsePropertyOnly<CharacterDefinitionNode>("character");
+                return ParseCharacter();
             }
             else if (MatchCurrentKeyword("weapon"))
             {
@@ -152,6 +153,26 @@ namespace TextEngine.Parsing
             }
 
             return null;
+        }
+
+        private SyntaxNode ParseCharacter()
+        {
+            var characterKeyword = MatchKeyword("character");
+            var name = MatchToken(SyntaxKind.String);
+            var asKeyword = MatchKeyword("as"); 
+            var asWhat = MatchToken(SyntaxKind.Keyword);
+
+            if(asWhat.Text != "npc" && asWhat.Text != "player")
+            {
+                // Log?
+                // thow exception?
+            }
+
+            var withToken = MatchKeyword("with");
+            var properties = ParsePropertyList();
+            var endToken = MatchToken(SyntaxKind.EndToken);
+
+            return new CharacterDefinitionNode(characterKeyword, name, asKeyword, asWhat, withToken, properties);
         }
 
         private SyntaxNode ParsePlay()
