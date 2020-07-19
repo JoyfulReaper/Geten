@@ -29,7 +29,7 @@ namespace LibraryTests
         [TestMethod]
         public void Parse_Character_Should_Pass()
         {
-            var src = "character \"leo\" with health 100 and money 150 end end";
+            var src = "character \"leo\" as npc with health 100 and money 150 and description 'person' end end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
 

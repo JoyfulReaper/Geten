@@ -51,7 +51,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Character_Should_Pass()
         {
-            var src = "character \"leo\" with health 100 and money 150 end end";
+            var src = "character \"leo\" as npc with health 100 and money 150 and description 'handsome' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(new DiagnosticBag()));
