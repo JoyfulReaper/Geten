@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TextEngine.Parsing.Text;
 
@@ -15,39 +16,51 @@ namespace TextEngine.Parsing.Diagnostics
             _diagnostics.AddRange(diagnostics._diagnostics);
         }
 
-        private void Report(TextLocation span, string message)
+        private void Report(TextSpan span, string message)
         {
             var diagnostic = new Diagnostic(span, message);
             _diagnostics.Add(diagnostic);
         }
 
-        public void ReportBadCharacter(TextLocation location, char character)
+        public void ReportBadCharacter(TextSpan location, char character)
         {
             var message = $"Bad character input: '{character}'.";
             Report(location, message);
         }
 
-        public void ReportUnexpectedToken(TextLocation span, SyntaxKind actualKind, SyntaxKind expectedKind)
+        public void ReportUnexpectedToken<KindType>(TextSpan span, KindType actualKind, KindType expectedKind)
         {
             var message = $"Unexpected token <{actualKind}>, expected <{expectedKind}>.";
             Report(span, message);
         }
 
-        public void ReportInvalidNumber(TextLocation span, string text)
+        public void ReportInvalidNumber(TextSpan span, string text)
         {
             var message = $"The number {text} isn't valid.";
             Report(span, message);
         }
 
-        public void ReportUnterminatedString(TextLocation span)
+        public void ReportUnterminatedString(TextSpan span)
         {
-            const string message = "Unterminated string literal.";
+            var message = "Unterminated string literal.";
             Report(span, message);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _diagnostics.GetEnumerator();
+        }
+
+        internal void ReportUnexpectedKeyword<KindType>(TextSpan location, Token<KindType> keywordToken, string keyword)
+        {
+            var message = $"Expected '{keyword}' got '{keywordToken.Text}'.";
+            Report(location, message);
+        }
+
+        internal void ReportUnexpectedLiteral<KindType>(TextSpan location, KindType kind)
+        {
+            var message = $"Unexpected Literal '{kind}'.";
+            Report(location, message);
         }
     }
 }

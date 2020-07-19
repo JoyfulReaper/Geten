@@ -15,7 +15,7 @@ namespace DumbTests
             //Console.WriteLine("Enter Command: ");
             //var input = Console.ReadLine();
 
-            var input = "weapon \"sword\" with mindamage 10 and maxdamage 35 end";
+            var input = "weapon \"sword\" with mindamage 10 and maxdamage 35 end end";
             ScriptLexer l = new ScriptLexer(SourceText.From(input));
             var r = l.GetAllTokens();
 
@@ -25,7 +25,7 @@ namespace DumbTests
             Console.WriteLine("--------------------------------------------------");
 
             ScriptParser p = new ScriptParser();
-            BlockNode bn = (BlockNode)p.Parse("weapon \"sword\" with mindamage 10 and maxdamage 35 end");
+            BlockNode bn = (BlockNode)p.Parse("weapon \"sword\" with mindamage 10 and maxdamage 35 end end");
             VistChildNode(bn);
         }
 

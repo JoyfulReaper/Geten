@@ -389,7 +389,8 @@ namespace TextEngine.Parsing
                     result = new LiteralNode(Current);
                     break;
                 default:
-                    throw new Exception("Only String and Number as Literal accepted");
+                    Diagnostics.ReportUnexpectedLiteral(Current.Span, Current.Kind);
+                    break;
             }
 
             NextToken();
@@ -405,7 +406,9 @@ namespace TextEngine.Parsing
                 return keywordToken;
             }
 
-            throw new Exception($"expected '{keyword}' got '{keywordToken.Text}'");
+            Diagnostics.ReportUnexpectedKeyword(Current.Span, keywordToken, keyword);
+
+            return null;
         }
     }
 }

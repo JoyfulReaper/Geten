@@ -75,8 +75,7 @@ namespace TextEngine.Parsing
                     else
                     {
                         var span = new TextSpan(_position, 1);
-                        var location = new TextLocation(_text, span);
-                        _diagnostics.ReportBadCharacter(location, Current);
+                        _diagnostics.ReportBadCharacter(span, Current);
                         _position++;
                     }
 
@@ -129,8 +128,7 @@ namespace TextEngine.Parsing
                     case '\r':
                     case '\n':
                         var span = new TextSpan(_start, 1);
-                        var location = new TextLocation(_text, span);
-                        _diagnostics.ReportUnterminatedString(location);
+                        _diagnostics.ReportUnterminatedString(span);
                         done = true;
                         break;
                     case '"':
@@ -172,8 +170,7 @@ namespace TextEngine.Parsing
                     case '\r':
                     case '\n':
                         var span = new TextSpan(_start, 1);
-                        var location = new TextLocation(_text, span);
-                        _diagnostics.ReportUnterminatedString(location);
+                        _diagnostics.ReportUnterminatedString(span);
                         done = true;
                         break;
                     case '"':
@@ -217,8 +214,7 @@ namespace TextEngine.Parsing
             if (!int.TryParse(text, out var value))
             {
                 var span = new TextSpan(_start, length);
-                var location = new TextLocation(_text, span);
-                _diagnostics.ReportInvalidNumber(location, text);
+                _diagnostics.ReportInvalidNumber(span, text);
             }
 
             _value = value;
