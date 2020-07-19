@@ -106,6 +106,10 @@ namespace TextEngine.Parsing
             {
                 return ParsePropertyOnly<RoomDefinitionNode>("room");
             }
+            else if (MatchCurrentKeyword("exit"))
+            {
+                return ParsePropertyOnly<RoomDefinitionNode>("exit");
+            }
             else if (MatchCurrentKeyword("item"))
             {
                 return ParsePropertyOnly<ItemDefinitionNode>("item");

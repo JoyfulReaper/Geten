@@ -136,6 +136,16 @@ namespace LibraryTests
         }
 
         [TestMethod]
+        public void Parse_Exit_Should_Pass()
+        {
+            var src = "exit 'DiningRoom' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
+        }
+
+        [TestMethod]
         public void Parse_Increase_Should_Pass()
         {
             var src = "increase health of \"sarah\" by 15";
