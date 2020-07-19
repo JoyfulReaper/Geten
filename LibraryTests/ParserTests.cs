@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 using TextEngine.Parsing;
 
@@ -13,6 +14,16 @@ namespace LibraryTests
             var src = "include \"base.script\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
+        }
+
+        private void AssertNoDiagnostics(ScriptParser parser)
+        {
+            if(parser.Diagnostics.Any())
+            {
+                throw new Exception(parser.Diagnostics.First().ToString());
+            }
         }
 
         [TestMethod]
@@ -21,6 +32,8 @@ namespace LibraryTests
             var src = "character \"leo\" with health 100 and money 150 end end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -38,6 +51,8 @@ namespace LibraryTests
             end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -46,6 +61,8 @@ namespace LibraryTests
             var src = "weapon \"sword\" with mindamage 10 and maxdamage 35 end end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -54,6 +71,8 @@ namespace LibraryTests
             var src = "include \"base.script\"\nkey \"blub\" with maxusage 10 end end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -62,6 +81,8 @@ namespace LibraryTests
             var src = "memory \"name\" equals \"dodo\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -70,6 +91,8 @@ namespace LibraryTests
             var src = "memory \"name\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -78,6 +101,8 @@ namespace LibraryTests
             var src = "on \"start\" tell \"hello world\" end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -86,6 +111,8 @@ namespace LibraryTests
             var src = "ask for \"name?\" to \"name\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -94,6 +121,8 @@ namespace LibraryTests
             var src = "command 'look'";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -102,6 +131,8 @@ namespace LibraryTests
             var src = "room \"kitchen\" with shortName \"kitchen\" and lookDescription \"Uhh. It smells very tasty\" end end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -110,6 +141,8 @@ namespace LibraryTests
             var src = "increase health of \"sarah\" by 15";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -118,6 +151,8 @@ namespace LibraryTests
             var src = "decrease health of \"sarah\" by 15";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -126,6 +161,8 @@ namespace LibraryTests
             var src = "item 'hello' with isLocked true end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -134,6 +171,8 @@ namespace LibraryTests
             var src = "setProperty isLocked false";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -142,6 +181,8 @@ namespace LibraryTests
             var src = "setProperty of \"Chest\" isLocked false";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -150,6 +191,8 @@ namespace LibraryTests
             var src = "remove item \"apple\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -158,6 +201,8 @@ namespace LibraryTests
             var src = "remove item \"apple\" from \"chest\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -166,6 +211,8 @@ namespace LibraryTests
             var src = "add item \"apple\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -174,6 +221,8 @@ namespace LibraryTests
             var src = "add item \"apple\" to \"chest\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -182,6 +231,8 @@ namespace LibraryTests
             var src = "dialog \"apple_Monolog\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -190,6 +241,8 @@ namespace LibraryTests
             var src = "play \"something.wav\"";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
 
         [TestMethod]
@@ -198,6 +251,8 @@ namespace LibraryTests
             var src = "play \"something.wav\" in loop";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
         }
     }
 }

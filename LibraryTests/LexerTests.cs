@@ -1,5 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics;
+using System.Linq;
 using TextEngine.Parsing;
 using TextEngine.Parsing.Text;
 
@@ -19,6 +21,16 @@ namespace LibraryTests
             foreach (var t in tokens)
             {
                 Debug.WriteLine(t);
+            }
+
+            AssertNoDiagnostics(lexer);
+        }
+
+        private void AssertNoDiagnostics(ScriptLexer lexer)
+        {
+            if (lexer.Diagnostics.Any())
+            {
+                throw new Exception(lexer.Diagnostics.First().ToString());
             }
         }
     }

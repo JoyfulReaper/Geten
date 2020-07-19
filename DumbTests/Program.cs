@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using TextEngine.CommandParsing;
 using TextEngine.Parsing;
 using TextEngine.Parsing.Syntax;
 using TextEngine.Parsing.Text;
 
 namespace DumbTests
 {
-    class Program
+    public static class Program
     {
         static void Main(string[] args)
         {
