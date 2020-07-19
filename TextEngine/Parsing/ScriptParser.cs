@@ -138,6 +138,10 @@ namespace TextEngine.Parsing
             {
                 return ParsePlay();
             }
+            else
+            {
+                Diagnostics.ReportUnexpectedKeyword(Current.Span, Current);
+            }
 
             return null;
         }
@@ -298,7 +302,7 @@ namespace TextEngine.Parsing
             MatchKeyword("tell");
             var message = MatchToken(SyntaxKind.String);
 
-            return new TellNode(message.Value.ToString());
+            return new TellNode(message);
         }
 
         private SyntaxNode ParseInclude()

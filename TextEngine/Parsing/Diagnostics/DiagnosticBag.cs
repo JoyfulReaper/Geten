@@ -57,6 +57,12 @@ namespace TextEngine.Parsing.Diagnostics
             Report(location, message);
         }
 
+        internal void ReportUnexpectedKeyword<KindType>(TextSpan location, Token<KindType> keywordToken)
+        {
+            var message = $"Unexpected '{keywordToken.Text}'.";
+            Report(location, message);
+        }
+
         internal void ReportUnexpectedLiteral<KindType>(TextSpan location, KindType kind)
         {
             var message = $"Unexpected Literal '{kind}'.";
