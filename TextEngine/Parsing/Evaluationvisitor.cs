@@ -29,7 +29,24 @@ namespace TextEngine.Parsing
 
         public void Visit(CharacterDefinitionNode node)
         {
-            throw new NotImplementedException();
+
+            // need to add token for as player or as npc
+            var name = node.NameToken.Value?.ToString();
+            var desciption = node.Properties["description"]?.ToString();
+            var maxHealth = (int)(node.Properties["maxHealth"] ?? 100);
+            var health = (int)(node.Properties["health"] ?? 100);
+            var money = (int)(node.Properties["money"] ?? 0); // not used right now
+
+            if(false) // It's the player
+            {
+                Player player = new Player(name, desciption, health, maxHealth);
+                TextEngine.Player = player;
+            } else // It's an NPC
+            {
+                NPC npc = new NPC(name, desciption, maxHealth, health);
+                TextEngine.AddNPC(npc);
+            }
+
         }
 
         public void Visit(AskForInputNode node)
@@ -109,9 +126,9 @@ namespace TextEngine.Parsing
             var name = node.NameToken.Value.ToString();
             var locked = (bool)node.Properties["locked"];
             var visible = (bool)node.Properties["visible"];
-            var side = node.Properties["side"].ToString();
-            var toRoom = node.Properties["toRoom"].ToString();
-            var fromRoom = node.Properties["fromRoom"].ToString();
+            var side = node.Properties["side"]?.ToString();
+            var toRoom = node.Properties["toRoom"]?.ToString();
+            var fromRoom = node.Properties["fromRoom"]?.ToString();
 
             Direction dirSide = TextEngine.GetDirectionFromChar(Char.ToUpper(side[0])); 
             Room to = TextEngine.GetRoom(toRoom);

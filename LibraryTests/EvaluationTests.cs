@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using TextEngine.Parsing;
 using TextEngine.Parsing.Diagnostics;
 
@@ -42,6 +43,15 @@ namespace LibraryTests
         public void Evaluate_Exit_Should_Pass()
         {
             var src = "exit 'DiningRoom' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+        }
+
+        [TestMethod]
+        public void Evaluate_Character_Should_Pass()
+        {
+            var src = "character \"leo\" with health 100 and money 150 end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(new DiagnosticBag()));
