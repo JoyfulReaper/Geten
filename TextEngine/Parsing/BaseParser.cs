@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using TextEngine.Parsing.Diagnostics;
 using TextEngine.Parsing.Text;
 
 namespace TextEngine.Parsing
@@ -10,6 +11,8 @@ namespace TextEngine.Parsing
     {
         protected ImmutableArray<Token<TokenType>> _tokens;
         protected int _position;
+
+        public DiagnosticBag Diagnostics { get; } = new DiagnosticBag();
 
         public Token<TokenType> Peek(int offset)
         {
@@ -44,7 +47,8 @@ namespace TextEngine.Parsing
             var lexer = (LexerType)Activator.CreateInstance(typeof(LexerType), SourceText.From(src, filename));
             
             _tokens = lexer.GetAllTokens().ToImmutableArray();
-            
+            Diagnostics.AddRange(lexer.Diagnostics);
+
             return InternalParse();
         }
 

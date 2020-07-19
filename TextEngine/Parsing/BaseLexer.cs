@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Text;
+using TextEngine.Parsing.Diagnostics;
 using TextEngine.Parsing.Text;
 
 namespace TextEngine.Parsing
@@ -13,6 +13,10 @@ namespace TextEngine.Parsing
         protected int _start;
         protected TokenType _kind;
         protected object _value;
+
+        protected DiagnosticBag _diagnostics = new DiagnosticBag();
+
+        public DiagnosticBag Diagnostics => _diagnostics;
 
         public BaseLexer(SourceText src)
         {
