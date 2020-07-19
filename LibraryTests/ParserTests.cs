@@ -158,7 +158,7 @@ namespace LibraryTests
         [TestMethod]
         public void Parse_Item_With_Boolean_Should_Pass()
         {
-            var src = "item 'hello' with isLocked true end";
+            var src = "item 'hello' with isLocked true end end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
 

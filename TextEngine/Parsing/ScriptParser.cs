@@ -106,6 +106,10 @@ namespace TextEngine.Parsing
             {
                 return ParsePropertyOnly<RoomDefinitionNode>("room");
             }
+            else if (MatchCurrentKeyword("item"))
+            {
+                return ParsePropertyOnly<ItemDefinitionNode>("item");
+            }
             else if(MatchCurrentKeyword("command"))
             {
                 return ParseCommand();
@@ -218,14 +222,16 @@ namespace TextEngine.Parsing
         {
             var setPropertykeyword = MatchKeyword("setProperty");
             Token<SyntaxKind> target = null;
+            Token<SyntaxKind> ofKeyword = null;
             if (MatchNextKeyword("of"))
             {
+                ofKeyword = NextToken();
                 target = MatchToken(SyntaxKind.String);
             }
             var property = MatchToken(SyntaxKind.Keyword);
             var value = ParseLiteral();
 
-            return new SetPropertyNode(setPropertykeyword, target, property, value);
+            return new SetPropertyNode(setPropertykeyword, ofKeyword, target, property, value);
         }
 
         private SyntaxNode ParseIncrease()
