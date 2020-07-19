@@ -62,6 +62,15 @@ namespace TextEngine.Parsing
                             result.Add(child);
                     }
                 }
+                else if (typeof(PropertyList).IsAssignableFrom(property.PropertyType))
+                {
+                    var children = (PropertyList)property.GetValue(this);
+                    foreach (var child in children)
+                    {
+                        result.Add(child.Key);
+                        result.Add(child.Value);
+                    }
+                }
             }
 
             return result;
