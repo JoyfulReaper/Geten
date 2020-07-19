@@ -10,6 +10,11 @@
             Loop = loop;
         }
 
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
         public Token<SyntaxKind> PlayKeyword { get; }
         public Token<SyntaxKind> Target { get; }
         public Token<SyntaxKind> InKeyword { get; }

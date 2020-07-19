@@ -14,5 +14,10 @@ namespace TextEngine.Parsing.Syntax
 
         public Token<SyntaxKind> DialogKeyword { get; }
         public Token<SyntaxKind> Target { get; }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

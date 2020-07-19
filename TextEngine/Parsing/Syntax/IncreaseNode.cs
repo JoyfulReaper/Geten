@@ -1,6 +1,6 @@
 ﻿namespace TextEngine.Parsing.Syntax
 {
-    class IncreaseNode : SyntaxNode
+    public class IncreaseNode : SyntaxNode
     {
         public Token<SyntaxKind> IncreaseKeyword { get; }
         public Token<SyntaxKind> IncreaseTarget { get; }
@@ -16,6 +16,11 @@
             Instance = instance;
             ByKeyword = byKeyword;
             IncreaseAmount = increaseAmount;
+        }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

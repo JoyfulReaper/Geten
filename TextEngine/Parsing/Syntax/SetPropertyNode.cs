@@ -11,6 +11,11 @@
             OfKeyword = ofKeyword;
         }
 
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
         public Token<SyntaxKind> SetPropertyKeyword { get; }
         public Token<SyntaxKind> Target { get; }
         public Token<SyntaxKind> Property { get; }

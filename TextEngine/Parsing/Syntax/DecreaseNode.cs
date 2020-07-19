@@ -1,6 +1,6 @@
 ﻿namespace TextEngine.Parsing.Syntax
 {
-    internal class DecreaseNode : SyntaxNode
+    public class DecreaseNode : SyntaxNode
     {
         public Token<SyntaxKind> IncreaseKeyword { get; }
         public Token<SyntaxKind> IncreaseTarget { get; }
@@ -17,6 +17,11 @@
             Instance = instance;
             ByKeyword = byKeyword;
             IncreaseAmount = increaseAmount;
+        }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

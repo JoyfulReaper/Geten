@@ -9,6 +9,8 @@ namespace TextEngine.Parsing
 {
     public abstract class SyntaxNode
     {
+        public abstract void Accept(IVisitor visitor);
+
 
         public virtual TextSpan Span
         {

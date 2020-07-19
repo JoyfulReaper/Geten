@@ -52,5 +52,10 @@ namespace TextEngine.Parsing
         {
             return Kind + ": " + (Value ?? Text);
         }
+
+        public override void Accept(IVisitor visitor)
+        {
+           
+        }
     }
 }

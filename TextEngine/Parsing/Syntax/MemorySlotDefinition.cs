@@ -10,6 +10,11 @@
             ValueToken = initialvalue;
         }
 
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
         public Token<SyntaxKind> KeywordToken { get; }
         public Token<SyntaxKind> SlotnameToken { get; }
         public Token<SyntaxKind> EqualsToken { get; }

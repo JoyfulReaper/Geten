@@ -12,5 +12,10 @@
         public BlockNode Body { get; }
         public Token<SyntaxKind> NameToken { get; }
         public Token<SyntaxKind> KeywordToken { get; }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

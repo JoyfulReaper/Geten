@@ -9,6 +9,11 @@ namespace TextEngine.Parsing.Syntax
             MessageToken = messageToken;
         }
 
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
         public Token<SyntaxKind> MessageToken { get; }
     }
 }

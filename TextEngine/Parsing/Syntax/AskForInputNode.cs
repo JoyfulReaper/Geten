@@ -19,5 +19,10 @@ namespace TextEngine.Parsing.Syntax
         public Token<SyntaxKind> ToKeyword { get; }
         public Token<SyntaxKind> Slotname { get; }
         public Token<SyntaxKind> Message { get; }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

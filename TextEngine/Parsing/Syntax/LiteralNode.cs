@@ -8,5 +8,10 @@
         }
 
         public Token<SyntaxKind> ValueToken { get; }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

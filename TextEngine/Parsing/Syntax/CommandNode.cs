@@ -10,5 +10,10 @@
 
         public Token<SyntaxKind> KeywordToken { get; }
         public Token<SyntaxKind> CommandToken { get; }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }
