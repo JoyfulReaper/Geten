@@ -4,13 +4,10 @@ using System.Text;
 
 namespace TextEngine.Parsing.Syntax
 {
-    public class ExitDefinitionNode : SyntaxNode
+    public class ExitDefinitionNode : PropertyOnlyBasedCommand
     {
-        public ExitDefinitionNode(Token<SyntaxKind> ExitKeyword, Token<SyntaxKind> NameToken, PropertyList properties)
+        public ExitDefinitionNode(Token<SyntaxKind> keywordToken, Token<SyntaxKind> nameToken, Token<SyntaxKind> withToken, PropertyList properties, BlockNode body) : base(keywordToken, nameToken, withToken, properties, body)
         {
-            this.ExitKeyword = ExitKeyword;
-            this.NameToken = NameToken;
-            Properties = properties;
         }
 
         public Token<SyntaxKind> ExitKeyword { get; }
