@@ -1,6 +1,6 @@
 ﻿namespace TextEngine.Parsing.Syntax
 {
-    class CommandNode : SyntaxNode
+    public class CommandNode : SyntaxNode
     {
         public CommandNode(Token<SyntaxKind> keywordToken, Token<SyntaxKind> commandToken)
         {

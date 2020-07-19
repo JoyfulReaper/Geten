@@ -1,6 +1,6 @@
 ﻿namespace TextEngine.Parsing.Syntax
 {
-    class PlayNode : SyntaxNode
+    public class PlayNode : SyntaxNode
     {
         public PlayNode(Token<SyntaxKind> playKeyword, Token<SyntaxKind> target, Token<SyntaxKind> inKeyword, Token<SyntaxKind> loop)
         {

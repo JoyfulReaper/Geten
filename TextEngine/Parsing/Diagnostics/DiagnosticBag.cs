@@ -41,7 +41,7 @@ namespace TextEngine.Parsing.Diagnostics
 
         public void ReportUnterminatedString(TextLocation span)
         {
-            var message = "Unterminated string literal.";
+            const string message = "Unterminated string literal.";
             Report(span, message);
         }
 

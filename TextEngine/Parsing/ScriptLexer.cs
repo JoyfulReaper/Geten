@@ -28,20 +28,6 @@ namespace TextEngine.Parsing
             } while (token.Kind != SyntaxKind.EOF);
         }
 
-        private char Current => Peek(0);
-
-        private char Lookahead => Peek(1);
-
-        private char Peek(int offset)
-        {
-            var index = _position + offset;
-
-            if (index >= _text.Length)
-                return '\0';
-
-            return _text[index];
-        }
-
         public override Token<SyntaxKind> Lex()
         {
             _start = _position;
