@@ -131,7 +131,7 @@ namespace TextEngine.Parsing
                         _diagnostics.ReportUnterminatedString(span);
                         done = true;
                         break;
-                    case '"':
+                    case '\'':
                         if (Lookahead == '\'')
                         {
                             sb.Append(Current);

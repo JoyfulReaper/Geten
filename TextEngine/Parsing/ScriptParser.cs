@@ -25,7 +25,7 @@ namespace TextEngine.Parsing
 
         public bool MatchNextKeyword(string keyword)
         {
-            return Peek(1).Kind == SyntaxKind.Keyword && Peek(1).Text == keyword;
+            return Peek(0).Kind == SyntaxKind.Keyword && Peek(0).Text == keyword;
         }
 
         public SyntaxNode ParseBlock()
