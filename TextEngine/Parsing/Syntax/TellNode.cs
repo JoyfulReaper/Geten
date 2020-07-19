@@ -4,11 +4,11 @@ namespace TextEngine.Parsing.Syntax
 {
     public class TellNode : SyntaxNode
     {
-        public TellNode(string message)
+        public TellNode(string messageToken)
         {
-            Message = message;
+            MessageToken = messageToken;
         }
 
-        public string Message { get; }
+        public string MessageToken { get; }
     }
 }

@@ -44,10 +44,13 @@ namespace TextEngine.Parsing
                 else if (typeof(IEnumerable<SyntaxNode>).IsAssignableFrom(property.PropertyType))
                 {
                     var children = (IEnumerable<SyntaxNode>)property.GetValue(this);
-                    foreach (var child in children)
+                    if (children != null)
                     {
-                        if (child != null)
-                            result.Add(child);
+                        foreach (var child in children)
+                        {
+                            if (child != null)
+                                result.Add(child);
+                        }
                     }
                 }
                 else if (typeof(BlockNode).IsAssignableFrom(property.PropertyType))
@@ -73,6 +76,11 @@ namespace TextEngine.Parsing
             return GetChildren().Last().GetLastToken();
         }
 
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
+
         public static void PrettyPrint(SyntaxNode node, string indent = "", bool isLast = true)
         {
             var marker = isLast ? "└──" : "├──";
@@ -84,13 +92,7 @@ namespace TextEngine.Parsing
 
             Console.ForegroundColor = node is Token<SyntaxKind> ? ConsoleColor.Blue : ConsoleColor.Cyan;
 
-            Console.Write(node.GetType().Name);
-
-            if (node is Token<SyntaxKind> t && t.Value != null)
-            {
-                Console.Write(" ");
-                Console.Write(t.Value);
-            }
+            Console.Write(node);
 
             Console.ResetColor();
 

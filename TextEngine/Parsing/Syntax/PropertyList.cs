@@ -2,7 +2,7 @@
 
 namespace TextEngine.Parsing.Syntax
 {
-    public class PropertyList : Dictionary<string, object>
+    public class PropertyList : Dictionary<Token<SyntaxKind>, SyntaxNode>
     {
 
     }

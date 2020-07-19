@@ -2,13 +2,17 @@
 {
     public class MemorySlotDefinition : SyntaxNode
     {
-        public MemorySlotDefinition(string name, object value)
+        public MemorySlotDefinition(Token<SyntaxKind> keyword, Token<SyntaxKind> slotname, Token<SyntaxKind> equalsToken, SyntaxNode initialvalue)
         {
-            Name = name;
-            Value = value;
+            KeywordToken = keyword;
+            SlotnameToken = slotname;
+            EqualsToken = equalsToken;
+            ValueToken = initialvalue;
         }
 
-        public string Name { get; }
-        public object Value { get; }
+        public Token<SyntaxKind> KeywordToken { get; }
+        public Token<SyntaxKind> SlotnameToken { get; }
+        public Token<SyntaxKind> EqualsToken { get; }
+        public SyntaxNode ValueToken { get; }
     }
 }

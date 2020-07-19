@@ -241,7 +241,7 @@ namespace TextEngine.Parsing
             var commandkeyword = MatchKeyword("command");
             var commandString = MatchToken(SyntaxKind.String);
 
-            return new CommandNode((string)commandString.Value);
+            return new CommandNode(commandkeyword, commandString);
         }
 
         private SyntaxNode ParseAskFor()
@@ -259,9 +259,9 @@ namespace TextEngine.Parsing
         {
             var keyword = MatchKeyword("on");
             var name = MatchToken(SyntaxKind.String);
-            var body = (BlockNode)ParseProcedureBlock();
+            var body = ParseProcedureBlock();
 
-            return new EventSubscriptionNode(name.Value.ToString(), body);
+            return new EventSubscriptionNode(keyword, name, body);
         }
 
         private BlockNode ParseProcedureBlock()
@@ -282,14 +282,15 @@ namespace TextEngine.Parsing
         {
             var keyword = MatchKeyword("memory");
             var slotname = MatchToken(SyntaxKind.String);
-            object initialvalue = null;
+            SyntaxNode initialvalue = null;
+            Token<SyntaxKind> equalsToken = null;
             if (MatchCurrentKeyword("equals"))
             {
-                var equalsToken = MatchKeyword("equals");
-                initialvalue = MatchToken(SyntaxKind.String).Value; // replace with ParseValue()
+                equalsToken = MatchKeyword("equals");
+                initialvalue = ParseLiteral(); // replace with ParseValue()
             }
 
-            return new MemorySlotDefinition(slotname.Value.ToString(), initialvalue);
+            return new MemorySlotDefinition(keyword, slotname,equalsToken, initialvalue);
         }
 
         private SyntaxNode ParseTell()
@@ -314,9 +315,9 @@ namespace TextEngine.Parsing
         private T ParsePropertyOnly<T>(string keyword)
             where T : PropertyOnlyBasedCommand
         {
-            MatchKeyword(keyword);
-            var name = MatchToken(SyntaxKind.String);
-            MatchKeyword("with");
+            var keywordToken = MatchKeyword(keyword);
+            var nameToken = MatchToken(SyntaxKind.String);
+            var withToken = MatchKeyword("with");
             var properties = ParsePropertyList();
             BlockNode body = new BlockNode(null);
 
@@ -325,7 +326,7 @@ namespace TextEngine.Parsing
                 body = ParseProcedureBlock();
             }
 
-            var result = (T)Activator.CreateInstance(typeof(T), name.Text, properties, body);
+            var result = (T)Activator.CreateInstance(typeof(T), keywordToken, nameToken, withToken, properties, body);
             //MatchToken(SyntaxKind.EndToken);
 
             return result;
@@ -369,12 +370,12 @@ namespace TextEngine.Parsing
             }
         }
 
-        private (string name, SyntaxNode value) ParseProperty()
+        private (Token<SyntaxKind> name, SyntaxNode value) ParseProperty()
         {
             var name = MatchToken(SyntaxKind.Keyword);
             var value = ParseLiteral();
 
-            return (name.Text, value);
+            return (name, value);
         }
 
         private SyntaxNode ParseLiteral()
@@ -383,13 +384,9 @@ namespace TextEngine.Parsing
             switch (Current.Kind)
             {
                 case SyntaxKind.String:
-                    result = new LiteralNode(Current.Text);
-                    break;
                 case SyntaxKind.Number:
-                    result = new LiteralNode(int.Parse(Current.Text));
-                    break;
                 case SyntaxKind.Boolean:
-                    result = new LiteralNode(bool.Parse(Current.Text));
+                    result = new LiteralNode(Current);
                     break;
                 default:
                     throw new Exception("Only String and Number as Literal accepted");

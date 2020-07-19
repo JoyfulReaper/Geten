@@ -2,11 +2,11 @@
 {
     public class LiteralNode : SyntaxNode
     {
-        public LiteralNode(object value)
+        public LiteralNode(Token<SyntaxKind> valueToken)
         {
-            Value = value;
+            ValueToken = valueToken;
         }
 
-        public object Value { get; }
+        public Token<SyntaxKind> ValueToken { get; }
     }
 }

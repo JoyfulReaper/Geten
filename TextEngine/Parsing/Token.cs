@@ -48,6 +48,9 @@ namespace TextEngine.Parsing
         /// </summary>
         public override TextSpan Span => new TextSpan(Position, Text?.Length ?? 0);
 
-        public override string ToString() => Kind + ": " + Text;
+        public override string ToString()
+        {
+            return Kind + ": " + (Value ?? Text);
+        }
     }
 }

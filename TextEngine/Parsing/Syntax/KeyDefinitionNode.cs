@@ -2,7 +2,7 @@
 {
     public class KeyDefinitionNode : PropertyOnlyBasedCommand
     {
-        public KeyDefinitionNode(string name, PropertyList properties, BlockNode body) : base(name, properties, body)
+        public KeyDefinitionNode(Token<SyntaxKind> keywordToken, Token<SyntaxKind> nameToken, Token<SyntaxKind> withToken, PropertyList properties, BlockNode body) : base(keywordToken, nameToken, withToken, properties, body)
         {
         }
     }

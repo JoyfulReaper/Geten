@@ -2,13 +2,15 @@
 {
     public class EventSubscriptionNode : SyntaxNode
     {
-        public EventSubscriptionNode(string name, BlockNode body)
+        public EventSubscriptionNode(Token<SyntaxKind> keywordToken, Token<SyntaxKind> nameToken, BlockNode body)
         {
-            Name = name;
             Body = body;
+            NameToken = nameToken;
+            KeywordToken = keywordToken;
         }
 
-        public string Name { get; }
         public BlockNode Body { get; }
+        public Token<SyntaxKind> NameToken { get; }
+        public Token<SyntaxKind> KeywordToken { get; }
     }
 }

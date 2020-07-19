@@ -2,10 +2,13 @@
 {
     class CommandNode : SyntaxNode
     {
-        public string Command { get; set; }
-        public CommandNode(string command)
+        public CommandNode(Token<SyntaxKind> keywordToken, Token<SyntaxKind> commandToken)
         {
-            Command = command; 
+            KeywordToken = keywordToken;
+            CommandToken = commandToken;
         }
+
+        public Token<SyntaxKind> KeywordToken { get; }
+        public Token<SyntaxKind> CommandToken { get; }
     }
 }
