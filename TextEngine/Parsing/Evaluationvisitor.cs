@@ -1,11 +1,19 @@
 ﻿using System;
 using TextEngine.MapItems;
+using TextEngine.Parsing.Diagnostics;
 using TextEngine.Parsing.Syntax;
 
 namespace TextEngine.Parsing
 {
     public class EvaluationVisitor : IVisitor
     {
+        public EvaluationVisitor(DiagnosticBag parent)
+        {
+            Diagnostics.AddRange(parent);
+        }
+
+        DiagnosticBag Diagnostics = new DiagnosticBag();
+
         public void Visit(BlockNode block)
         {
             foreach (var node in block.Children)
