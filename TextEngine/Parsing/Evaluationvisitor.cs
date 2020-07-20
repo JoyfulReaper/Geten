@@ -32,15 +32,18 @@ namespace TextEngine.Parsing
             var name = node.Name?.ToString();
             var location = node.Target?.ToString();
 
-            if(location == "player")
+            Item item = SymbolTable.GetInstance<Item>(name);
+
+            if (location == "player")
             {
-                // Add item to players inv
+                TextEngine.Player?.Inventory.AddItem(item);
             }
             else
             {
                 if(TextEngine.RoomExists(location))
                 {
                     // Add item to Room's inv
+                    SymbolTable.GetInstance<Room>(location).Inventory.AddItem(item);
                 }
                 else
                 {
@@ -65,10 +68,14 @@ namespace TextEngine.Parsing
             {
                 Player player = new Player(name, description, health, maxHealth);
                 TextEngine.Player = player;
+
+                SymbolTable.Add(name, player);
             } else if(asWhat == "npc") // It's an NPC
             {
                 NPC npc = new NPC(name, description, maxHealth, health);
                 TextEngine.AddNPC(npc);
+
+                SymbolTable.Add(name, npc);
             }
             else
             {
@@ -129,6 +136,8 @@ namespace TextEngine.Parsing
                item = new Item(name, pluralName, desc, visible, obtainable);
             }
 
+            SymbolTable.Add(name, item);
+
             Room r = TextEngine.GetRoom(location);
             if (location != null)
             {
@@ -181,6 +190,7 @@ namespace TextEngine.Parsing
             var lookDesc = node.Properties["lookDescription"]?.ToString();
 
             Room r = new Room(name, shortName, desc, lookDesc);
+            SymbolTable.Add(name, r);
 
             TextEngine.AddRoom(r);
         }

@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace TextEngine.Parsing
 {
     public static class SymbolTable
     {
-        private static Dictionary<string, object> _objects = new Dictionary<string, object>();
+        private static ConcurrentDictionary<string, object> _objects = new ConcurrentDictionary<string, object>();
 
         public static void Add(string name, object instance)
         {
             if (_objects.ContainsKey(name)) throw new Exception($"'{name}' is already declared");
 
-            _objects.Add(name, instance);
+            _objects.TryAdd(name, instance);
         }
 
         public static T GetInstance<T>(string name)
