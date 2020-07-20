@@ -218,7 +218,7 @@ namespace LibraryTests
         [TestMethod]
         public void Parse_Add_Item_Should_Pass()
         {
-            var src = "add item \"apple\"";
+            var src = "add item \"apple\" to 'player'";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
 

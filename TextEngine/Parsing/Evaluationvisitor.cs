@@ -24,7 +24,30 @@ namespace TextEngine.Parsing
 
         public void Visit(AddItemNode node)
         {
-            throw new NotImplementedException();
+            // Where is the item to add? An existing item needs to be taken from somewhere...
+            // Maybe a cache of all items should be made and we can copy on from there
+            // Ok, will think about this more tomorrow.
+
+            var addWhat = node.Argument?.ToString();
+            var name = node.Name?.ToString();
+            var location = node.Target?.ToString();
+
+            if(location == "player")
+            {
+                // Add item to players inv
+            }
+            else
+            {
+                if(TextEngine.RoomExists(location))
+                {
+                    // Add item to Room's inv
+                }
+                else
+                {
+                    // Get all Rooms and check for ContainerItems with name
+                    // Gat all NPCs and check for one with name
+                }
+            }
         }
 
         public void Visit(CharacterDefinitionNode node)
@@ -118,6 +141,7 @@ namespace TextEngine.Parsing
                     else
                     {
                         // Get all Rooms and see if there is a ContainerItem with name name
+                        // Get all NPCs and see if there is one with name
                     }
                 }
             }
