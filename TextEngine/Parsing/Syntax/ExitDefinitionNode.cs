@@ -10,10 +10,6 @@ namespace TextEngine.Parsing.Syntax
         {
         }
 
-        public Token<SyntaxKind> ExitKeyword { get; }
-        public Token<SyntaxKind> NameToken { get; }
-        public PropertyList Properties { get; }
-
         public override void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
