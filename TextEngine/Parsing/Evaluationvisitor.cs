@@ -91,7 +91,7 @@ namespace TextEngine.Parsing
 
         public void Visit(CommandNode node)
         {
-            throw new NotImplementedException();
+            CommandProccessor.ProcessCommand((string)node.CommandToken.Value);
         }
 
         public void Visit(DecreaseNode node)

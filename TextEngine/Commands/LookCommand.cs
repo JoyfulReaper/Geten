@@ -13,7 +13,7 @@
         public void Invoke()
         {
             if (LookAt == null)
-                TextEngine.AddMessage(TextEngine.Player.Location.LookDescription);
+                TextEngine.AddMessage(TextEngine.Player?.Location.LookDescription);
         }
     }
 }

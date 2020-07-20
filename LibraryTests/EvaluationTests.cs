@@ -101,6 +101,17 @@ namespace LibraryTests
             AssertNoDiagnostics(p);
         }
 
+        [TestMethod]
+        public void Evaluate_Command_Should_Pass()
+        {
+            var src = "command 'look'";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
         private void AssertNoDiagnostics(ScriptParser parser)
         {
             if (parser.Diagnostics.Any())
