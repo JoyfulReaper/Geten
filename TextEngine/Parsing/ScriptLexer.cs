@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using TextEngine.Parsing.Text;
 
@@ -104,6 +105,7 @@ namespace TextEngine.Parsing
             else if (text == "true" || text == "false")
             {
                 _kind = SyntaxKind.Boolean;
+                _value = Boolean.Parse(text);
                 return;
             }
             else
