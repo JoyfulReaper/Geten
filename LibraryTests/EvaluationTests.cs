@@ -24,6 +24,7 @@ namespace LibraryTests
             var r = p.Parse(room);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
 
+            Assert.IsTrue(TextEngine.TextEngine.RoomExists("kitchen"));
             AssertNoDiagnostics(p);
         }
 
@@ -41,13 +42,14 @@ namespace LibraryTests
             var r = p.Parse(room);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
 
+            Assert.IsTrue(TextEngine.TextEngine.RoomExists("DiningRoom"));
             AssertNoDiagnostics(p);
         }
 
         [TestMethod]
         public void Evaluate_Exit_Should_Pass()
         {
-            var src = "exit 'DiningRoom' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
+            var src = "exit 'DiningRoomE' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
