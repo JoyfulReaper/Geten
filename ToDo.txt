@@ -1,5 +1,3 @@
-- Parsing
-[ ] Enable option to use a shop system in charakter by dialog or an item
 
 - CommandParsing
 [ ] Allow To Drop Items
