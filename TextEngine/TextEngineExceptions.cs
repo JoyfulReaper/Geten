@@ -24,6 +24,8 @@ SOFTWARE.
 
 using System;
 
+// This is a message and needs to be better though out :(
+
 namespace TextEngine
 {
     /// <summary>
@@ -55,7 +57,7 @@ namespace TextEngine
     }
 
     /// <summary>
-    /// What are Unit tests...??
+    /// Will probably want to remove this at somepoint
     /// </summary>
     public class DebugException : Exception
     {
@@ -68,9 +70,7 @@ namespace TextEngine
             : base(message, inner) { }
     }
 
-    /// <summary>
-    /// Don't know if I should use this or ArgumentException...
-    /// </summary>
+
     public class InvalidItemException : Exception
     {
         public InvalidItemException() { }
@@ -79,6 +79,17 @@ namespace TextEngine
             : base(message) { }
 
         public InvalidItemException(string message, Exception inner)
+            : base(message, inner) { }
+    }
+
+    public class InvalidCharacterException : Exception
+    {
+        public InvalidCharacterException() { }
+
+        public InvalidCharacterException(string message)
+            : base(message) { }
+
+        public InvalidCharacterException(string message, Exception inner)
             : base(message, inner) { }
     }
 }
