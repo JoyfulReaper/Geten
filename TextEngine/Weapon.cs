@@ -23,6 +23,8 @@ SOFTWARE.
 */
 
 
+using System;
+
 namespace TextEngine
 {
     /// <summary>
@@ -33,11 +35,36 @@ namespace TextEngine
         /// <summary>
         /// The minimum amount of Damage a weapon is capable of inflicting
         /// </summary>
-        public int MinDamage { get; set; }
+        public int MinDamage {
+            get => minDamage;
+            set
+            {
+                if (value < 0)
+                    throw (new ArgumentOutOfRangeException("MinDamage must be >= 0"));
+                minDamage = value;
+            }
+        }
         /// <summary>
         /// The maximum amount of Dmage a weapon is capable of inflicting
         /// </summary>
-        public int MaxDamage { get; set; }
+        public int MaxDamage {
+            get => maxDamage;
+            set
+            {
+                if (value < 0)
+                    throw (new ArgumentOutOfRangeException("MaxDamage must be >= 0"));
+            }
+        }
+
+        private int maxDamage;
+        private int minDamage;
+
+        public Weapon(string name, string pluralName, string desc, int minDamage, int maxDamage, bool visible, bool obtainable) 
+                : base(name, pluralName, desc, visible, obtainable)
+        {
+            MinDamage = minDamage;
+            MaxDamage = maxDamage;
+        }
 
         /// <summary>
         /// Construct a weapon
