@@ -31,9 +31,9 @@ namespace LibraryTests
         public void Evaluate_Room_Should_Pass()
         {
             string room =
-                @"room 'kitchen'
-                    with shortName 'kitchen' and
-                        lookDescription 'Uhh. It smells very tasty'
+                @"room 'Dining Room'
+                    with shortName 'DiningRoom' and
+                        lookDescription 'It has a table and four chairs.'
                     end
                    end";
 
@@ -69,7 +69,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Item_Should_Pass()
         {
-            var src = "item 'pen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' end end";
+            var src = "item 'pencil' with pluralName 'pencils' and obtainable true and visible true and description 'you write with it' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
@@ -97,7 +97,7 @@ namespace LibraryTests
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
-
+            Assert.IsTrue(TextEngine.TextEngine.Player.Inventory.HasItem("pen"));
             AssertNoDiagnostics(p);
         }
 
