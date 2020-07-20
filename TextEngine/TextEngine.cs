@@ -200,7 +200,6 @@ namespace TextEngine
         public static void AddNPC(NPC npc)
         {
             SymbolTable.Add(npc.Name, npc);
-            npcs.Add(npc);
 
             if(NpcExists(npc)) // Check should no longer be needed
                 throw new ArgumentException ($"NPC {npc.Name} has already been added");
@@ -223,7 +222,7 @@ namespace TextEngine
         /// <returns>true on success, false on failure</returns>
         public static void AddRoom(Room room)
         {
-            SymbolTable.Add(room.Name, room);
+            SymbolTable.Add(room.ShortName, room);
 
             if (RoomExists(room)) // Check should no longer be needed
                 throw new ArgumentException(room.ShortName + " already exisits in map");
