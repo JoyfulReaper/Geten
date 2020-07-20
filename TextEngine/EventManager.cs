@@ -3,11 +3,11 @@ using TextEngine.Parsing.Syntax;
 
 namespace TextEngine
 {
-    public static class EventManager
+    public class EventManager
     {
-        private static ConcurrentDictionary<string, ConcurrentQueue<BlockNode>> _subscriptions = new ConcurrentDictionary<string, ConcurrentQueue<BlockNode>>();
+        private ConcurrentDictionary<string, ConcurrentQueue<BlockNode>> _subscriptions = new ConcurrentDictionary<string, ConcurrentQueue<BlockNode>>();
 
-        public static void Subscribe(string name, BlockNode body)
+        public void Subscribe(string name, BlockNode body)
         {
             if(_subscriptions.ContainsKey(name))
             {
@@ -21,7 +21,7 @@ namespace TextEngine
             }
         }
 
-        public static void Raise(string name)
+        public void Raise(string name)
         {
             var bodies = _subscriptions[name];
             foreach (var b in bodies)
