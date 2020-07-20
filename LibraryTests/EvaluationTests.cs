@@ -79,7 +79,7 @@ namespace LibraryTests
         public void Evaluate_ItemInPlayerInv_Should_Pass()
         {
             Player pl = new Player("Fred");
-            //TextEngine.Player = pl // Why doesnt this work? Test is failing becasue player is null, but can't set it
+            TextEngine.TextEngine.Player = pl;
             var src = "item 'pen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'player' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
