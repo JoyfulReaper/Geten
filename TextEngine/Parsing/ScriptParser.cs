@@ -109,7 +109,7 @@ namespace TextEngine.Parsing
             }
             else if (MatchCurrentKeyword("exit"))
             {
-                return ParsePropertyOnly<RoomDefinitionNode>("exit");
+                return ParsePropertyOnly<ExitDefinitionNode>("exit");
             }
             else if (MatchCurrentKeyword("item"))
             {
