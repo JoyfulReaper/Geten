@@ -36,6 +36,7 @@ namespace TextEngine
         public bool Locked { get; set; }
         public Inventory Inventory { get; }
 
+        public ContainerItem(string name, string pluralName, string desc, bool visible, bool obtainable, int cap) : base(name, pluralName, desc, visible, obtainable) { Inventory = new Inventory(cap);  }
         public ContainerItem(string name, string desc, bool visible, bool obtainable, int cap) : base(name, desc, visible, obtainable) { Inventory = new Inventory(cap); }
         public ContainerItem(string name, string desc, bool visible, bool obtainable) : base(name, desc, visible, obtainable) { Inventory = new Inventory(); }
         public ContainerItem(string name) : this(name, "", true, true) { Inventory = new Inventory(); }

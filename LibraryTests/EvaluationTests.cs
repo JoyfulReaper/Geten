@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using TextEngine;
 using TextEngine.Parsing;
 using TextEngine.Parsing.Diagnostics;
 
@@ -52,6 +52,35 @@ namespace LibraryTests
         public void Evaluate_Character_Should_Pass()
         {
             var src = "character \"leo\" as npc with health 100 and money 150 and description 'handsome' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+        }
+
+        [TestMethod]
+        public void Evaluate_Item_Should_Pass()
+        {
+            var src = "item 'pen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+        }
+
+        [TestMethod]
+        public void Evaluate_ContainerItem_Should_Pass()
+        {
+            var src = "item 'chest' with pluralName 'chests' and obtainable false and visible true and description 'you can open it' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+        }
+
+        [TestMethod]
+        public void Evaluate_ItemInPlayerInv_Should_Pass()
+        {
+            Player pl = new Player("Fred");
+            //TextEngine.Player = pl // Why doesnt this work? Test is failing becasue player is null, but can't set it
+            var src = "item 'pen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'player' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(new DiagnosticBag()));

@@ -86,7 +86,42 @@ namespace TextEngine.Parsing
 
         public void Visit(ItemDefinitionNode node)
         {
-            throw new NotImplementedException();
+            // Need to have a way to determine where to put the item and if the item is a containter or not - Done
+            // Need to figure out if the location is a room or another ContainerItem, then add to that inventory
+            var name = node.NameToken.Value?.ToString();
+            var pluralName = node.Properties["pluralName"].ToString(); // null is okay
+            var obtainable = (bool)(node.Properties["obtainable"] ?? true);
+            var visible = (bool)(node.Properties["visible"] ?? true);
+            var desc = node.Properties["description"]?.ToString();
+            var location = node.Properties["location"]?.ToString();
+            var container = (bool)(node.Properties["container"] ?? false);
+
+            Item item;
+            if (container)
+            {
+                var capacity = (int)(node.Properties["capacity"] ?? 0);
+                item = new ContainerItem(name, pluralName, desc, visible, obtainable, capacity);
+            } else
+            {
+               item = new Item(name, pluralName, desc, visible, obtainable);
+            }
+
+            Room r = TextEngine.GetRoom(location);
+            if (location != null)
+            {
+                if (location == "player")
+                    TextEngine.Player.Inventory.AddItem(item);
+                else
+                {
+                    if(TextEngine.RoomExists(location))
+                        r.Inventory.AddItem(item);
+                    else
+                    {
+                        // Get all Rooms and see if there is a ContainerItem with name name
+                    }
+                }
+            }
+
         }
 
         public void Visit(KeyDefinitionNode node)
