@@ -24,18 +24,15 @@ namespace TextEngine.Parsing
 
         public void Visit(AddItemNode node)
         {
-            // Where is the item to add? An existing item needs to be taken from somewhere...
-            // Maybe a cache of all items should be made and we can copy on from there
-            // Ok, will think about this more tomorrow.
-
             var addWhat = node.Argument?.ToString();
-            var name = node.Name?.ToString();
-            var location = node.Target?.ToString();
+            var name = node.Name.Value?.ToString();
+            var location = node.Target.Value?.ToString();
 
             Item item = SymbolTable.GetInstance<Item>(name);
 
             if (location == "player")
             {
+                // Add item to Room's inv
                 TextEngine.Player?.Inventory.AddItem(item);
             }
             else
@@ -47,7 +44,9 @@ namespace TextEngine.Parsing
                 }
                 else
                 {
-                    // Get all Rooms and check for ContainerItems with name
+                    // Check for a container item
+
+
                     // Gat all NPCs and check for one with name
                 }
             }
@@ -75,7 +74,7 @@ namespace TextEngine.Parsing
                 NPC npc = new NPC(name, description, maxHealth, health);
                 TextEngine.AddNPC(npc);
 
-                SymbolTable.Add(name, npc);
+                //SymbolTable.Add(name, npc); // AddNPC() does this now, hopefully that is the "correct" thing to do
             }
             else
             {
@@ -190,16 +189,15 @@ namespace TextEngine.Parsing
             var lookDesc = node.Properties["lookDescription"]?.ToString();
 
             Room r = new Room(name, shortName, desc, lookDesc);
-            SymbolTable.Add(name, r);
-
+            //SymbolTable.Add(name, r); //TextEngine.AddRoom does this
             TextEngine.AddRoom(r);
         }
 
         public void Visit(ExitDefinitionNode node)
         {
             var name = node.NameToken.Value.ToString();
-            var locked = (bool)node.Properties["locked"];
-            var visible = (bool)node.Properties["visible"];
+            var locked = (bool)(node.Properties["locked"] ?? false);
+            var visible = (bool)(node.Properties["visible"] ?? true);
             var side = node.Properties["side"]?.ToString();
             var toRoom = node.Properties["toRoom"]?.ToString();
             var fromRoom = node.Properties["fromRoom"]?.ToString();
@@ -209,7 +207,7 @@ namespace TextEngine.Parsing
             Room from = TextEngine.GetRoom(fromRoom);
 
             Exit exit = new Exit(name, to, locked, visible);
-            to.SetSide(dirSide, exit);
+            from.SetSide(dirSide, exit);
         }
 
         public void Visit(SetPropertyNode node)
