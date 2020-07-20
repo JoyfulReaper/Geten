@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using TextEngine.MapItems;
+using TextEngine.Parsing;
 
 namespace TextEngine
 {
@@ -48,7 +49,15 @@ namespace TextEngine
         /// <summary>
         /// The active playable character
         /// </summary>
-        public static Player Player { get; set; }
+        public static Player Player {
+            get => player;
+            set
+            {
+                if (value == null)
+                    throw (new InvalidCharacterException("Player cannot be null"));
+                player = value;
+            }
+        }
 
         /// <summary>
         /// The room in which the game should begin
@@ -77,6 +86,7 @@ namespace TextEngine
 
         private static readonly Queue<string> messages = new Queue<string>();
         private static Room startRoom = null;
+        private static Player player = null;
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,7 +143,7 @@ namespace TextEngine
 
         public static Direction GetDirectionFromChar(char c)
         {
-            switch (c)
+            switch (Char.ToUpper(c))
             {
                 case 'N':
                     return Direction.North;
@@ -152,12 +162,33 @@ namespace TextEngine
             }
         }
 
+        public static Direction GetDirectionFromString(string dir)
+        {
+            switch (dir.ToLower())
+            {
+                case "north":
+                    return Direction.North;
+                case "south":
+                    return Direction.South;
+                case "east":
+                    return Direction.East;
+                case "west":
+                    return Direction.West;
+                case "up":
+                    return Direction.Up;
+                case "down":
+                    return Direction.Down;
+                default:
+                    return Direction.Invalid;
+            }
+        }
+
         public static bool IsCommand(string name)
         {
             var cmds = new List<string>
             {
-                "quit",
-                "go",
+                "quit", "exit",
+                "go", "n", "s", "e", "w", "u", "down",
                 "look",
                 "pickup",
                 "take",
@@ -168,13 +199,19 @@ namespace TextEngine
 
         public static void AddNPC(NPC npc)
         {
-            if(NpcExists(npc))
+            SymbolTable.Add(npc.Name, npc);
+            npcs.Add(npc);
+
+            if(NpcExists(npc)) // Check should no longer be needed
                 throw new ArgumentException ($"NPC {npc.Name} has already been added");
 
             npcs.Add(npc);
         }
 
         public static bool NpcExists(NPC npc) => npcs.Contains(npc);
+
+        public static bool NpcExists(string name) =>
+            npcs.Where(_ => _ is NPC).FirstOrDefault(_ => ((NPC)_).Name == name) == null ? false : true;
 
         public static NPC GetNPC(string name) => npcs.FirstOrDefault(_ => _.Name == name);
 
@@ -186,7 +223,9 @@ namespace TextEngine
         /// <returns>true on success, false on failure</returns>
         public static void AddRoom(Room room)
         {
-            if (RoomExists(room))
+            SymbolTable.Add(room.Name, room);
+
+            if (RoomExists(room)) // Check should no longer be needed
                 throw new ArgumentException(room.ShortName + " already exisits in map");
 
             map.Add(room);
@@ -205,6 +244,16 @@ namespace TextEngine
         }
 
         public static Room GetRoom(string shortName) => (Room)map.Where(_ => _ is Room).FirstOrDefault(_ => ((Room)_).ShortName == shortName);
+
+        public static List<Room> GetAllRooms()
+        { 
+            // Is there a one liner for this?
+            List<Room> result = new List<Room>();
+            var rooms = map.Where(_ => _ is Room);
+            foreach (var room in rooms)
+                result.Add((Room)room);
+            return result;
+        }
 
         public static void ProccessCommand(string command)
         {
