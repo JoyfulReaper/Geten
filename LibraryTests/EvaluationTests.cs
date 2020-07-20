@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using TextEngine;
+using TextEngine.MapItems;
 using TextEngine.Parsing;
 
 namespace LibraryTests
@@ -9,6 +10,24 @@ namespace LibraryTests
     [TestClass]
     public class EvaluationTests
     {
+        [TestMethod]
+        public void Evaluate_Add_Item_to_Room_Should_Pass()
+        {
+            Room r = new Room("Test Room1", "test1", "For testing!", "It looks boring :(");
+            Item s = new Weapon("sword", "swords", "It looks kind of dull...", 5, 10, true, true);
+
+            //TextEngine.Parsing.SymbolTable.Add(r.Name, r);
+            TextEngine.Parsing.SymbolTable.Add(s.Name, s);
+            TextEngine.TextEngine.AddRoom(r);
+
+            var src = "add item 'sword' to 'test1'";
+            var p = new ScriptParser();
+            var pRes = p.Parse(src);
+            pRes.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(r.Inventory.HasItem("sword"));
+        }
+
         [TestMethod]
         public void Evaluate_Full_Room_Should_Pass()
         {
@@ -60,7 +79,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Character_Should_Pass()
         {
-            var src = "character \"leo\" as npc with health 100 and money 150 and description 'handsome' end end";
+            var src = "character \"Frank\" as npc with health 100 and money 150 and description 'handsome' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
