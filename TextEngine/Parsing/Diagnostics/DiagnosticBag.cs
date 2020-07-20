@@ -68,5 +68,11 @@ namespace TextEngine.Parsing.Diagnostics
             var message = $"Unexpected Literal '{kind}'.";
             Report(location, message);
         }
+
+        internal void ReportBadPlayerCharacter(string name)
+        {
+            var message = $"Character '{name}' must be player or npc";
+            Report(TextSpan.FromBounds(0,0), message);
+        }
     }
 }

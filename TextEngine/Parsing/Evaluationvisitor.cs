@@ -9,10 +9,10 @@ namespace TextEngine.Parsing
     {
         public EvaluationVisitor(DiagnosticBag parent)
         {
-            Diagnostics.AddRange(parent);
+            Diagnostics = parent;
         }
 
-        DiagnosticBag Diagnostics = new DiagnosticBag();
+        private DiagnosticBag Diagnostics;
 
         public void Visit(BlockNode block)
         {
@@ -72,7 +72,7 @@ namespace TextEngine.Parsing
             }
             else
             {
-                throw new DebugException("Character must be player or npc");
+                Diagnostics.ReportBadPlayerCharacter(name);
             }
 
         }

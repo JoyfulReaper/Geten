@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 using TextEngine;
 using TextEngine.Parsing;
-using TextEngine.Parsing.Diagnostics;
 
 namespace LibraryTests
 {
@@ -21,7 +22,9 @@ namespace LibraryTests
 
             var p = new ScriptParser();
             var r = p.Parse(room);
-            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
         }
 
         [TestMethod]
@@ -36,7 +39,9 @@ namespace LibraryTests
 
             var p = new ScriptParser();
             var r = p.Parse(room);
-            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
         }
 
         [TestMethod]
@@ -45,7 +50,9 @@ namespace LibraryTests
             var src = "exit 'DiningRoom' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
         }
 
         [TestMethod]
@@ -54,7 +61,9 @@ namespace LibraryTests
             var src = "character \"leo\" as npc with health 100 and money 150 and description 'handsome' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
         }
 
         [TestMethod]
@@ -63,7 +72,9 @@ namespace LibraryTests
             var src = "item 'pen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
         }
 
         [TestMethod]
@@ -72,7 +83,9 @@ namespace LibraryTests
             var src = "item 'chest' with pluralName 'chests' and obtainable false and visible true and description 'you can open it' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
         }
 
         [TestMethod]
@@ -83,7 +96,17 @@ namespace LibraryTests
             var src = "item 'pen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'player' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(new DiagnosticBag()));
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
+        private void AssertNoDiagnostics(ScriptParser parser)
+        {
+            if (parser.Diagnostics.Any())
+            {
+                throw new Exception(parser.Diagnostics.First().ToString());
+            }
         }
     }
 }
