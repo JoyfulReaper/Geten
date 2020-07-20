@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Reflection.Metadata.Ecma335;
 
 namespace TextEngine.Parsing
 {
@@ -13,6 +14,8 @@ namespace TextEngine.Parsing
 
             _objects.TryAdd(name, instance);
         }
+
+        public static bool Contains(string name) => _objects.ContainsKey(name);
 
         public static T GetInstance<T>(string name)
         {
