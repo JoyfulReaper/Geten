@@ -15,8 +15,18 @@ namespace Geten.Core
             Description = descr;
         }
 
-        public string Description { get; set; }
-        public string Name { get; set; }
+        public string Description
+        {
+            get { return GetProperty<string>(nameof(Description)); }
+            set { SetProperty(nameof(Description), value); }
+        }
+
+        public string Name
+        {
+            get { return GetProperty<string>(nameof(Name)); }
+            set { SetProperty(nameof(Name), value); }
+        }
+
         public int PropertyCount => _properties.Count;
 
         public void Add(string name, object value)

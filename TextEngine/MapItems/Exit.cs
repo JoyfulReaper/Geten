@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.GameObjects;
+
 namespace Geten.MapItems
 {
     /// <summary>
@@ -29,21 +31,6 @@ namespace Geten.MapItems
     /// </summary>
     public class Exit : MapSite
     {
-        /// <summary>
-        /// Weather or not the exit is locked
-        /// </summary>
-        public bool Locked { get; set; }
-
-        /// <summary>
-        /// Weather or not the exit is visible 
-        /// </summary>
-        public bool Visible { get; set; }
-
-        /// <summary>
-        /// The Room on the other side of the exit
-        /// </summary>
-        public Room ToRoom { get; set; }
-
         /// <summary>
         /// Construct an Exit
         /// </summary>
@@ -66,6 +53,21 @@ namespace Geten.MapItems
         public Exit(Room toRoom) : this("door", toRoom, false, true) { }
 
         /// <summary>
+        /// Weather or not the exit is locked
+        /// </summary>
+        public bool Locked { get; set; }
+
+        /// <summary>
+        /// The Room on the other side of the exit
+        /// </summary>
+        public Room ToRoom { get; set; }
+
+        /// <summary>
+        /// Weather or not the exit is visible
+        /// </summary>
+        public bool Visible { get; set; }
+
+        /// <summary>
         /// Attempt to Enter (Use) this exit
         /// </summary>
         /// <param name="character">The Character attempting to use this Exit</param>
@@ -76,7 +78,6 @@ namespace Geten.MapItems
                 ToRoom.Enter(character, heading);
             else
                 TextEngine.AddMessage("You try to go though the " + Name + ", but it is locked.");
-
         }
 
         /// <summary>
@@ -87,6 +88,5 @@ namespace Geten.MapItems
         {
             return base.ToString() + $", toRoom: {ToRoom.ShortName}, Locked {Locked}, Visible {Visible}";
         }
-
     }
 }

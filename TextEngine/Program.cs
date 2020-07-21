@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Geten.Core;
+using Geten.GameObjects;
 using Geten.MapItems;
 using System;
 

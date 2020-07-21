@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Geten.Core.Exceptions;
+using Geten.GameObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

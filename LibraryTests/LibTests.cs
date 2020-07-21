@@ -25,5 +25,9 @@ namespace LibraryTests
     }
 
     internal class TestObject : GameObject
-    { }
+    {
+        public TestObject() : base("test", "nothing")
+        {
+        }
+    }
 }

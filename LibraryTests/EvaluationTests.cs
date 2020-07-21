@@ -1,5 +1,6 @@
 ﻿using Geten;
 using Geten.Core;
+using Geten.GameObjects;
 using Geten.MapItems;
 using Geten.Parsers.Script;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

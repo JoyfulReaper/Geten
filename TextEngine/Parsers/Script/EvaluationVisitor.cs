@@ -1,5 +1,6 @@
 ﻿using Geten.Core;
 using Geten.Core.Parsing.Diagnostics;
+using Geten.GameObjects;
 using Geten.MapItems;
 using Geten.Parsers.Script.Syntax;
 using System;

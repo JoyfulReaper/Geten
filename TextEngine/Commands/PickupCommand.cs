@@ -1,4 +1,6 @@
-﻿namespace Geten.Commands
+﻿using Geten.GameObjects;
+
+namespace Geten.Commands
 {
     internal class PickupCommand : ITextCommand
     {

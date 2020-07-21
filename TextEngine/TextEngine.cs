@@ -24,6 +24,7 @@ SOFTWARE.
 
 using Geten.Core;
 using Geten.Core.Exceptions;
+using Geten.GameObjects;
 using Geten.MapItems;
 using System;
 using System.Collections.Generic;
