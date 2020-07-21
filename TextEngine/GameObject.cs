@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TextEngine.Parsing.Syntax;
 
 namespace TextEngine
 {
-    public abstract class GameObject
+    public abstract class GameObject : IEnumerable
     {
         //property bag for changable properties by script
         private Dictionary<string, object> _properties = new Dictionary<string, object>();
@@ -38,6 +39,10 @@ namespace TextEngine
 
         public string Name { get; set; }
 
+        public int PropertyCount => _properties.Count;
+
+
+
         public void MatchPropertyList(PropertyList list)
         {
             foreach (var p in list)
@@ -46,5 +51,14 @@ namespace TextEngine
             }
         }
 
+        public IEnumerator GetEnumerator()
+        {
+            return _properties.GetEnumerator();
+        }
+
+        public void Add(string name, object value)
+        {
+            _properties.Add(name, value);
+        }
     }
 }

@@ -11,5 +11,18 @@ namespace LibraryTests
         {
             Assert.IsTrue("hElLO WoRld" == (CaseInsensitiveString)"hello world");
         }
+
+        [TestMethod]
+        public void GameObject_Initializer_Should_Pass()
+        {
+            var go = new TestObject {
+                { "name", "friend" },
+                { "attackable", false }
+            };
+
+            Assert.AreEqual(go.PropertyCount, 2);
+        }
     }
+
+    class TestObject : GameObject { }
 }
