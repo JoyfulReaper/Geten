@@ -32,7 +32,7 @@ namespace TextEngine.Parsing
 
             if (target == "player")
             {
-                // Add item to Room's inv
+                // Add item to Players's inv
                 TextEngine.Player?.Inventory.AddItem(item);
             }
             else
@@ -44,7 +44,7 @@ namespace TextEngine.Parsing
                 }
                 else if (TextEngine.NpcExists(target))
                 {
-                    // Gat all NPCs and check for one with name
+                    // Get all NPCs and check for one with name
                     SymbolTable.GetInstance<NPC>(target).Inventory.AddItem(item);
                 }
                 else
