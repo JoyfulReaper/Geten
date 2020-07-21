@@ -11,6 +11,35 @@ namespace LibraryTests
     public class EvaluationTests
     {
         [TestMethod]
+        public void Evaluate_Add_Item_to_NPC_Should_Pass()
+        {
+            NPC npc = new NPC("Some Guy", "He looks nice", 100, 100);
+            Item item = new Item("Bag of Chips", "They look crunchy!");
+            SymbolTable.Add(item.Name, item);
+            TextEngine.TextEngine.AddNPC(npc);
+            string src = "add item 'Bag of Chips' to 'Some Guy'";
+            ScriptParser p = new ScriptParser();
+            var res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Add_Item_to_ContainerItem_Should_Pass()
+        {
+            ContainerItem ci = new ContainerItem("Brown Bag", "It has a cookie in it", true, true);
+            SymbolTable.Add(ci.Name, ci);
+            string src = "item 'cookie' with description 'chocolate chip' end end add item 'cookie' to 'Brown Bag'";
+
+            ScriptParser p = new ScriptParser();
+            var res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
+            [TestMethod]
         public void Evaluate_Add_Item_to_Room_Should_Pass()
         {
             Room r = new Room("Test Room1", "test1", "For testing!", "It looks boring :(");
@@ -33,7 +62,7 @@ namespace LibraryTests
         {
             string room =
                 @"room 'kitchen'
-                    with shortName 'kitchen' and
+                    with shortName 'kitchen2' and
                         description 'It looks modren' and
                         lookDescription 'Uhh. It smells very tasty'
                     end
@@ -41,7 +70,7 @@ namespace LibraryTests
 
             var p = new ScriptParser();
             var r = p.Parse(room);
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
+           r.Accept(new EvaluationVisitor(p.Diagnostics));
 
             Assert.IsTrue(TextEngine.TextEngine.RoomExists("kitchen"));
             AssertNoDiagnostics(p);
@@ -68,6 +97,10 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Exit_Should_Pass()
         {
+            Room kitchen = new Room("Kitchen", "kitchen");
+            Room dining = new Room("Dining", "dining");
+            TextEngine.TextEngine.AddRoom(kitchen);
+            TextEngine.TextEngine.AddRoom(dining);
             var src = "exit 'DiningRoomE' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
@@ -106,6 +139,18 @@ namespace LibraryTests
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
 
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Target 'badTarget' is not a valid Room, NPC or ContainerItem")]
+        public void Evaluate_Add_Item_BadTarget_Should_Pass()
+        {
+            var src = "item 'Book' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'Book' to 'badTarget'";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
         }
 

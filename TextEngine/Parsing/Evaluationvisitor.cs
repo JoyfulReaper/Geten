@@ -26,28 +26,37 @@ namespace TextEngine.Parsing
         {
             var addWhat = node.Argument?.ToString();
             var name = node.Name.Value?.ToString();
-            var location = node.Target.Value?.ToString();
+            var target = node.Target.Value?.ToString();
 
             Item item = SymbolTable.GetInstance<Item>(name);
 
-            if (location == "player")
+            if (target == "player")
             {
                 // Add item to Room's inv
                 TextEngine.Player?.Inventory.AddItem(item);
             }
             else
             {
-                if(TextEngine.RoomExists(location))
+                if (TextEngine.RoomExists(target))
                 {
                     // Add item to Room's inv
-                    SymbolTable.GetInstance<Room>(location).Inventory.AddItem(item);
+                    SymbolTable.GetInstance<Room>(target).Inventory.AddItem(item);
+                }
+                else if (TextEngine.NpcExists(target))
+                {
+                    // Gat all NPCs and check for one with name
+                    SymbolTable.GetInstance<NPC>(target).Inventory.AddItem(item);
                 }
                 else
                 {
-                    // Check for a container item
-
-
-                    // Gat all NPCs and check for one with name
+                    // Get all Container Items and check for one with name
+                    try
+                    {
+                        SymbolTable.GetInstance<ContainerItem>(target).Inventory.AddItem(item);
+                    } catch (Exception e)
+                    {
+                        Diagnostics.ReportBadTargetInventory(target);
+                    }
                 }
             }
         }
@@ -118,7 +127,7 @@ namespace TextEngine.Parsing
             // Need to have a way to determine where to put the item and if the item is a containter or not - Done
             // Need to figure out if the location is a room or another ContainerItem, then add to that inventory
             var name = node.NameToken.Value?.ToString();
-            var pluralName = node.Properties["pluralName"].ToString(); // null is okay
+            var pluralName = node.Properties["pluralName"]?.ToString(); // null is okay
             var obtainable = (bool)(node.Properties["obtainable"] ?? true);
             var visible = (bool)(node.Properties["visible"] ?? true);
             var desc = node.Properties["description"]?.ToString();
