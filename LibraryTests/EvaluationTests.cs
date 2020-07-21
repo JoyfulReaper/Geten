@@ -121,6 +121,17 @@ namespace LibraryTests
         }
 
         [TestMethod]
+        public void Evaluate_Player_Should_Pass()
+        {
+            var src = "character \"Bob\" as player with health 100 and money 150 and description 'The Hero' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
         public void Evaluate_Item_Should_Pass()
         {
             var src = "item 'pencil' with pluralName 'pencils' and obtainable true and visible true and description 'you write with it' end end";
