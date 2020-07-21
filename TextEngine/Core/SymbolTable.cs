@@ -5,7 +5,7 @@ namespace Geten.Core
 {
     public static class SymbolTable
     {
-        private static ConcurrentDictionary<CaseInsensitiveString, object> _objects = new ConcurrentDictionary<CaseInsensitiveString, object>();
+        private static readonly ConcurrentDictionary<CaseInsensitiveString, object> _objects = new ConcurrentDictionary<CaseInsensitiveString, object>();
 
         public static void Add(CaseInsensitiveString name, object instance)
         {

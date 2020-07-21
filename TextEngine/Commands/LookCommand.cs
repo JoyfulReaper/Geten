@@ -7,7 +7,7 @@
             LookAt = lookAt;
         }
 
-        private string LookAt { get; set; }
+        private string LookAt { get; }
 
         public void Invoke()
         {

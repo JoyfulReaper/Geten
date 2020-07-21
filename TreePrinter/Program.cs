@@ -1,4 +1,5 @@
-﻿using Geten.Core.Parsing;
+﻿using Geten.Core;
+using Geten.Core.Parsing;
 using Geten.Parsers.Script;
 using System;
 using System.Linq;
@@ -12,9 +13,9 @@ namespace TreePrinter
             while (true)
             {
                 Console.Write(">> ");
-                var input = Console.ReadLine();
+                var input = (CaseInsensitiveString)Console.ReadLine();
 
-                if (input.ToLower() == "quit")
+                if (input == "quit")
                     Environment.Exit(0);
 
                 var parser = new ScriptParser();

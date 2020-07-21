@@ -12,14 +12,17 @@ namespace Geten.Parsers.Script.Syntax
             Loop = loop;
         }
 
+        public Token<SyntaxKind> InKeyword { get; }
+
+        public Token<SyntaxKind> Loop { get; }
+
+        public Token<SyntaxKind> PlayKeyword { get; }
+
+        public Token<SyntaxKind> Target { get; }
+
         public override void Accept(IScriptVisitor visitor)
         {
             visitor.Visit(this);
         }
-
-        public Token<SyntaxKind> PlayKeyword { get; }
-        public Token<SyntaxKind> Target { get; }
-        public Token<SyntaxKind> InKeyword { get; }
-        public Token<SyntaxKind> Loop { get; }
     }
 }

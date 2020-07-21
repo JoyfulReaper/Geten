@@ -23,7 +23,6 @@ namespace Geten.Core.Parsing
             Value = value;
         }
 
-
         /// <summary>
         ///  The TokenType
         /// </summary>
@@ -35,6 +34,11 @@ namespace Geten.Core.Parsing
         public int Position { get; }
 
         /// <summary>
+        ///  The TokenSpan
+        /// </summary>
+        public override TextSpan Span => new TextSpan(Position, Text?.Length ?? 0);
+
+        /// <summary>
         ///  The Token Text
         /// </summary>
         public CaseInsensitiveString Text { get; }
@@ -44,19 +48,13 @@ namespace Geten.Core.Parsing
         /// </summary>
         public object Value { get; }
 
-        /// <summary>
-        ///  The TokenSpan
-        /// </summary>
-        public override TextSpan Span => new TextSpan(Position, Text?.Length ?? 0);
+        public override void Accept(IScriptVisitor visitor)
+        {
+        }
 
         public override string ToString()
         {
             return Kind + ": " + (Value ?? Text);
-        }
-
-        public override void Accept(IScriptVisitor visitor)
-        {
-           
         }
     }
 }

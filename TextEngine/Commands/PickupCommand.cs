@@ -1,7 +1,6 @@
 ﻿namespace Geten.Commands
 {
-
-    class PickupCommand : ITextCommand
+    internal class PickupCommand : ITextCommand
     {
         public void Invoke()
         {

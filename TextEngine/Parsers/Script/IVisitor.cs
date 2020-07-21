@@ -5,6 +5,7 @@ namespace Geten.Parsers.Script
     public interface IScriptVisitor
     {
         void Visit(BlockNode block);
+
         void Visit(AddItemNode node);
 
         void Visit(CharacterDefinitionNode node);
@@ -42,6 +43,5 @@ namespace Geten.Parsers.Script
         void Visit(WeaponDefinitionNode node);
 
         void Visit(ExitDefinitionNode node);
-
     }
 }

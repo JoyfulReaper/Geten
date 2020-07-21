@@ -22,22 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Geten;
 using Geten.Core;
 using Geten.MapItems;
 using System;
 
 namespace Geten
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        public static void TestingSetup()
         {
-           
+        }
+
+        private static void Main(string[] args)
+        {
             Player player = new Player("Kyle");
             TextEngine.Player = player;
             player.Inventory.Capacity = 100;
-            
+
             Room r1 = new Room("Starting Room", "Starting Room", "You find yourself in a rather large and dark room", "You look around, It looks like there is an exit to the East!");
             Room r2 = new Room("Another Room", "Second Room", "You smell a foul scent", "I think something might have died in here!");
 
@@ -47,7 +49,7 @@ namespace Geten
             r2.SetSide(Direction.East, new Wall());
             r2.SetSide(Direction.South, new Wall());
             r2.SetSide(Direction.West, new Exit(r1));
-         
+
             r1.SetSide(Direction.Up, new Roof());
             r1.SetSide(Direction.Down, new Floor());
             r1.SetSide(Direction.North, new Wall());
@@ -78,7 +80,6 @@ namespace Geten
             Console.WriteLine(r2);
 
             Console.WriteLine("----------------------------------------------------");
-
 
             if (!TextEngine.Player.Inventory.HasItem("Phone"))
                 Console.WriteLine("Player has no phone!");
@@ -112,22 +113,18 @@ namespace Geten
             GreedyWrap wrapper = new GreedyWrap(Console.WindowWidth);
             TextEngine.StartRoom = r1;
             TextEngine.StartGame();
-            while(!TextEngine.GameOver)
+            while (!TextEngine.GameOver)
             {
                 wrapper.LineWidth = Console.WindowWidth;
-                while(TextEngine.HasMessage())
+                while (TextEngine.HasMessage())
                 {
-                    Console.WriteLine( wrapper.LineWrap((TextEngine.GetMessage() ) ) );
+                    Console.WriteLine(wrapper.LineWrap((TextEngine.GetMessage())));
                 }
 
                 Console.Write("Enter command: ");
                 string input = Console.ReadLine();
                 TextEngine.ProccessCommand(input);
             }
-        }
-        public static void TestingSetup()
-        {
-
         }
     }
 }

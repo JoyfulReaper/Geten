@@ -47,7 +47,7 @@ namespace Geten.MapItems
             Description = desc;
 
             if (lookDesc == null || lookDesc.Length <= 0)
-                if (Description != null && Description.Length >= 1)
+                if (Description?.Length >= 1)
                     LookDescription = Description;
                 else
                     LookDescription = "You look around, but don't see anything of any significance";

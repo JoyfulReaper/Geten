@@ -13,15 +13,19 @@ namespace Geten.Parsers.Script.Syntax
             OfKeyword = ofKeyword;
         }
 
+        public Token<SyntaxKind> OfKeyword { get; }
+
+        public Token<SyntaxKind> Property { get; }
+
+        public Token<SyntaxKind> SetPropertyKeyword { get; }
+
+        public Token<SyntaxKind> Target { get; }
+
+        public SyntaxNode Value { get; }
+
         public override void Accept(IScriptVisitor visitor)
         {
             visitor.Visit(this);
         }
-
-        public Token<SyntaxKind> SetPropertyKeyword { get; }
-        public Token<SyntaxKind> Target { get; }
-        public Token<SyntaxKind> Property { get; }
-        public SyntaxNode Value { get; }
-        public Token<SyntaxKind> OfKeyword { get; }
     }
 }

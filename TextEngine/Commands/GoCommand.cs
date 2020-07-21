@@ -2,15 +2,15 @@
 
 namespace Geten.Commands
 {
-    class GoCommand : ITextCommand
+    internal class GoCommand : ITextCommand
     {
         public GoCommand(Direction direction)
         {
             Direction = direction;
         }
+
         public GoCommand()
         {
-
         }
 
         public Direction Direction { get; }

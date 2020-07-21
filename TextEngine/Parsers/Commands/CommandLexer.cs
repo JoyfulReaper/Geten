@@ -13,10 +13,20 @@ namespace Geten.Parsers.Commands
 {
     public class CommandLexer : BaseLexer<CommandKind>
     {
-        public CommandLexer(SourceText src) : base (src)
+        public CommandLexer(SourceText src) : base(src)
         {
         }
 
+        public override IEnumerable<Token<CommandKind>> GetAllTokens()
+        {
+            Token<CommandKind> token;
+            do
+            {
+                token = Lex();
+                if (token.Kind != CommandKind.WhiteSpace && token.Kind != CommandKind.EOF)
+                    yield return token;
+            } while (token.Kind != CommandKind.EOF);
+        }
 
         public override Token<CommandKind> Lex()
         {
@@ -26,6 +36,7 @@ namespace Geten.Parsers.Commands
                 case '\0':
                     _kind = CommandKind.EOF;
                     break;
+
                 case '0':
                 case '1':
                 case '2':
@@ -36,14 +47,16 @@ namespace Geten.Parsers.Commands
                 case '7':
                 case '8':
                 case '9':
-                    readNumberToken();
+                    ReadNumberToken();
                     break;
+
                 case ' ':
                 case '\t':
                 case '\n':
                 case '\r':
                     ReadWhiteSpace();
                     break;
+
                 default:
                     if (char.IsLetter(Current))
                         ReadCommand();
@@ -56,38 +69,6 @@ namespace Geten.Parsers.Commands
             var text = _text.ToString(_start, length);
 
             return new Token<CommandKind>(_kind, _start, text, _value);
-        }
-
-        private void ReadCommand()
-        {
-            while (char.IsLetter(Current))
-                 _position++;
-
-            var length = _position - _start;
-            var text = _text.ToString(_start, length);
-
-            GetCommandKind(text);
-        }
-
-        private void ReadWhiteSpace()
-        {
-            while (char.IsWhiteSpace(Current))
-                _position++;
-
-            _kind = CommandKind.WhiteSpace;
-        }
-
-        private void readNumberToken()
-        {
-            while (char.IsDigit(Current))
-                _position++;
-
-            var length = _position - _start;
-            var text = _text.ToString(_start, length);
-            var value = int.Parse(text);
-
-            _value = value;
-            _kind = CommandKind.Number;
         }
 
         private CommandKind GetCommandKind(string text)
@@ -109,6 +90,7 @@ namespace Geten.Parsers.Commands
                     _kind = CommandKind.Direction;
                     _value = TextEngine.GetDirectionFromChar(char.ToUpper(text[0]));
                     break;
+
                 default:
                     if (TextEngine.IsCommand(text))
                     {
@@ -124,15 +106,36 @@ namespace Geten.Parsers.Commands
             return _kind;
         }
 
-        public override IEnumerable<Token<CommandKind>> GetAllTokens()
+        private void ReadCommand()
         {
-            Token<CommandKind> token;
-            do
-            {
-                token = Lex();
-                if (token.Kind != CommandKind.WhiteSpace && token.Kind != CommandKind.EOF)
-                    yield return token;
-            } while (token.Kind != CommandKind.EOF);
+            while (char.IsLetter(Current))
+                _position++;
+
+            var length = _position - _start;
+            var text = _text.ToString(_start, length);
+
+            GetCommandKind(text);
+        }
+
+        private void ReadNumberToken()
+        {
+            while (char.IsDigit(Current))
+                _position++;
+
+            var length = _position - _start;
+            var text = _text.ToString(_start, length);
+            var value = int.Parse(text);
+
+            _value = value;
+            _kind = CommandKind.Number;
+        }
+
+        private void ReadWhiteSpace()
+        {
+            while (char.IsWhiteSpace(Current))
+                _position++;
+
+            _kind = CommandKind.WhiteSpace;
         }
     }
 }

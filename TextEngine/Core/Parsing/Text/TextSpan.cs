@@ -17,9 +17,9 @@
         }
 
         /// <summary>
-        ///  The Start of the Span
+        ///  The End of The Span
         /// </summary>
-        public int Start { get; }
+        public int End => Start + Length;
 
         /// <summary>
         ///  The Length of the Span
@@ -27,9 +27,9 @@
         public int Length { get; }
 
         /// <summary>
-        ///  The End of The Span
+        ///  The Start of the Span
         /// </summary>
-        public int End => Start + Length;
+        public int Start { get; }
 
         /// <summary>
         ///  Generate a Span

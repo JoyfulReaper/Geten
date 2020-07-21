@@ -42,6 +42,7 @@ namespace Geten
         /// <param name="name">The Character's name</param>
         /// <param name="health">The Character's initial health</param>
         /// <param name="maxHealth">The Character's maximum health</param>
+        /// <param name="desc">The Character's description</param>
         public Character(string name = "Character", string desc = "", int health = 100, int maxHealth = 100)
         {
             Name = name;

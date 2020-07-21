@@ -12,17 +12,14 @@ namespace LibraryTests
     public class EvaluationTests
     {
         [TestMethod]
-        public void Evaluate_Add_Item_to_NPC_Should_Pass()
+        [ExpectedException(typeof(Exception), "Target 'badTarget' is not a valid Room, NPC or ContainerItem")]
+        public void Evaluate_Add_Item_BadTarget_Should_Pass()
         {
-            NPC npc = new NPC("Some Guy", "He looks nice", 100, 100);
-            Item item = new Item("Bag of Chips", "They look crunchy!");
-            SymbolTable.Add(item.Name, item);
-            TextEngine.AddNPC(npc);
-            string src = "add item 'Bag of Chips' to 'Some Guy'";
-            ScriptParser p = new ScriptParser();
-            var res = p.Parse(src);
-            res.Accept(new EvaluationVisitor(p.Diagnostics));
+            var src = "item 'Book' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'Book' to 'badTarget'";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
 
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
         }
 
@@ -40,7 +37,22 @@ namespace LibraryTests
             AssertNoDiagnostics(p);
         }
 
-            [TestMethod]
+        [TestMethod]
+        public void Evaluate_Add_Item_to_NPC_Should_Pass()
+        {
+            NPC npc = new NPC("Some Guy", "He looks nice", 100, 100);
+            Item item = new Item("Bag of Chips", "They look crunchy!");
+            SymbolTable.Add(item.Name, item);
+            TextEngine.AddNPC(npc);
+            string src = "add item 'Bag of Chips' to 'Some Guy'";
+            ScriptParser p = new ScriptParser();
+            var res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
         public void Evaluate_Add_Item_to_Room_Should_Pass()
         {
             Room r = new Room("Test Room1", "test1", "For testing!", "It looks boring :(");
@@ -59,58 +71,6 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        public void Evaluate_Full_Room_Should_Pass()
-        {
-            string room =
-                @"room 'kitchen'
-                    with shortName 'kitchen2' and
-                        description 'It looks modren' and
-                        lookDescription 'Uhh. It smells very tasty'
-                    end
-                   end";
-
-            var p = new ScriptParser();
-            var r = p.Parse(room);
-           r.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            Assert.IsTrue(TextEngine.RoomExists("kitchen"));
-            AssertNoDiagnostics(p);
-        }
-
-        [TestMethod]
-        public void Evaluate_Room_Should_Pass()
-        {
-            string room =
-                @"room 'Dining Room'
-                    with shortName 'DiningRoom' and
-                        lookDescription 'It has a table and four chairs.'
-                    end
-                   end";
-
-            var p = new ScriptParser();
-            var r = p.Parse(room);
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            Assert.IsTrue(TextEngine.RoomExists("DiningRoom"));
-            AssertNoDiagnostics(p);
-        }
-
-        [TestMethod]
-        public void Evaluate_Exit_Should_Pass()
-        {
-            Room kitchen = new Room("Kitchen", "kitchen");
-            Room dining = new Room("Dining", "dining");
-            TextEngine.AddRoom(kitchen);
-            TextEngine.AddRoom(dining);
-            var src = "exit 'DiningRoomE' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            AssertNoDiagnostics(p);
-        }
-
-        [TestMethod]
         public void Evaluate_Character_Should_Pass()
         {
             var src = "character \"Frank\" as npc with health 100 and money 150 and description 'handsome' end end";
@@ -122,20 +82,9 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        public void Evaluate_Player_Should_Pass()
+        public void Evaluate_Command_Should_Pass()
         {
-            var src = "character \"Bob\" as player with health 100 and money 150 and description 'The Hero' end end";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            AssertNoDiagnostics(p);
-        }
-
-        [TestMethod]
-        public void Evaluate_Item_Should_Pass()
-        {
-            var src = "item 'pencil' with pluralName 'pencils' and obtainable true and visible true and description 'you write with it' end end";
+            var src = "command 'look'";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
@@ -155,14 +104,47 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "Target 'badTarget' is not a valid Room, NPC or ContainerItem")]
-        public void Evaluate_Add_Item_BadTarget_Should_Pass()
+        public void Evaluate_Exit_Should_Pass()
         {
-            var src = "item 'Book' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'Book' to 'badTarget'";
+            Room kitchen = new Room("Kitchen", "kitchen");
+            Room dining = new Room("Dining", "dining");
+            TextEngine.AddRoom(kitchen);
+            TextEngine.AddRoom(dining);
+            var src = "exit 'DiningRoomE' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
-
             r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Full_Room_Should_Pass()
+        {
+            string room =
+                @"room 'kitchen'
+                    with shortName 'kitchen2' and
+                        description 'It looks modren' and
+                        lookDescription 'Uhh. It smells very tasty'
+                    end
+                   end";
+
+            var p = new ScriptParser();
+            var r = p.Parse(room);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(TextEngine.RoomExists("kitchen"));
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Item_Should_Pass()
+        {
+            var src = "item 'pencil' with pluralName 'pencils' and obtainable true and visible true and description 'you write with it' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
             AssertNoDiagnostics(p);
         }
 
@@ -180,13 +162,31 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        public void Evaluate_Command_Should_Pass()
+        public void Evaluate_Player_Should_Pass()
         {
-            var src = "command 'look'";
+            var src = "character \"Bob\" as player with health 100 and money 150 and description 'The Hero' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
 
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Room_Should_Pass()
+        {
+            string room =
+                @"room 'Dining Room'
+                    with shortName 'DiningRoom' and
+                        lookDescription 'It has a table and four chairs.'
+                    end
+                   end";
+
+            var p = new ScriptParser();
+            var r = p.Parse(room);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(TextEngine.RoomExists("DiningRoom"));
             AssertNoDiagnostics(p);
         }
 

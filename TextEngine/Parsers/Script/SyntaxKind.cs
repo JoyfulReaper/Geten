@@ -24,6 +24,7 @@
         ///  Number Token
         /// </summary>
         Number,
+
         BadToken,
         Whitespace,
         EndToken,

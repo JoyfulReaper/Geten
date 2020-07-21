@@ -8,7 +8,7 @@ namespace Geten.Parsers.Script
 {
     public class EvaluationVisitor : IScriptVisitor
     {
-        private DiagnosticBag Diagnostics;
+        private readonly DiagnosticBag Diagnostics;
 
         public EvaluationVisitor(DiagnosticBag parent)
         {
@@ -55,7 +55,7 @@ namespace Geten.Parsers.Script
                     {
                         SymbolTable.GetInstance<ContainerItem>(target).Inventory.AddItem(item);
                     }
-                    catch (Exception e)
+                    catch
                     {
                         Diagnostics.ReportBadTargetInventory(target);
                     }
@@ -152,11 +152,15 @@ namespace Geten.Parsers.Script
             if (location != null)
             {
                 if (location == "player")
+                {
                     TextEngine.Player.Inventory.AddItem(item);
+                }
                 else
                 {
                     if (TextEngine.RoomExists(location))
+                    {
                         r.Inventory.AddItem(item);
+                    }
                     else
                     {
                         // Get all Rooms and see if there is a ContainerItem with name name
@@ -247,10 +251,17 @@ namespace Geten.Parsers.Script
             {
                 case "health":
                     if (instance == "player")
+                    {
                         if (increase)
+                        {
                             TextEngine.Player.Health += amount;
+                        }
                         else
+                        {
                             TextEngine.Player.Health -= amount;
+                        }
+                    }
+
                     break;
 
                 default:

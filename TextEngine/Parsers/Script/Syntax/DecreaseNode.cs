@@ -15,7 +15,6 @@ namespace Geten.Parsers.Script.Syntax
         public Token<SyntaxKind> IncreaseAmount { get; }
         public Token<SyntaxKind> IncreaseKeyword { get; }
         public Token<SyntaxKind> IncreaseTarget { get; }
-        public Token<SyntaxKind> Instance { get; }
         public Token<SyntaxKind> OfKeyword { get; }
 
         public override void Accept(IScriptVisitor visitor)

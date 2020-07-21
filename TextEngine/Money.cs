@@ -5,8 +5,6 @@
     /// </summary>
     public class Money
     {
-        private decimal amount;
-
         private string name;
 
         public Money(string name, decimal amount)
@@ -18,11 +16,7 @@
         /// <summary>
         /// The amount of Money - Can be Negative
         /// </summary>
-        public decimal Amount
-        {
-            get => amount;
-            set => amount = value;
-        }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// The name of the Currency

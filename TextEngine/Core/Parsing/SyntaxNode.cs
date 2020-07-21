@@ -10,9 +10,6 @@ namespace Geten.Core.Parsing
 {
     public abstract class SyntaxNode
     {
-        public abstract void Accept(IScriptVisitor visitor);
-
-
         public virtual TextSpan Span
         {
             get
@@ -29,6 +26,33 @@ namespace Geten.Core.Parsing
                 return TextSpan.FromBounds(0, 0);
             }
         }
+
+        public static void PrettyPrint(SyntaxNode node, string indent = "", bool isLast = true)
+        {
+            var marker = isLast ? "└──" : "├──";
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+
+            Console.Write(indent);
+            Console.Write(marker);
+
+            Console.ForegroundColor = node is Token<SyntaxKind> ? ConsoleColor.Blue : ConsoleColor.Cyan;
+
+            Console.Write(node);
+
+            Console.ResetColor();
+
+            Console.WriteLine();
+
+            indent += isLast ? "   " : "│  ";
+
+            var lastChild = node.GetChildren().LastOrDefault();
+
+            foreach (var child in node.GetChildren())
+                PrettyPrint(child, indent, child == lastChild);
+        }
+
+        public abstract void Accept(IScriptVisitor visitor);
 
         public IEnumerable<SyntaxNode> GetChildren()
         {
@@ -91,31 +115,6 @@ namespace Geten.Core.Parsing
         public override string ToString()
         {
             return GetType().Name;
-        }
-
-        public static void PrettyPrint(SyntaxNode node, string indent = "", bool isLast = true)
-        {
-            var marker = isLast ? "└──" : "├──";
-
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-
-            Console.Write(indent);
-            Console.Write(marker);
-
-            Console.ForegroundColor = node is Token<SyntaxKind> ? ConsoleColor.Blue : ConsoleColor.Cyan;
-
-            Console.Write(node);
-
-            Console.ResetColor();
-
-            Console.WriteLine();
-
-            indent += isLast ? "   " : "│  ";
-
-            var lastChild = node.GetChildren().LastOrDefault();
-
-            foreach (var child in node.GetChildren())
-                PrettyPrint(child, indent, child == lastChild);
         }
     }
 }

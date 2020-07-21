@@ -7,18 +7,20 @@ namespace Geten.Core
     public abstract class GameObject : IEnumerable
     {
         //property bag for changable properties by script
-        private Dictionary<string, object> _properties = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
-        public void SetProperty(string name, object value)
+        public string Name { get; set; }
+
+        public int PropertyCount => _properties.Count;
+
+        public void Add(string name, object value)
         {
-            if(_properties.ContainsKey(name))
-            {
-                _properties[name] = value;
-            }
-            else
-            {
-                _properties.Add(name, value);
-            }
+            _properties.Add(name, value);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return _properties.GetEnumerator();
         }
 
         public T GetProperty<T>(string name)
@@ -28,19 +30,13 @@ namespace Geten.Core
 
         public object GetProperty(string name)
         {
-            if(_properties.ContainsKey(name))
+            if (_properties.ContainsKey(name))
             {
                 return _properties[name];
             }
 
             return null;
         }
-
-
-        public string Name { get; set; }
-
-        public int PropertyCount => _properties.Count;
-
 
         public void MatchPropertyList(PropertyList list)
         {
@@ -50,14 +46,16 @@ namespace Geten.Core
             }
         }
 
-        public IEnumerator GetEnumerator()
+        public void SetProperty(string name, object value)
         {
-            return _properties.GetEnumerator();
-        }
-
-        public void Add(string name, object value)
-        {
-            _properties.Add(name, value);
+            if (_properties.ContainsKey(name))
+            {
+                _properties[name] = value;
+            }
+            else
+            {
+                _properties.Add(name, value);
+            }
         }
     }
 }

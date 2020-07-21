@@ -42,6 +42,19 @@ namespace Geten
     /// </summary>
     public static class TextEngine
     {
+        /// <summary>
+        /// List containing all rooms on the map
+        /// </summary>
+        private static readonly List<MapSite> map = new List<MapSite>();
+
+        private static readonly Queue<string> messages = new Queue<string>();
+
+        private static readonly List<NPC> npcs = new List<NPC>();
+
+        private static Player player = null;
+
+        private static Room startRoom = null;
+
         /// <value>
         /// Flag indicating if the game has ended
         /// </value>
@@ -50,7 +63,8 @@ namespace Geten
         /// <summary>
         /// The active playable character
         /// </summary>
-        public static Player Player {
+        public static Player Player
+        {
             get => player;
             set
             {
@@ -66,7 +80,7 @@ namespace Geten
         public static Room StartRoom
         {
             get { return startRoom; }
-            set 
+            set
             {
                 if (map.Contains(value))
                 {
@@ -75,146 +89,25 @@ namespace Geten
                     startRoom.Enter(Player, Direction.Invalid);
                 }
                 else
+                {
                     throw new RoomDoesNotExisitException(value.ShortName + " has not been added to the map");
+                }
             }
         }
-
-        /// <summary>
-        /// List containing all rooms on the map
-        /// </summary>
-        private static readonly List<MapSite> map = new List<MapSite>();
-        private static readonly List<NPC> npcs = new List<NPC>();
-
-        private static readonly Queue<string> messages = new Queue<string>();
-        private static Room startRoom = null;
-        private static Player player = null;
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
-        /// <summary>
-        /// Preform any setup and prepare fot the game to begin
-        /// </summary>
-        public static void StartGame()
-        {
-            if (!GameOver)
-                throw new InvalidOperationException("A game is in progress");
-
-            if (startRoom == null)
-                throw new InvalidOperationException("The starting room has not been set");
-
-            GameOver = false;
-
-            // TODO: Any critical start up such as loading/placing/creating rooms, NPCs, items, ETC
-        }
-
-        /// <summary>
-        /// Get the name of a direction
-        /// </summary>
-        /// <param name="dir">Direction to get the name of</param>
-        /// <param name="shortName">Return short name susch as "N" instead of "North"</param>
-        /// <returns>String containing the name of the direction</returns>
-        public static string DirectionName(Direction dir, bool shortName = false)
-        {
-            switch (dir)
-            {
-                case Direction.North:
-                    if (shortName)
-                        return "N";
-                    return "North";
-                case Direction.East:
-                    if (shortName)
-                        return "E";
-                    return "East";
-                case Direction.West:
-                    if (shortName)
-                        return "W";
-                    return "West";
-                case Direction.South:
-                    if (shortName)
-                        return "S";
-                    return "South";
-                case Direction.Up:
-                    return "Up";
-                case Direction.Down:
-                    return "Down";
-                default:
-                    return "Unknown Direction";
-            }
-        }
-
-        public static Direction GetDirectionFromChar(char c)
-        {
-            switch (Char.ToUpper(c))
-            {
-                case 'N':
-                    return Direction.North;
-                case 'S':
-                    return Direction.South;
-                case 'E':
-                    return Direction.East;
-                case 'W':
-                    return Direction.West;
-                case 'U':
-                    return Direction.Up;
-                case 'D':
-                    return Direction.Down;
-                default:
-                    return Direction.Invalid;
-            }
-        }
-
-        public static Direction GetDirectionFromString(string dir)
-        {
-            switch (dir.ToLower())
-            {
-                case "north":
-                    return Direction.North;
-                case "south":
-                    return Direction.South;
-                case "east":
-                    return Direction.East;
-                case "west":
-                    return Direction.West;
-                case "up":
-                    return Direction.Up;
-                case "down":
-                    return Direction.Down;
-                default:
-                    return Direction.Invalid;
-            }
-        }
-
-        public static bool IsCommand(string name)
-        {
-            var cmds = new List<string>
-            {
-                "quit", "exit",
-                "go", "n", "s", "e", "w", "u", "down",
-                "look",
-                "pickup",
-                "take",
-            };
-
-            return cmds.Contains(name.ToLower());
-        }
+        public static void AddMessage(string message) => messages.Enqueue(message);
 
         public static void AddNPC(NPC npc)
         {
             SymbolTable.Add(npc.Name, npc);
 
-            if(NpcExists(npc)) // ToDo: Check should no longer be needed, replace holding npcs with SymbolTable
-                throw new ArgumentException ($"NPC {npc.Name} has already been added");
+            if (NpcExists(npc)) // ToDo: Check should no longer be needed, replace holding npcs with SymbolTable
+                throw new ArgumentException($"NPC {npc.Name} has already been added");
 
             npcs.Add(npc);
         }
-
-        public static bool NpcExists(NPC npc) => npcs.Contains(npc);
-
-        public static bool NpcExists(string name) =>
-            npcs.Where(_ => _ is NPC).FirstOrDefault(_ => ((NPC)_).Name == name) == null ? false : true;
-
-        public static NPC GetNPC(string name) => npcs.FirstOrDefault(_ => _.Name == name);
-
 
         /// <summary>
         /// Add a room to the map
@@ -232,21 +125,48 @@ namespace Geten
         }
 
         /// <summary>
-        /// Check if a room exists
+        /// Get the name of a direction
         /// </summary>
-        /// <param name="room">Room to check for</param>
-        /// <returns>true on success, false on failure</returns>
-        public static bool RoomExists(Room room) => map.Contains(room);
-
-        public static bool RoomExists(string shortName)
+        /// <param name="dir">Direction to get the name of</param>
+        /// <param name="shortName">Return short name susch as "N" instead of "North"</param>
+        /// <returns>String containing the name of the direction</returns>
+        public static string DirectionName(Direction dir, bool shortName = false)
         {
-            return map.Where(_ => _ is Room).FirstOrDefault(_ => ((Room)_).ShortName == shortName) == null ? false : true;
+            switch (dir)
+            {
+                case Direction.North:
+                    if (shortName)
+                        return "N";
+                    return "North";
+
+                case Direction.East:
+                    if (shortName)
+                        return "E";
+                    return "East";
+
+                case Direction.West:
+                    if (shortName)
+                        return "W";
+                    return "West";
+
+                case Direction.South:
+                    if (shortName)
+                        return "S";
+                    return "South";
+
+                case Direction.Up:
+                    return "Up";
+
+                case Direction.Down:
+                    return "Down";
+
+                default:
+                    return "Unknown Direction";
+            }
         }
 
-        public static Room GetRoom(string shortName) => (Room)map.Where(_ => _ is Room).FirstOrDefault(_ => ((Room)_).ShortName == shortName);
-
         public static List<Room> GetAllRooms()
-        { 
+        {
             // Is there a one liner for this?
             List<Room> result = new List<Room>();
             var rooms = map.Where(_ => _ is Room);
@@ -255,18 +175,120 @@ namespace Geten
             return result;
         }
 
+        public static Direction GetDirectionFromChar(char c)
+        {
+            switch (Char.ToUpper(c))
+            {
+                case 'N':
+                    return Direction.North;
+
+                case 'S':
+                    return Direction.South;
+
+                case 'E':
+                    return Direction.East;
+
+                case 'W':
+                    return Direction.West;
+
+                case 'U':
+                    return Direction.Up;
+
+                case 'D':
+                    return Direction.Down;
+
+                default:
+                    return Direction.Invalid;
+            }
+        }
+
+        public static Direction GetDirectionFromString(string dir)
+        {
+            switch (dir.ToLower())
+            {
+                case "north":
+                    return Direction.North;
+
+                case "south":
+                    return Direction.South;
+
+                case "east":
+                    return Direction.East;
+
+                case "west":
+                    return Direction.West;
+
+                case "up":
+                    return Direction.Up;
+
+                case "down":
+                    return Direction.Down;
+
+                default:
+                    return Direction.Invalid;
+            }
+        }
+
+        public static string GetMessage() => messages.Dequeue();
+
+        public static NPC GetNPC(string name) => npcs.Find(_ => _.Name == name);
+
+        public static Room GetRoom(string shortName) => (Room)map.Where(_ => _ is Room).FirstOrDefault(_ => ((Room)_).ShortName == shortName);
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+        public static bool HasMessage() => messages.Count > 0;
+
+        public static bool IsCommand(string name)
+        {
+            var cmds = new List<string>
+            {
+                "quit", "exit",
+                "go", "n", "s", "e", "w", "u", "down",
+                "look",
+                "pickup",
+                "take",
+            };
+
+            return cmds.Contains(name.ToLower());
+        }
+
+        public static bool NpcExists(NPC npc) => npcs.Contains(npc);
+
+        public static bool NpcExists(string name) =>
+                    !npcs.Any(_ => _ is NPC && ((NPC)_).Name == name) ? false : true;
+
         public static void ProccessCommand(string command)
         {
             CommandProccessor.ProcessCommand(command);
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Check if a room exists
+        /// </summary>
+        /// <param name="room">Room to check for</param>
+        /// <returns>true on success, false on failure</returns>
+        public static bool RoomExists(Room room) => map.Contains(room);
 
-        public static void AddMessage(string message) => messages.Enqueue(message);
+        public static bool RoomExists(string shortName)
+        {
+            return !map.Any(_ => _ is Room && ((Room)_).ShortName == shortName) ? false : true;
+        }
 
-        public static bool HasMessage() => messages.Count > 0;
+        /// <summary>
+        /// Preform any setup and prepare fot the game to begin
+        /// </summary>
+        public static void StartGame()
+        {
+            if (!GameOver)
+                throw new InvalidOperationException("A game is in progress");
 
-        public static string GetMessage() => messages.Dequeue();
+            if (startRoom == null)
+                throw new InvalidOperationException("The starting room has not been set");
+
+            GameOver = false;
+
+            // TODO: Any critical start up such as loading/placing/creating rooms, NPCs, items, ETC
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////
     }

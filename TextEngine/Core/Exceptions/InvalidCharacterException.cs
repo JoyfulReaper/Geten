@@ -28,10 +28,11 @@ using System;
 
 namespace Geten.Core.Exceptions
 {
-
     public class InvalidCharacterException : Exception
     {
-        public InvalidCharacterException() { }
+        public InvalidCharacterException()
+        {
+        }
 
         public InvalidCharacterException(string message)
             : base(message) { }

@@ -35,29 +35,10 @@ namespace Geten
     public class Inventory
     {
         /// <summary>
-        /// The total number of items the inventory can hold
-        /// </summary>
-        public int Capacity 
-        {
-            get => capacity;
-            set 
-            {
-                if (value < 0)
-                    throw new InvalidQuantityException("Inventory Capacity must be >= 0");
-                else
-                    capacity = value;
-            }
-        }
-
-        /// <summary>
-        /// The current number of items in the inventory
-        /// </summary>
-        public int Count { get; private set; }
-
-        /// <summary>
         /// A list containing all of the items in the inventory
         /// </summary>
         private readonly Dictionary<Item, int> items;
+
         private int capacity;
 
         /// <summary>
@@ -70,6 +51,26 @@ namespace Geten
             Capacity = capacity;
             Count = 0;
         }
+
+        /// <summary>
+        /// The total number of items the inventory can hold
+        /// </summary>
+        public int Capacity
+        {
+            get => capacity;
+            set
+            {
+                if (value < 0)
+                    throw new InvalidQuantityException("Inventory Capacity must be >= 0");
+                else
+                    capacity = value;
+            }
+        }
+
+        /// <summary>
+        /// The current number of items in the inventory
+        /// </summary>
+        public int Count { get; private set; }
 
         ////////////////////////////////////////////////////////////////////////
 
@@ -108,6 +109,53 @@ namespace Geten
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="name">Item to get</param>
+        /// <returns>The Item</returns>
+        public Item GetItem(string name)
+        {
+            if (!HasItem(name))
+                throw new ArgumentException(name + " is not in the inventory");
+
+            return items.Keys.First(key => key.Name == name);
+        }
+
+        /// <summary>
+        /// Check if the Iventory contains an item
+        /// </summary>
+        /// <param name="item">The item to check for</param>
+        /// <returns>true if the item is contained, false if not</returns>
+        public bool HasItem(Item item) => items.ContainsKey(item);
+
+        /// <summary>
+        /// Check if the Inventory contains an Item
+        /// </summary>
+        /// <param name="itemName">The Item to check for</param>
+        /// <returns>True if contained, false otherwise</returns>
+        public bool HasItem(String itemName) => items.Keys.Any(key => key.Name == itemName);
+
+        /// <summary>
+        /// Check how many of an Item are in the Inventory
+        /// </summary>
+        /// <param name="item">The item to check for</param>
+        /// <returns>The number of that item in the Inventory</returns>
+        public int ItemQuantity(Item item) => items[item];
+
+        /// <summary>
+        /// Check how many of an Item are in the Inventory
+        /// </summary>
+        /// <param name="itemName">The name of the Item to check</param>
+        /// <returns>The number of that item in the Inventory</returns>
+        public int ItemQuantity(string itemName)
+        {
+            if (!HasItem(itemName))
+                throw new ArgumentException("Inventoy does not contain " + itemName);
+
+            return items[GetItem(itemName)];
+        }
+
+        /// <summary>
         /// Remove an Item from the Inventory
         /// </summary>
         /// <param name="item">The Item to remove</param>
@@ -140,53 +188,6 @@ namespace Geten
                 throw new ArgumentException("Iventory does not contain " + itemName);
 
             RemoveItem(GetItem(itemName));
-        }
-
-        /// <summary>
-        /// Check if the Iventory contains an item
-        /// </summary>
-        /// <param name="item">The item to check for</param>
-        /// <returns>true if the item is contained, false if not</returns>
-        public bool HasItem(Item item) => items.ContainsKey(item);
-
-        /// <summary>
-        /// Check if the Inventory contains an Item
-        /// </summary>
-        /// <param name="itemName">The Item to check for</param>
-        /// <returns>True if contained, false otherwise</returns>
-        public bool HasItem(String itemName) => items.Keys.Any(key => key.Name == itemName);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name">Item to get</param>
-        /// <returns>The Item</returns>
-        public Item GetItem(string name)
-        {
-            if (!HasItem(name))
-                throw new ArgumentException(name + " is not in the inventory");
-
-            return items.Keys.First(key => key.Name == name);
-        }
-
-        /// <summary>
-        /// Check how many of an Item are in the Inventory
-        /// </summary>
-        /// <param name="item">The item to check for</param>
-        /// <returns>The number of that item in the Inventory</returns>
-        public int ItemQuantity(Item item) => items[item];
-
-        /// <summary>
-        /// Check how many of an Item are in the Inventory
-        /// </summary>
-        /// <param name="itemName">The name of the Item to check</param>
-        /// <returns>The number of that item in the Inventory</returns>
-        public int ItemQuantity(string itemName)
-        {
-            if (!HasItem(itemName))
-                throw new ArgumentException("Inventoy does not contain " + itemName);
-
-            return items[GetItem(itemName)];
         }
     }
 }

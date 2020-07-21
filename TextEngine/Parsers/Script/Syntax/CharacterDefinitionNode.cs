@@ -15,12 +15,12 @@ namespace Geten.Parsers.Script.Syntax
             Properties = properties;
         }
 
-        public Token<SyntaxKind> KeywordToken { get; }
-        public Token<SyntaxKind> NameToken { get; }
         public Token<SyntaxKind> AsToken { get; }
         public Token<SyntaxKind> AsWhatToken { get; }
-        public Token<SyntaxKind> WithToken { get; }
+        public Token<SyntaxKind> KeywordToken { get; }
+        public Token<SyntaxKind> NameToken { get; }
         public PropertyList Properties { get; }
+        public Token<SyntaxKind> WithToken { get; }
 
         public override void Accept(IScriptVisitor visitor)
         {
