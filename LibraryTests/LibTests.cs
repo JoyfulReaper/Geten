@@ -45,7 +45,7 @@ namespace LibraryTests
                 { "attackable", false }
             };
 
-            Assert.AreEqual(go.PropertyCount, 2);
+            Assert.AreEqual(go.PropertyCount, 3);
         }
     }
 

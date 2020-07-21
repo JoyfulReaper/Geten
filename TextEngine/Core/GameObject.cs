@@ -7,7 +7,7 @@ namespace Geten.Core
     public abstract class GameObject : IEnumerable
     {
         //property bag for mutable properties by script
-        private readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
+        private readonly Dictionary<CaseInsensitiveString, object> _properties = new Dictionary<CaseInsensitiveString, object>();
 
         public GameObject(string name, string descr)
         {
@@ -31,7 +31,7 @@ namespace Geten.Core
 
         public void Add(string name, object value)
         {
-            _properties.Add(name, value);
+            SetProperty(name, value);
         }
 
         public IEnumerator GetEnumerator()
