@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using TextEngine;
 using TextEngine.Parsing;
 
 namespace LibraryTests
@@ -20,7 +21,7 @@ namespace LibraryTests
 
         private void AssertNoDiagnostics(ScriptParser parser)
         {
-            if(parser.Diagnostics.Any())
+            if (parser.Diagnostics.Any())
             {
                 throw new Exception(parser.Diagnostics.First().ToString());
             }
@@ -39,7 +40,7 @@ namespace LibraryTests
         [TestMethod]
         public void Parse_Character_Event_Should_Pass()
         {
-            var src = 
+            var src =
             @"character ""leo"" 
                 with 
                     health 100 and 
