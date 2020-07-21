@@ -104,12 +104,34 @@ namespace TextEngine.Parsing
 
         public void Visit(DecreaseNode node)
         {
-            throw new NotImplementedException();
+            ChangeQuantity(node);
         }
 
         public void Visit(IncreaseNode node)
         {
-            throw new NotImplementedException();
+            ChangeQuantity(node);
+        }
+
+        private void ChangeQuantity<T>(T node)
+            where T : ChangeQuantityNode
+        {
+            bool increase = node.GetType() == typeof(IncreaseNode);
+            var target = node.Target.Value?.ToString();
+            var amount = (int)node.Amount.Value;
+            var instance = node.Instance.Value?.ToString();
+
+            switch(target)
+            {
+                case "health":
+                    if (instance == "player")
+                        if (increase)
+                            TextEngine.Player.Health += amount;
+                        else
+                            TextEngine.Player.Health -= amount;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void Visit(DialogCallNode node)
