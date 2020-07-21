@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System;
 
-namespace Geten
+namespace Geten.GameObjects
 {
     /// <summary>
     /// Represents a Weapon

@@ -25,7 +25,7 @@ SOFTWARE.
 using Geten.Core;
 using System;
 
-namespace Geten
+namespace Geten.GameObjects
 {
     /// <summary>
     /// Represents an item

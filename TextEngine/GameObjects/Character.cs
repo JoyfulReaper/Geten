@@ -26,7 +26,7 @@ using Geten.Core;
 using Geten.MapItems;
 using System;
 
-namespace Geten
+namespace Geten.GameObjects
 {
     /// <summary>
     /// Represents a Character
