@@ -53,6 +53,7 @@ namespace TextEngine
             {
                 if (value < 0)
                     throw (new ArgumentOutOfRangeException("MaxDamage must be >= 0"));
+                maxDamage = value;
             }
         }
 
