@@ -24,22 +24,23 @@
 
         public static bool operator !=(CaseInsensitiveString src, string check)
         {
-            return src.src != check;
+            return !src.Equals(check);
         }
 
         public static bool operator ==(CaseInsensitiveString src, string check)
         {
-            return src.src == check;
+            return src.Equals(check);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object other)
         {
-            if (!(obj is CaseInsensitiveString other))
-            {
-                return false;
-            }
+            if (!(other is CaseInsensitiveString)) return false;
+            return Equals((CaseInsensitiveString)other);
+        }
 
-            return src.Equals(obj);
+        public bool Equals(CaseInsensitiveString other)
+        {
+            return src == other.src;
         }
 
         public override int GetHashCode()

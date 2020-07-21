@@ -1,4 +1,5 @@
-﻿using Geten.Core.Parsing;
+﻿using Geten.Core;
+using Geten.Core.Parsing;
 using Geten.Core.Parsing.Text;
 using Geten.Parsers.Script;
 using Geten.Parsers.Script.Syntax;
@@ -11,6 +12,14 @@ namespace DumbTests
     {
         static void Main(string[] args)
         {
+            CaseInsensitiveString a = new CaseInsensitiveString("TeSt");
+            Console.WriteLine(a);
+
+            Console.WriteLine(a.Equals("test")); // False
+            Console.WriteLine(a == "test"); // True
+            Console.WriteLine(a != "test"); // False
+
+            Environment.Exit(0);
             //Console.WriteLine("Enter Command: ");
             //var input = Console.ReadLine();
 
