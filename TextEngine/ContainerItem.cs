@@ -31,7 +31,7 @@ namespace TextEngine
     /// <summary>
     /// An item that has an inventory (Like a chest)
     /// </summary>
-    class ContainerItem : Item
+    public class ContainerItem : Item
     {
         public bool Locked { get; set; }
         public Inventory Inventory { get; }
