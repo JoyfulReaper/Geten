@@ -1,6 +1,6 @@
 ﻿namespace TextEngine.Parsing.Syntax
 {
-    public class DecreaseNode : SyntaxNode
+    public class DecreaseNode : ChangeQuantityNode
     {
         public Token<SyntaxKind> IncreaseKeyword { get; }
         public Token<SyntaxKind> IncreaseTarget { get; }
@@ -9,14 +9,11 @@
         public Token<SyntaxKind> ByKeyword { get; }
         public Token<SyntaxKind> IncreaseAmount { get; }
         
-        public DecreaseNode(Token<SyntaxKind> increaseKeyword, Token<SyntaxKind> increaseTarget, Token<SyntaxKind> ofKeyword, Token<SyntaxKind> instance, Token<SyntaxKind> byKeyword, Token<SyntaxKind> increaseAmount)
+        public DecreaseNode(Token<SyntaxKind> increaseKeyword, Token<SyntaxKind> increaseTarget, Token<SyntaxKind> ofKeyword, Token<SyntaxKind> instance, Token<SyntaxKind> byKeyword, Token<SyntaxKind> increaseAmount) : base (increaseTarget, increaseAmount, instance)
         {
             IncreaseKeyword = increaseKeyword;
-            IncreaseTarget = increaseTarget;
             OfKeyword = ofKeyword;
-            Instance = instance;
             ByKeyword = byKeyword;
-            IncreaseAmount = increaseAmount;
         }
 
         public override void Accept(IVisitor visitor)
