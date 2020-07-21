@@ -74,5 +74,11 @@ namespace TextEngine.Parsing.Diagnostics
             var message = $"Character '{name}' must be player or npc";
             Report(TextSpan.FromBounds(0,0), message);
         }
+
+        internal void ReportBadTargetInventory(string target)
+        {
+            var message = $"Target '{target}' is not a valid Room, NPC or ContainerItem";
+            Report(TextSpan.FromBounds(0, 0), message);
+        }
     }
 }
