@@ -1,7 +1,7 @@
-﻿using System.Collections.Concurrent;
-using TextEngine.Parsing.Syntax;
+﻿using Geten.Parsers.Script.Syntax;
+using System.Collections.Concurrent;
 
-namespace TextEngine
+namespace Geten
 {
     public class EventManager
     {

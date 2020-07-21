@@ -1,14 +1,13 @@
-﻿namespace TextEngine.Commands
+﻿namespace Geten.Commands
 {
-    [CommandName("look")]
-    class LookCommand : ITextCommand
+    internal class LookCommand : ITextCommand
     {
-        private string LookAt { get; set; }
-
         public LookCommand(string lookAt)
         {
             LookAt = lookAt;
         }
+
+        private string LookAt { get; set; }
 
         public void Invoke()
         {

@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace TextEngine.MapItems
+namespace Geten.MapItems
 {
     /// <summary>
     /// Represents and exit from one MapSite to another

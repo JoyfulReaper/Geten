@@ -1,6 +1,4 @@
-﻿using TextEngine.CommandParsing;
-
-namespace TextEngine.Commands
+﻿namespace Geten.Commands
 {
     public interface ITextCommand
     {

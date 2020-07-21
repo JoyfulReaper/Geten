@@ -1,10 +1,6 @@
-﻿using TextEngine.CommandParsing;
-
-namespace TextEngine.Commands
+﻿namespace Geten.Commands
 {
 
-    [CommandName("pickup")]
-    [CommandName("take")]
     class PickupCommand : ITextCommand
     {
         public void Invoke()

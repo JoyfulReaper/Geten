@@ -1,9 +1,9 @@
+using Geten.Core.Parsing.Text;
+using Geten.Parsers.Script;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using TextEngine.Parsing;
-using TextEngine.Parsing.Text;
 
 namespace LibraryTests
 {

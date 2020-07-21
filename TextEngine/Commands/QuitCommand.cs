@@ -1,9 +1,7 @@
 ﻿using System;
-using TextEngine.CommandParsing;
 
-namespace TextEngine.Commands
+namespace Geten.Commands
 {
-    [CommandName("quit")]
     class QuitCommand : ITextCommand
     {
         public void Invoke()

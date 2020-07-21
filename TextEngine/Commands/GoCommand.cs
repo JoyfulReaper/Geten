@@ -1,9 +1,7 @@
-﻿using TextEngine.CommandParsing;
-using TextEngine.MapItems;
+﻿using Geten.MapItems;
 
-namespace TextEngine.Commands
+namespace Geten.Commands
 {
-    [CommandName("go")]
     class GoCommand : ITextCommand
     {
         public GoCommand(Direction direction)

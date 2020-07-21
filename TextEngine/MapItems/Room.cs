@@ -23,36 +23,14 @@ SOFTWARE.
 */
 
 using System.Collections.Generic;
-using System.ComponentModel;
 
-namespace TextEngine.MapItems
+namespace Geten.MapItems
 {
     /// <summary>
     /// Represents a room with 6 sides, one for each Direction
     /// </summary>
     public class Room : MapSite
     {
-        /// <summary>
-        /// The Short Name for this room. May possible show this when the room is entered, have not decided.
-        /// </summary>
-        public string ShortName { get; set; }
-        /// <summary>
-        /// The Room's description, to be shown when the room is Entered
-        /// </summary>
-        public string Description { get; set; }
-        /// <summary>
-        /// The desciption shows when the LOOK command is given
-        /// </summary>
-        public string LookDescription { get; set; }
-        /// <summary>
-        /// True if the Character has been in the room before, false is not
-        /// </summary>
-        public bool Visisted { get; private set; }
-
-        /// <summary>
-        /// The Items contained in the Room's Inventory
-        /// </summary>
-        public Inventory Inventory { get; } // Should we allow this to be set as well?
         private readonly Dictionary<Direction, MapSite> sides;
 
         /// <summary>
@@ -81,6 +59,7 @@ namespace TextEngine.MapItems
             sides = new Dictionary<Direction, MapSite>();
             InitializeSides();
         }
+
         /// <summary>
         /// Construct a Room
         /// </summary>
@@ -94,15 +73,30 @@ namespace TextEngine.MapItems
         /// <param name="shortName">The short name of the room</param>
         public Room(string name, string shortName) : this(name, shortName, "", "") { }
 
-        private void InitializeSides()
-        {
-            SetSide(Direction.Up, new Roof());
-            SetSide(Direction.Down, new Floor());
-            SetSide(Direction.North, new Wall());
-            SetSide(Direction.South, new Wall());
-            SetSide(Direction.East, new Wall());
-            SetSide(Direction.West, new Wall());
-        }
+        /// <summary>
+        /// The Room's description, to be shown when the room is Entered
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// The Items contained in the Room's Inventory
+        /// </summary>
+        public Inventory Inventory { get; }
+
+        /// <summary>
+        /// The desciption shows when the LOOK command is given
+        /// </summary>
+        public string LookDescription { get; set; }
+
+        /// <summary>
+        /// The Short Name for this room. May possible show this when the room is entered, have not decided.
+        /// </summary>
+        public string ShortName { get; set; }
+
+        /// <summary>
+        /// True if the Character has been in the room before, false is not
+        /// </summary>
+        public bool Visisted { get; private set; }
 
         /// <summary>
         /// Enter the room
@@ -111,12 +105,13 @@ namespace TextEngine.MapItems
         /// <param name="heading">The Character's heading</param>
         public override void Enter(Character character, Direction heading)
         {
-            if(character == TextEngine.Player)
+            if (character == TextEngine.Player)
                 Visisted = true;
 
             character.Move(this);
             TextEngine.AddMessage(Description);
         }
+
         /// <summary>
         /// Get a side of the room
         /// </summary>
@@ -144,6 +139,17 @@ namespace TextEngine.MapItems
         public override string ToString()
         {
             return base.ToString() + $", ShortName: {ShortName}, Description {Description}, LookDescription: {LookDescription}, Visited: {Visisted}";
+        }
+
+        // Should we allow this to be set as well?
+        private void InitializeSides()
+        {
+            SetSide(Direction.Up, new Roof());
+            SetSide(Direction.Down, new Floor());
+            SetSide(Direction.North, new Wall());
+            SetSide(Direction.South, new Wall());
+            SetSide(Direction.East, new Wall());
+            SetSide(Direction.West, new Wall());
         }
     }
 }

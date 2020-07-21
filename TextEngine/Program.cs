@@ -22,11 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten;
+using Geten.Core;
+using Geten.MapItems;
 using System;
-using Kgivler.GreedyWrap;
-using TextEngine.MapItems;
 
-namespace TextEngine
+namespace Geten
 {
     class Program
     {

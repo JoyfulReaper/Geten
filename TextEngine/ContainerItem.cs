@@ -22,23 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TextEngine
+namespace Geten
 {
     /// <summary>
     /// An item that has an inventory (Like a chest)
     /// </summary>
     public class ContainerItem : Item
     {
-        public bool Locked { get; set; }
-        public Inventory Inventory { get; }
+        public ContainerItem(string name, string pluralName, string desc, bool visible, bool obtainable, int cap) : base(name, pluralName, desc, visible, obtainable)
+        {
+            Inventory = new Inventory(cap);
+        }
 
-        public ContainerItem(string name, string pluralName, string desc, bool visible, bool obtainable, int cap) : base(name, pluralName, desc, visible, obtainable) { Inventory = new Inventory(cap);  }
-        public ContainerItem(string name, string desc, bool visible, bool obtainable, int cap) : base(name, desc, visible, obtainable) { Inventory = new Inventory(cap); }
-        public ContainerItem(string name, string desc, bool visible, bool obtainable) : base(name, desc, visible, obtainable) { Inventory = new Inventory(); }
-        public ContainerItem(string name) : this(name, "", true, true) { Inventory = new Inventory(); }
+        public ContainerItem(string name, string desc, bool visible, bool obtainable, int cap) : base(name, desc, visible, obtainable)
+        {
+            Inventory = new Inventory(cap);
+        }
+
+        public ContainerItem(string name, string desc, bool visible, bool obtainable) : base(name, desc, visible, obtainable)
+        {
+            Inventory = new Inventory();
+        }
+
+        public ContainerItem(string name) : this(name, "", true, true)
+        {
+            Inventory = new Inventory();
+        }
+
+        public Inventory Inventory { get; }
+        public bool Locked { get; set; }
     }
 }

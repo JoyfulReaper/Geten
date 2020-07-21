@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System;
 
-namespace TextEngine
+namespace Geten
 {
     /// <summary>
     /// Represents an item

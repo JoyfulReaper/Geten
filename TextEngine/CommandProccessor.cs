@@ -22,9 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using TextEngine.CommandParsing;
+using Geten.Parsers.Commands;
 
-namespace TextEngine
+namespace Geten
 {
     public static class CommandProccessor
     {

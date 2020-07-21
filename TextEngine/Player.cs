@@ -22,10 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
-
-
-namespace TextEngine
+namespace Geten
 {
     /// <summary>
     /// Represents the playable character
@@ -38,6 +35,6 @@ namespace TextEngine
         /// <param name="name">Player's name</param>
         /// <param name="health">Staring health (any int > 0)</param>
         /// <param name="maxHealth">Player's Maximum Health</param>
-        public Player(string name = "Player", string desc="", int health = 100, int maxHealth = 100) : base(name, desc, health, maxHealth) { }
+        public Player(string name = "Player", string desc = "", int health = 100, int maxHealth = 100) : base(name, desc, health, maxHealth) { }
     }
 }

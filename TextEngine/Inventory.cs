@@ -22,11 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TextEngine
+namespace Geten
 {
     /// <summary>
     /// Represents an Inventory of Items

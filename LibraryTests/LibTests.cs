@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TextEngine;
+﻿using Geten.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LibraryTests
 {
@@ -24,5 +24,6 @@ namespace LibraryTests
         }
     }
 
-    class TestObject : GameObject { }
+    internal class TestObject : GameObject
+    { }
 }

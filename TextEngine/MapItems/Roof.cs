@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace TextEngine.MapItems
+namespace Geten.MapItems
 {
     /// <summary>
     /// Represents the Roof, the MapSite in the Up direction

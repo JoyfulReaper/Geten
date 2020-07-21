@@ -22,14 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.Core;
+using Geten.Core.Exceptions;
+using Geten.MapItems;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using TextEngine.MapItems;
-using TextEngine.Parsing;
 
-namespace TextEngine
+namespace Geten
 {
     /// <summary>
     /// Represent the directions the player can move in
@@ -201,7 +202,7 @@ namespace TextEngine
         {
             SymbolTable.Add(npc.Name, npc);
 
-            if(NpcExists(npc)) // Check should no longer be needed
+            if(NpcExists(npc)) // ToDo: Check should no longer be needed, replace holding npcs with SymbolTable
                 throw new ArgumentException ($"NPC {npc.Name} has already been added");
 
             npcs.Add(npc);

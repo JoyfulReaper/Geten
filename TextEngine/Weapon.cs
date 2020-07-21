@@ -22,46 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 using System;
 
-namespace TextEngine
+namespace Geten
 {
     /// <summary>
     /// Represents a Weapon
     /// </summary>
     public class Weapon : Item
     {
-        /// <summary>
-        /// The minimum amount of Damage a weapon is capable of inflicting
-        /// </summary>
-        public int MinDamage {
-            get => minDamage;
-            set
-            {
-                if (value < 0)
-                    throw (new ArgumentOutOfRangeException("MinDamage must be >= 0"));
-                minDamage = value;
-            }
-        }
-        /// <summary>
-        /// The maximum amount of Dmage a weapon is capable of inflicting
-        /// </summary>
-        public int MaxDamage {
-            get => maxDamage;
-            set
-            {
-                if (value < 0)
-                    throw (new ArgumentOutOfRangeException("MaxDamage must be >= 0"));
-                maxDamage = value;
-            }
-        }
-
         private int maxDamage;
+
         private int minDamage;
 
-        public Weapon(string name, string pluralName, string desc, int minDamage, int maxDamage, bool visible, bool obtainable) 
-                : base(name, pluralName, desc, visible, obtainable)
+        public Weapon(string name, string pluralName, string desc, int minDamage, int maxDamage, bool visible, bool obtainable)
+                        : base(name, pluralName, desc, visible, obtainable)
         {
             MinDamage = minDamage;
             MaxDamage = maxDamage;
@@ -72,5 +47,33 @@ namespace TextEngine
         /// </summary>
         /// <param name="name">The name of the weapon</param>
         public Weapon(string name) : base(name) { }
+
+        /// <summary>
+        /// The maximum amount of Dmage a weapon is capable of inflicting
+        /// </summary>
+        public int MaxDamage
+        {
+            get => maxDamage;
+            set
+            {
+                if (value < 0)
+                    throw (new ArgumentOutOfRangeException("MaxDamage must be >= 0"));
+                maxDamage = value;
+            }
+        }
+
+        /// <summary>
+        /// The minimum amount of Damage a weapon is capable of inflicting
+        /// </summary>
+        public int MinDamage
+        {
+            get => minDamage;
+            set
+            {
+                if (value < 0)
+                    throw (new ArgumentOutOfRangeException("MinDamage must be >= 0"));
+                minDamage = value;
+            }
+        }
     }
 }

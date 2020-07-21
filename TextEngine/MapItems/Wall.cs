@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 
-namespace TextEngine.MapItems
+namespace Geten.MapItems
 {
     /// <summary>
     /// Represents a wall

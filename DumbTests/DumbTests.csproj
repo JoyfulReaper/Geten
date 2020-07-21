@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextEngine\TextEngine.csproj" />
+    <ProjectReference Include="..\TextEngine\Geten.csproj" />
   </ItemGroup>
 
 </Project>

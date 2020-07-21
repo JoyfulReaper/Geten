@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Geten.Core.Parsing;
+using Geten.Core.Parsing.Text;
+using Geten.Parsers.Script;
+using Geten.Parsers.Script.Syntax;
+using System;
 using System.Collections.Generic;
-using TextEngine.Parsing;
-using TextEngine.Parsing.Syntax;
-using TextEngine.Parsing.Text;
 
 namespace DumbTests
 {

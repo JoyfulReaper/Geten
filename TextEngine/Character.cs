@@ -22,39 +22,45 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.MapItems;
 using System;
-using TextEngine.MapItems;
 
-namespace TextEngine
+namespace Geten
 {
     /// <summary>
     /// Represents a Character
     /// </summary>
     public abstract class Character
     {
+        private int health;
+
+        private int maxHealth;
+
         /// <summary>
-        /// Character's Name
+        /// Constructs a Character
         /// </summary>
-        public string Name { get; set; }
+        /// <param name="name">The Character's name</param>
+        /// <param name="health">The Character's initial health</param>
+        /// <param name="maxHealth">The Character's maximum health</param>
+        public Character(string name = "Character", string desc = "", int health = 100, int maxHealth = 100)
+        {
+            Name = name;
+            Health = health;
+            MaxHealth = maxHealth;
+            Description = desc;
+            CharacterMoney = new Money(null, 0);
+            Inventory = new Inventory();
+        }
+
+        /// <summary>
+        /// The amount of local currence that the character has
+        /// </summary>
+        public Money CharacterMoney { get; set; }
 
         /// <summary>
         /// Characters Description
-        /// </summary> 
-        public string Description { get; set; }
-
-        /// <summary>
-        /// The maximum health a character can have
         /// </summary>
-        public int MaxHealth
-        {
-            get => maxHealth;
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentOutOfRangeException("MaxHealth must be > 0");
-                maxHealth = value;
-            }
-        }
+        public string Description { get; set; }
 
         /// <summary>
         /// Health can be any vaild int > 0. I would suggest using 0 - 100. 0 is dead
@@ -74,9 +80,9 @@ namespace TextEngine
         }
 
         /// <summary>
-        /// The amount of local currence that the character has
+        /// The Character's Inventory
         /// </summary>
-        public Money CharacterMoney { get; set; }
+        public Inventory Inventory { get; }
 
         /// <summary>
         /// The room that the Character is in
@@ -84,33 +90,29 @@ namespace TextEngine
         public Room Location { get; set; }
 
         /// <summary>
+        /// The maximum health a character can have
+        /// </summary>
+        public int MaxHealth
+        {
+            get => maxHealth;
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("MaxHealth must be > 0");
+                maxHealth = value;
+            }
+        }
+
+        /// <summary>
+        /// Character's Name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// The Room that the Character was in previously
         /// </summary>
         public Room PreviousLocation { get; private set; }
 
-        /// <summary>
-        /// The Character's Inventory
-        /// </summary>
-        public Inventory Inventory { get;}
-
-        private int health;
-        private int maxHealth;
-
-        /// <summary>
-        /// Constructs a Character
-        /// </summary>
-        /// <param name="name">The Character's name</param>
-        /// <param name="health">The Character's initial health</param>
-        /// <param name="maxHealth">The Character's maximum health</param>
-        public Character(string name = "Character", string desc ="" , int health = 100, int maxHealth = 100)
-        {
-            Name = name;
-            Health = health;
-            MaxHealth = maxHealth;
-            Description = desc;
-            CharacterMoney = new Money(null, 0);
-            Inventory = new Inventory();
-        }
         /// <summary>
         /// Check if the chacater is alive
         /// </summary>

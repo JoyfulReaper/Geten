@@ -1,9 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Geten;
+using Geten.Core;
+using Geten.MapItems;
+using Geten.Parsers.Script;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using TextEngine;
-using TextEngine.MapItems;
-using TextEngine.Parsing;
 
 namespace LibraryTests
 {
@@ -16,7 +17,7 @@ namespace LibraryTests
             NPC npc = new NPC("Some Guy", "He looks nice", 100, 100);
             Item item = new Item("Bag of Chips", "They look crunchy!");
             SymbolTable.Add(item.Name, item);
-            TextEngine.TextEngine.AddNPC(npc);
+            TextEngine.AddNPC(npc);
             string src = "add item 'Bag of Chips' to 'Some Guy'";
             ScriptParser p = new ScriptParser();
             var res = p.Parse(src);
@@ -46,8 +47,8 @@ namespace LibraryTests
             Item s = new Weapon("sword", "swords", "It looks kind of dull...", 5, 10, true, true);
 
             //TextEngine.Parsing.SymbolTable.Add(r.Name, r);
-            TextEngine.Parsing.SymbolTable.Add(s.Name, s);
-            TextEngine.TextEngine.AddRoom(r);
+            SymbolTable.Add(s.Name, s);
+            TextEngine.AddRoom(r);
 
             var src = "add item 'sword' to 'test1'";
             var p = new ScriptParser();
@@ -72,7 +73,7 @@ namespace LibraryTests
             var r = p.Parse(room);
            r.Accept(new EvaluationVisitor(p.Diagnostics));
 
-            Assert.IsTrue(TextEngine.TextEngine.RoomExists("kitchen"));
+            Assert.IsTrue(TextEngine.RoomExists("kitchen"));
             AssertNoDiagnostics(p);
         }
 
@@ -90,7 +91,7 @@ namespace LibraryTests
             var r = p.Parse(room);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
 
-            Assert.IsTrue(TextEngine.TextEngine.RoomExists("DiningRoom"));
+            Assert.IsTrue(TextEngine.RoomExists("DiningRoom"));
             AssertNoDiagnostics(p);
         }
 
@@ -99,8 +100,8 @@ namespace LibraryTests
         {
             Room kitchen = new Room("Kitchen", "kitchen");
             Room dining = new Room("Dining", "dining");
-            TextEngine.TextEngine.AddRoom(kitchen);
-            TextEngine.TextEngine.AddRoom(dining);
+            TextEngine.AddRoom(kitchen);
+            TextEngine.AddRoom(dining);
             var src = "exit 'DiningRoomE' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
@@ -169,12 +170,12 @@ namespace LibraryTests
         public void Evaluate_ItemInPlayerInv_Should_Pass()
         {
             Player pl = new Player("Fred");
-            TextEngine.TextEngine.Player = pl;
+            TextEngine.Player = pl;
             var src = "item 'pen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'player' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
-            Assert.IsTrue(TextEngine.TextEngine.Player.Inventory.HasItem("pen"));
+            Assert.IsTrue(TextEngine.Player.Inventory.HasItem("pen"));
             AssertNoDiagnostics(p);
         }
 

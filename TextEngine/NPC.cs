@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace TextEngine
+namespace Geten
 {
     /// <summary>
     /// Represents a non-playable Character
