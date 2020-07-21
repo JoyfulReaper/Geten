@@ -16,5 +16,24 @@ namespace Geten.Parsers.Script.Syntax
         {
             visitor.Visit(this);
         }
+
+        public IEnumerable<T> Descendants<T>()
+            where T : SyntaxNode
+        {
+            foreach (var n in Children)
+            {
+                if (n is BlockNode nbn)
+                {
+                    foreach (var nc in nbn.Descendants<T>())
+                    {
+                        yield return nc;
+                    }
+                }
+                else if (n is T)
+                {
+                    yield return (T)n;
+                }
+            }
+        }
     }
 }
