@@ -4,13 +4,13 @@ namespace TextEngine.Parsing.Syntax
 {
     public class PropertyList : Dictionary<Token<SyntaxKind>, SyntaxNode>
     {
-        public object this[string key]
+        public object this[CaseInsensitiveString key]
         {
             get
             {
                 foreach (var kvp in this)
                 {
-                    if(kvp.Key.Text.ToString().ToLower() == key.ToLower())
+                    if(kvp.Key.Text == key)
                     {
                         return ((LiteralNode)kvp.Value).ValueToken.Value;
                     }

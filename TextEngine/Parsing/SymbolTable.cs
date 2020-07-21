@@ -6,18 +6,18 @@ namespace TextEngine.Parsing
 {
     public static class SymbolTable
     {
-        private static ConcurrentDictionary<string, object> _objects = new ConcurrentDictionary<string, object>();
+        private static ConcurrentDictionary<CaseInsensitiveString, object> _objects = new ConcurrentDictionary<CaseInsensitiveString, object>();
 
-        public static void Add(string name, object instance)
+        public static void Add(CaseInsensitiveString name, object instance)
         {
             if (_objects.ContainsKey(name)) throw new Exception($"'{name}' is already declared");
 
             _objects.TryAdd(name, instance);
         }
 
-        public static bool Contains(string name) => _objects.ContainsKey(name);
+        public static bool Contains(CaseInsensitiveString name) => _objects.ContainsKey(name);
 
-        public static T GetInstance<T>(string name)
+        public static T GetInstance<T>(CaseInsensitiveString name)
         {
             if (!_objects.ContainsKey(name)) throw new Exception($"'{name}' is not declared");
 

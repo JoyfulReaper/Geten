@@ -4,9 +4,12 @@
     {
         private readonly string src;
 
+        public int Length => src.Length;
+
         public CaseInsensitiveString(string src)
         {
             this.src = src.ToLower();
+            string.Intern(src);
         }
 
         public static implicit operator string(CaseInsensitiveString str)
@@ -41,14 +44,12 @@
                 return false;
             }
 
-            throw new System.NotImplementedException();
+            return src.Equals(obj);
         }
 
         public override int GetHashCode()
         {
             return src.GetHashCode();
         }
-
-        //ToDo: replace all needed strings
     }
 }

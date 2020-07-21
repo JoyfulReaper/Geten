@@ -14,7 +14,7 @@ namespace TextEngine.Parsing
         /// <param name="position">The startposition of the Token</param>
         /// <param name="text">The resulting Text</param>
         /// <param name="value">The Value. Can be Null</param>
-        public Token(TokenType kind, int position, string text, object value)
+        public Token(TokenType kind, int position, CaseInsensitiveString text, object value)
         {
             Kind = kind;
             Position = position;
@@ -36,7 +36,7 @@ namespace TextEngine.Parsing
         /// <summary>
         ///  The Token Text
         /// </summary>
-        public string Text { get; }
+        public CaseInsensitiveString Text { get; }
 
         /// <summary>
         ///  The Token Value
