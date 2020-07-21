@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.Core;
 using System;
 
 namespace Geten
@@ -29,25 +30,8 @@ namespace Geten
     /// <summary>
     /// Represents an item
     /// </summary>
-    public class Item
+    public class Item : GameObject
     {
-        /// <value>Allows the item to be added to an Inventory</value>
-        public bool Obtainable { get; set; }
-
-        /// <value>If true the object is visible when looking</value>
-        public bool Visible { get; set; }
-
-        /// <value>The name of the item</value>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// The plural name of this item
-        /// </summary>
-        public string PluralName { get; set; }
-
-        /// <value>The description to be shown for the item</value>
-        public string Description { get; set; }
-
         /// <summary>
         /// Construct an Item
         /// </summary>
@@ -57,8 +41,8 @@ namespace Geten
         /// <param name="visible">Determine if the Item is Visible</param>
         /// <param name="obtainable">Determine if the Item can be added to an Inventory</param>
         public Item(string name, string pluralName, string desc, bool visible, bool obtainable)
+            : base(name, desc)
         {
-            Name = name;
             if (pluralName == null || pluralName.Length <= 0)
                 PluralName = name + "s";
             else
@@ -98,13 +82,16 @@ namespace Geten
         /// <param name="name">The name of the Item</param>
         public Item(string name) : this(name, "") { }
 
+        /// <value>Allows the item to be added to an Inventory</value>
+        public bool Obtainable { get; set; }
+
         /// <summary>
-        /// Use this item
+        /// The plural name of this item
         /// </summary>
-        public virtual void Use()
-        {
-            throw new NotImplementedException();
-        }
+        public string PluralName { get; set; }
+
+        /// <value>If true the object is visible when looking</value>
+        public bool Visible { get; set; }
 
         /// <summary>
         /// Check if this item is equal to another item
@@ -136,6 +123,14 @@ namespace Geten
         public override string ToString()
         {
             return "Name: " + Name + ", Plural name " + PluralName + ", Description: " + Description + ", Visible: " + Visible + ", Obtainable: " + Obtainable;
+        }
+
+        /// <summary>
+        /// Use this item
+        /// </summary>
+        public virtual void Use()
+        {
+            throw new NotImplementedException();
         }
     }
 }

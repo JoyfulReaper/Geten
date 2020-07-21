@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.Core;
 using Geten.MapItems;
 using System;
 
@@ -30,7 +31,7 @@ namespace Geten
     /// <summary>
     /// Represents a Character
     /// </summary>
-    public abstract class Character
+    public abstract class Character : GameObject
     {
         private int health;
 
@@ -44,8 +45,8 @@ namespace Geten
         /// <param name="maxHealth">The Character's maximum health</param>
         /// <param name="desc">The Character's description</param>
         public Character(string name = "Character", string desc = "", int health = 100, int maxHealth = 100)
+          : base(name, desc)
         {
-            Name = name;
             Health = health;
             MaxHealth = maxHealth;
             Description = desc;
@@ -57,11 +58,6 @@ namespace Geten
         /// The amount of local currence that the character has
         /// </summary>
         public Money CharacterMoney { get; set; }
-
-        /// <summary>
-        /// Characters Description
-        /// </summary>
-        public string Description { get; set; }
 
         /// <summary>
         /// Health can be any vaild int > 0. I would suggest using 0 - 100. 0 is dead
@@ -103,11 +99,6 @@ namespace Geten
                 maxHealth = value;
             }
         }
-
-        /// <summary>
-        /// Character's Name
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// The Room that the Character was in previously

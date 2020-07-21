@@ -6,11 +6,17 @@ namespace Geten.Core
 {
     public abstract class GameObject : IEnumerable
     {
-        //property bag for changable properties by script
+        //property bag for mutable properties by script
         private readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
-        public string Name { get; set; }
+        public GameObject(string name, string descr)
+        {
+            Name = name;
+            Description = descr;
+        }
 
+        public string Description { get; set; }
+        public string Name { get; set; }
         public int PropertyCount => _properties.Count;
 
         public void Add(string name, object value)
