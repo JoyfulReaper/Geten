@@ -50,6 +50,12 @@ namespace Geten.Core.Parsing.Diagnostics
             Report(TextSpan.FromBounds(0, 0), message);
         }
 
+        internal void ReportBadNPC(string name)
+        {
+            var message = $"NPC '{name}' is not valid";
+            Report(TextSpan.FromBounds(0, 0), message);
+        }
+
         internal void ReportBadTargetInventory(string target)
         {
             var message = $"Target '{target}' is not a valid Room, NPC or ContainerItem";
