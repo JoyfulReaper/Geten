@@ -232,7 +232,46 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        public void Evaluate_ItemInPlayerInv_Should_Pass()
+        public void Evaluate_Item_In_Room_Inv_Should_Pass()
+        {
+            Room room = new Room("Item_In_Room", "In_Room_Inv");
+            TextEngine.AddRoom(room);
+            var src = "item 'roomPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'In_Room_Inv' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            Assert.IsTrue(TextEngine.GetRoom("In_Room_Inv").Inventory.HasItem("roomPen"));
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Item_In_NPC_Inv_Should_Pass()
+        {
+            var npc = new NPC("Item_In_NPC");
+            TextEngine.AddNPC(npc);
+            var src = "item 'NPCPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'Item_In_NPC' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            Assert.IsTrue(TextEngine.GetNPC("Item_In_NPC").Inventory.HasItem("NPCPen"));
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Item_In_ContainerItem_Inv_Should_Pass()
+        {
+            var ci = new ContainerItem("Item_In_CI", "For testing", true, false, 10);
+            SymbolTable.Add(ci.Name, ci);
+            var src = "item 'CIPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'Item_In_CI' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            Assert.IsTrue(SymbolTable.GetInstance<ContainerItem>("Item_In_CI").Inventory.HasItem("CIPen"));
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Item_In_Player_Inv_Should_Pass()
         {
             Player pl = new Player("Fred");
             TextEngine.Player = pl;

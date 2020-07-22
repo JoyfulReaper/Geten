@@ -125,8 +125,7 @@ namespace Geten.Parsers.Script
 
         public void Visit(ItemDefinitionNode node)
         {
-            // Need to have a way to determine where to put the item and if the item is a containter or not - Done
-            // Need to figure out if the location is a room or another ContainerItem, then add to that inventory
+            // What about adding multiple items at one time? number property?
             var name = node.NameToken.Value?.ToString();
             var pluralName = node.Properties["pluralName"]?.ToString(); // null is okay
             var obtainable = (bool)(node.Properties["obtainable"] ?? true);
@@ -148,25 +147,27 @@ namespace Geten.Parsers.Script
 
             SymbolTable.Add(name, item);
 
-            Room r = TextEngine.GetRoom(location);
-            if (location != null)
+            if (location == null) // Just add it to the SymbolTable
+                return;
+
+            if (location == "player")
             {
-                if (location == "player")
-                {
-                    TextEngine.Player.Inventory.AddItem(item);
-                }
-                else
-                {
-                    if (TextEngine.RoomExists(location))
-                    {
-                        r.Inventory.AddItem(item);
-                    }
-                    else
-                    {
-                        // Get all Rooms and see if there is a ContainerItem with name name
-                        // Get all NPCs and see if there is one with name
-                    }
-                }
+                // Add to player inventory
+                TextEngine.Player.Inventory.AddItem(item);
+            }
+            else if (TextEngine.RoomExists(location))
+            {
+                // Add to Room Inventory
+                TextEngine.GetRoom(location).Inventory.AddItem(item);
+            }
+            else if (TextEngine.NpcExists(location))
+            {
+                // Add to NPC inventory
+                TextEngine.GetNPC(location).Inventory.AddItem(item);
+            }
+            else if(SymbolTable.Contains(location))
+            {
+                SymbolTable.GetInstance<ContainerItem>(location).Inventory.AddItem(item);
             }
         }
 
