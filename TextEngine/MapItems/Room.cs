@@ -65,7 +65,7 @@ namespace Geten.MapItems
         /// Construct a Room
         /// </summary>
         /// <param name="name">The name of the Room</param>
-        public Room(string name) : this(name, "", "", "") { }
+        public Room(string name) : this(name, name, "", "") { }
 
         /// <summary>
         /// Construct a Rooom
