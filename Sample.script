@@ -73,7 +73,7 @@ item "box"
         description "A small box." and
         location "MailRoom" and
         container true and
-        capacity 3 and
+        inventorySize 3 and
         quantity 1
     end
 end

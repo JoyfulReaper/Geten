@@ -36,11 +36,13 @@ namespace Geten.Parsers.Script
             var description = node.Properties["description"]?.ToString();
             var maxHealth = (int)(node.Properties["maxHealth"] ?? 100);
             var health = (int)(node.Properties["health"] ?? 100);
+            var inventorySize = (int)(node.Properties["inventorySize"] ?? 10);
             var money = (int)(node.Properties["money"] ?? 0); // not used right now
 
             if (asWhat == "player") // It's the player
             {
                 Player player = new Player(name, description, health, maxHealth);
+                player.Inventory.Capacity = inventorySize;
                 TextEngine.Player = player;
 
                 SymbolTable.Add(name, player);
@@ -48,6 +50,7 @@ namespace Geten.Parsers.Script
             else if (asWhat == "npc") // It's an NPC
             {
                 NPC npc = new NPC(name, description, maxHealth, health);
+                npc.Inventory.Capacity = inventorySize;
                 TextEngine.AddNPC(npc);
 
                 //SymbolTable.Add(name, npc); // AddNPC() does this now, hopefully that is the "correct" thing to do
@@ -98,11 +101,12 @@ namespace Geten.Parsers.Script
             var desc = node.Properties["description"]?.ToString();
             var location = node.Properties["location"]?.ToString();
             var container = (bool)(node.Properties["container"] ?? false);
+            var quantity = (int)(node.Properties["quantity"] ?? 1);
 
             Item item;
             if (container)
             {
-                var capacity = (int)(node.Properties["capacity"] ?? 0);
+                var capacity = (int)(node.Properties["inventorySize"] ?? 0);
                 item = new ContainerItem(name, pluralName, desc, visible, obtainable, capacity);
             }
             else
@@ -118,21 +122,21 @@ namespace Geten.Parsers.Script
             if (location == "player")
             {
                 // Add to player inventory
-                TextEngine.Player.Inventory.AddItem(item);
+                TextEngine.Player.Inventory.AddItem(item, quantity);
             }
             else if (TextEngine.RoomExists(location))
             {
                 // Add to Room Inventory
-                TextEngine.GetRoom(location).Inventory.AddItem(item);
+                TextEngine.GetRoom(location).Inventory.AddItem(item, quantity);
             }
             else if (TextEngine.NpcExists(location))
             {
                 // Add to NPC inventory
-                TextEngine.GetNPC(location).Inventory.AddItem(item);
+                TextEngine.GetNPC(location).Inventory.AddItem(item, quantity);
             }
             else if(SymbolTable.Contains(location))
             {
-                SymbolTable.GetInstance<ContainerItem>(location).Inventory.AddItem(item);
+                SymbolTable.GetInstance<ContainerItem>(location).Inventory.AddItem(item, quantity);
             }
         }
 
