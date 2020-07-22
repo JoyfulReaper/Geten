@@ -6,6 +6,7 @@ using Geten.Parsers.Script;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Net;
 
 namespace LibraryTests
 {
@@ -102,8 +103,23 @@ namespace LibraryTests
             {
                 Assert.AreEqual(e.Message, "Target 'badTarget' is not a valid Room, NPC or ContainerItem");
             }
-            
-            
+        }
+
+        [TestMethod]
+        public void Evaluate_Remove_Item_BadTarget_Should_Pass()
+        {
+            var src = "item 'remBook' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'remBook' to 'badTarget'";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            try
+            {
+                r.Accept(new EvaluationVisitor(p.Diagnostics));
+                AssertNoDiagnostics(p);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "Target 'badTarget' is not a valid Room, NPC or ContainerItem");
+            }
         }
 
         [TestMethod]
@@ -116,6 +132,30 @@ namespace LibraryTests
             ScriptParser p = new ScriptParser();
             var res = p.Parse(src);
             res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(ci.Inventory.HasItem("cookie"));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Remove_Item_From_ContainerItem_Should_Pass()
+        {
+            ContainerItem ci = new ContainerItem("Empty Bag", "It's empty", true, true);
+            SymbolTable.Add(ci.Name, ci);
+            string src = "item 'cookie2' with description 'chocolate chip' end end add item 'cookie2' to 'Empty Bag'";
+
+            ScriptParser p = new ScriptParser();
+            var res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(ci.Inventory.HasItem("cookie2"));
+
+            p = new ScriptParser();
+            res = p.Parse("remove item 'cookie2' from 'Empty Bag'");
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsFalse(ci.Inventory.HasItem("cookie2"));
 
             AssertNoDiagnostics(p);
         }
@@ -131,6 +171,32 @@ namespace LibraryTests
             ScriptParser p = new ScriptParser();
             var res = p.Parse(src);
             res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(npc.Inventory.HasItem("Bag of Chips"));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Remove_Item_From_NPC_Should_Pass()
+        {
+            NPC npc = new NPC("Remove Guy", "He looks nice", 100, 100);
+            Item item = new Item("Empty Bag of Chips", "Just air.");
+            SymbolTable.Add(item.Name, item);
+            TextEngine.AddNPC(npc);
+            string src = "add item 'Empty Bag of Chips' to 'Remove Guy'";
+            ScriptParser p = new ScriptParser();
+            var res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(npc.Inventory.HasItem("Empty Bag of Chips"));
+
+            src = "remove item 'Empty Bag of Chips' from 'Remove Guy'";
+            p = new ScriptParser();
+            res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsFalse(npc.Inventory.HasItem("Empty Bag of Chips"));
 
             AssertNoDiagnostics(p);
         }
@@ -151,6 +217,35 @@ namespace LibraryTests
             pRes.Accept(new EvaluationVisitor(p.Diagnostics));
 
             Assert.IsTrue(r.Inventory.HasItem("sword"));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Remove_Item_From_Room_Should_Pass()
+        {
+            Room r = new Room("Test Room2", "test2", "For testing!", "It looks boring :(");
+            Item s = new Weapon("toothpick", null, "It looks kind of dull...", 1, 2, true, true);
+
+            //TextEngine.Parsing.SymbolTable.Add(r.Name, r);
+            SymbolTable.Add(s.Name, s);
+            TextEngine.AddRoom(r);
+
+            var src = "add item 'toothpick' to 'test2'";
+            var p = new ScriptParser();
+            var pRes = p.Parse(src);
+            pRes.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(r.Inventory.HasItem("toothpick"));
+
+            src = "remove item 'toothpick' from 'test2'";
+            p = new ScriptParser();
+            pRes = p.Parse(src);
+            pRes.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsFalse(r.Inventory.HasItem("toothpick"));
+
+            AssertNoDiagnostics(p);
         }
 
         [TestMethod]

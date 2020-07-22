@@ -26,42 +26,7 @@ namespace Geten.Parsers.Script
 
         public void Visit(AddItemNode node)
         {
-            var addWhat = node.Argument?.ToString();
-            var name = node.Name.Value?.ToString();
-            var target = node.Target.Value?.ToString();
-
-            Item item = SymbolTable.GetInstance<Item>(name);
-
-            if (target == "player")
-            {
-                // Add item to Players's inv
-                TextEngine.Player?.Inventory.AddItem(item);
-            }
-            else
-            {
-                if (TextEngine.RoomExists(target))
-                {
-                    // Add item to Room's inv
-                    SymbolTable.GetInstance<Room>(target).Inventory.AddItem(item);
-                }
-                else if (TextEngine.NpcExists(target))
-                {
-                    // Get all NPCs and check for one with name
-                    SymbolTable.GetInstance<NPC>(target).Inventory.AddItem(item);
-                }
-                else
-                {
-                    // Get all Container Items and check for one with name
-                    try
-                    {
-                        SymbolTable.GetInstance<ContainerItem>(target).Inventory.AddItem(item);
-                    }
-                    catch
-                    {
-                        Diagnostics.ReportBadTargetInventory(target);
-                    }
-                }
-            }
+            Targeted(node);
         }
 
         public void Visit(CharacterDefinitionNode node)
@@ -193,7 +158,7 @@ namespace Geten.Parsers.Script
 
         public void Visit(RemoveItemNode node)
         {
-            throw new NotImplementedException();
+            Targeted(node);
         }
 
         public void Visit(RoomDefinitionNode node)
@@ -240,8 +205,61 @@ namespace Geten.Parsers.Script
             throw new NotImplementedException();
         }
 
-        private void ChangeQuantity<T>(T node)
-                                                                                                                    where T : ChangeQuantityNode
+        private void Targeted<T>(T node)
+            where T : TargetedNode
+        {
+            var addWhat = node.Argument?.ToString();
+            var name = node.Name.Value?.ToString();
+            var target = node.Target.Value?.ToString();
+            bool add = node.GetType() == typeof(AddItemNode);
+
+            Item item = SymbolTable.GetInstance<Item>(name);
+
+            if (target == "player")
+            {
+                // Add item to Players's inv
+                if (add)
+                    TextEngine.Player?.Inventory.AddItem(item);
+                else
+                    TextEngine.Player?.Inventory.RemoveItem(item);
+            }
+            else
+            {
+                if (TextEngine.RoomExists(target))
+                {
+                    // Add item to Room's inv
+                    if (add)
+                        SymbolTable.GetInstance<Room>(target).Inventory.AddItem(item);
+                    else
+                        SymbolTable.GetInstance<Room>(target).Inventory.RemoveItem(item);
+                }
+                else if (TextEngine.NpcExists(target))
+                {
+                    // Get all NPCs and check for one with name
+                    if (add)
+                        SymbolTable.GetInstance<NPC>(target).Inventory.AddItem(item);
+                    else
+                        SymbolTable.GetInstance<NPC>(target).Inventory.RemoveItem(item);
+                }
+                else
+                {
+                    // Get all Container Items and check for one with name
+                    try
+                    {
+                        if (add)
+                            SymbolTable.GetInstance<ContainerItem>(target).Inventory.AddItem(item);
+                        else
+                            SymbolTable.GetInstance<ContainerItem>(target).Inventory.RemoveItem(item);
+                    }
+                    catch
+                    {
+                        Diagnostics.ReportBadTargetInventory(target);
+                    }
+                }
+            }
+        }
+
+        private void ChangeQuantity<T>(T node)                                                                                                            where T : ChangeQuantityNode
         {
             bool increase = node.GetType() == typeof(IncreaseNode);
             var target = node.Target.Text?.ToString();
