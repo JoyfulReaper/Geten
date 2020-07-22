@@ -13,6 +13,36 @@ namespace LibraryTests
     public class EvaluationTests
     {
         [TestMethod]
+        public void Evaluate_Increase_Player_Health_Should_Pass()
+        {
+            var player = new Player("TestPlayer1", "He likes to test!", 90, 100);
+            TextEngine.Player = player;
+
+            var src = "increase health of 'player' by 10";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            AssertNoDiagnostics(p);
+            Assert.IsTrue(Geten.TextEngine.Player.Health == 100);
+        }
+
+        [TestMethod]
+        public void Evaluate_Increase_NPC_Health_Should_Pass()
+        {
+            var npc = new NPC("TestNPC1", "He likes to test", 90, 100);
+            TextEngine.AddNPC(npc);
+
+            var src = "increase health of 'TestNPC1' by 10";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            AssertNoDiagnostics(p);
+            Assert.IsTrue(Geten.TextEngine.GetNPC("TestNPC1").Health == 100);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(Exception), "Target 'badTarget' is not a valid Room, NPC or ContainerItem")]
         public void Evaluate_Add_Item_BadTarget_Should_Pass()
         {

@@ -66,7 +66,6 @@ namespace Geten.Parsers.Script
 
         public void Visit(CharacterDefinitionNode node)
         {
-            // need to add token for as player or as npc
             var asWhat = node.AsWhatToken.Text?.ToString();
             var name = node.NameToken.Value?.ToString();
             var description = node.Properties["description"]?.ToString();
@@ -244,7 +243,7 @@ namespace Geten.Parsers.Script
                                                                                                                     where T : ChangeQuantityNode
         {
             bool increase = node.GetType() == typeof(IncreaseNode);
-            var target = node.Target.Value?.ToString();
+            var target = node.Target.Text?.ToString();
             var amount = (int)node.Amount.Value;
             var instance = node.Instance.Value?.ToString();
 
@@ -261,6 +260,19 @@ namespace Geten.Parsers.Script
                         {
                             TextEngine.Player.Health -= amount;
                         }
+                    } else
+                    {
+                        var instanceTarget = TextEngine.GetNPC(instance);
+                        if(instanceTarget != null)
+                        {
+                            if (increase)
+                                instanceTarget.Health += amount;
+                            else
+                                instanceTarget.Health -= amount;
+                        } else
+                        {
+                            Diagnostics.ReportBadNPC(instance);
+                        } 
                     }
 
                     break;
