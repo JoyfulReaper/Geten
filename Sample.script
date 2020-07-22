@@ -28,6 +28,15 @@ character \"sarah\"
     end 
 end
 
+character "Sam" as npc
+    with
+        description "A friendly looking fellow" and
+        maxHealth 100 and
+        health 100 and
+        inventorySize 15
+    end
+end
+
 tell "hello world"
 
 memory "name" equals "Tombo"
@@ -54,6 +63,18 @@ exit "toDiningRoom" from "kitchen" with
     locked false and
     visible true and
     toRoom 'diningRoom'
+    end
+end
+
+item "box"
+    with
+        obtainable true and
+        visible true and
+        description "A small box." and
+        location "MailRoom" and
+        container true and
+        capacity 3 and
+        quantity 1
     end
 end
 
