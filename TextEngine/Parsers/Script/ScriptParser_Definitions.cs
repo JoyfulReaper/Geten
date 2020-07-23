@@ -38,8 +38,7 @@ namespace Geten.Parsers.Script
             var ofKeywordToken = MatchKeyword("of");
             var ouputToken = MatchToken(SyntaxKind.String);
 
-            var ingrediants = ParseIngredients();
-            //ToDo: parse ingredients
+            var ingrediants = ParseIngredients(); //ToDo: parse ingredients
             var endToken = MatchToken(SyntaxKind.EndToken);
 
             return new RecipeDefinitionNode(recipeKeywordToken, nameToken, willKeywordToken, craftKeywordToken, quantityToken, ofKeywordToken, ouputToken, endToken);
