@@ -1,5 +1,6 @@
 ﻿using Geten;
 using Geten.Core.Crafting;
+using Geten.GameObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LibraryTests
@@ -22,7 +23,7 @@ namespace LibraryTests
         [TestInitialize]
         public void Init()
         {
-            inventory = new Inventory(100);
+            inventory = new Inventory(10);
             inventory.AddItem("wood", 5);
             inventory.AddItem("iron", 4);
 
@@ -33,7 +34,7 @@ namespace LibraryTests
                 ["iron"] = 3
             };
 
-            recipe = new Recipe("best sword ever", Recipe.RecipeType.Equipment, ingredients, new Geten.GameObjects.Item("iron_sword"));
+            recipe = new Recipe("best sword ever", Recipe.RecipeType.Equipment, ingredients, new Item("iron_sword"));
 
             book.Add(recipe);
         }
