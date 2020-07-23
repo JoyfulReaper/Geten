@@ -83,6 +83,9 @@ namespace Geten
             get { return startRoom; }
             set
             {
+                if (player == null)
+                    throw new InvalidCharacterException("Player must be set before setting StartRoom");
+
                 if (map.Contains(value))
                 {
                     startRoom = value;
