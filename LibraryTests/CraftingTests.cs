@@ -16,7 +16,7 @@ namespace LibraryTests
         {
             var output = CraftingTable.Craft(recipe, inventory);
 
-            Assert.AreEqual(inventory.Count, 3);
+            Assert.AreEqual(output.Name, "iron_sword");
         }
 
         [TestInitialize]
