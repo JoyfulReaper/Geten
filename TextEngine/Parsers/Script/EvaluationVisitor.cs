@@ -171,10 +171,13 @@ namespace Geten.Parsers.Script
             var shortName = node.Properties["shortName"]?.ToString();
             var desc = node.Properties["description"]?.ToString();
             var lookDesc = node.Properties["lookDescription"]?.ToString();
+            var startRoom = (bool)(node.Properties["startLocation"] ?? false);
 
             Room r = new Room(name, shortName, desc, lookDesc);
             //SymbolTable.Add(name, r); //TextEngine.AddRoom does this
             TextEngine.AddRoom(r);
+            if (startRoom)
+                TextEngine.StartRoom = r;
         }
 
         public void Visit(ExitDefinitionNode node)
