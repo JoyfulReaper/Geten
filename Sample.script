@@ -59,12 +59,25 @@ room "kitchen" with
     end
 end
 
-exit "toDiningRoom" from "kitchen" with
-    locked false and
-    visible true and
-    toRoom 'diningRoom'
+exit "toDiningRoom" from "kitchen" 
+    with
+        locked false and
+        visible true and
+        toRoom 'diningRoom' and
+        side "north"
     end
 end
+
+room "Modren Bathroom" 
+    with
+        name "Modren Bathroom" and
+        shortName "Bathroom1" and
+        description "Everything looks shiny!" and
+        lookDescription "You look around, but you can't find anything that isn't sparkling clean!" and
+        startLocation true
+    end
+end
+
 
 item "box"
     with
