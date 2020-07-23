@@ -29,5 +29,6 @@
         Whitespace,
         EndToken,
         Boolean,
+        Symbol,
     }
 }

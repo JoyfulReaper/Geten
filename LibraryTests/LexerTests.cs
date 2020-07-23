@@ -11,6 +11,16 @@ namespace LibraryTests
     public class LexerTests
     {
         [TestMethod]
+        public void Lex_Symbol_Should_Pass()
+        {
+            var l = new ScriptLexer(SourceText.From("@name"));
+            var token = l.GetAllTokens().First();
+
+            Assert.AreEqual(token.Kind, SyntaxKind.Symbol);
+            Assert.AreEqual(token.Value, "name");
+        }
+
+        [TestMethod]
         public void Lexer_Should_Pass()
         {
             var src = "memoryslot \"name\"\non \"setup\" ask for \"Please Tell me your name: \" to \"name\"";
