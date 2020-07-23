@@ -1,0 +1,53 @@
+﻿character "Fred" as player
+	with
+		health 100 and
+		maxHealth 100 and
+		description "The Hero!" and
+		inventorySize 10
+	end
+end
+
+room "Modren Bathroom" 
+    with
+        shortName "Bathroom1" and
+        description "You find yourself in a modren looking bathroom. Everything looks shiny!" and
+        lookDescription "You look around, but you can't find anything that isn't sparkling clean! Even the toliet is completely spotless! There is an open door to the east." and
+		startLocation true
+    end
+end
+
+room "Short Hallway" 
+    with
+        shortName "Hall1" and
+        description "It's a short hallway!" and
+        lookDescription "It looks like there is another room to the north!" and
+    end
+end
+
+room "Kitchen"
+    with
+        shortName "Kitchen" and
+        description "You are now in the kitchen. It also looks clean and modren. There is a shiney silver fridge, a brand new dishwasher, a table with and white table cloth and a pickle randomly sitting on the floor" and
+        lookDescription "It's not Pickle Rick."
+    end
+end
+
+exit "toHall"
+    with
+        locked false and
+        visible true and
+        toRoom "Hall1" and
+        fromRoom "Bathroom1" and
+        side "east"
+    end
+end
+
+exit "toKitchen"
+    with
+        locked false and
+        visible true and
+        toRoom "Kitchen" and
+        fromRoom "Hall1" and
+        side "north"
+    end
+end
