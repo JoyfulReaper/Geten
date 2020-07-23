@@ -104,7 +104,7 @@ namespace Geten
         /// <param name="item">The Item to add</param>
         /// <param name="quantity">The quantity to add</param>
         /// <returns>throws an exception for now :(</returns>
-        public bool AddItem(String item, int quantity = 1)
+        public bool AddItem(string item, int quantity = 1)
         {
             throw new NotImplementedException("Later, when we can load items from files, I promise!");
         }
@@ -134,7 +134,7 @@ namespace Geten
         /// </summary>
         /// <param name="itemName">The Item to check for</param>
         /// <returns>True if contained, false otherwise</returns>
-        public bool HasItem(String itemName) => items.Keys.Any(key => key.Name == itemName);
+        public bool HasItem(string itemName) => items.Keys.Any(key => key.Name == itemName);
 
         /// <summary>
         /// Check how many of an Item are in the Inventory
@@ -183,7 +183,7 @@ namespace Geten
         /// </summary>
         /// <param name="itemName">The name of the item to remove</param>
         /// <param name="quantity">The quantity to remove</param>
-        public void RemoveItem(String itemName, int quantity = 1)
+        public void RemoveItem(string itemName, int quantity = 1)
         {
             if (!HasItem(itemName))
                 throw new ArgumentException("Iventory does not contain " + itemName);
