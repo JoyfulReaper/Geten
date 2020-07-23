@@ -198,6 +198,21 @@ namespace LibraryTests
         }
 
         [TestMethod]
+        public void Parse_RecipeBook_Should_Pass()
+        {
+            var src =
+            @"recipebook ""armory""
+                recipe ""test"" will craft 1 of ""helm""
+
+                end
+            end"; //ToDo: add ingredients to test script
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
+        }
+
+        [TestMethod]
         public void Parse_Remove_Item_Should_Pass()
         {
             var src = "remove item \"apple\"";

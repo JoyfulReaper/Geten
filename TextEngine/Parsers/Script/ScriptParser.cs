@@ -3,6 +3,7 @@ using Geten.Parsers.Script.Syntax;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Geten.Parsers.Script
 {
@@ -270,6 +271,10 @@ namespace Geten.Parsers.Script
             {
                 return ParsePlay();
             }
+            else if (MatchCurrentKeyword("recipebook"))
+            {
+                return ParseRecipeBook();
+            }
             else
             {
                 Diagnostics.ReportUnexpectedKeyword(Current.Span, Current);
@@ -403,6 +408,55 @@ namespace Geten.Parsers.Script
             MatchToken(SyntaxKind.EndToken);
 
             return result;
+        }
+
+        private SyntaxNode ParseRecipe()
+        {
+            var recipeKeywordToken = MatchKeyword("recipe");
+            var nameToken = MatchToken(SyntaxKind.String);
+            var willKeywordToken = MatchKeyword("will");
+            var craftKeywordToken = MatchKeyword("craft");
+            var quantityToken = MatchToken(SyntaxKind.Number);
+            var ofKeywordToken = MatchKeyword("of");
+            var ouputToken = MatchToken(SyntaxKind.String);
+            //ToDo: parse ingredients
+            var endToken = MatchToken(SyntaxKind.EndToken);
+
+            return new RecipeDefinitionNode(recipeKeywordToken, nameToken, willKeywordToken, craftKeywordToken, quantityToken, ofKeywordToken, ouputToken, endToken);
+        }
+
+        private SyntaxNode ParseRecipeBook()
+        {
+            var recipeKeyword = MatchKeyword("recipebook");
+            var name = MatchToken(SyntaxKind.String);
+            var members = ParseRecipes();
+
+            if (!members.Any())
+            {
+                Diagnostics.ReportNoRecipesInBook(name.Span, name.Value.ToString());
+            }
+
+            var endToken = MatchToken(SyntaxKind.EndToken);
+
+            return new RecipeBookDefinition(recipeKeyword, name, members, endToken); //ToDo: add members to recipebook
+        }
+
+        private BlockNode ParseRecipes()
+        {
+            var recipes = new List<SyntaxNode>();
+
+            while (Current.Kind != SyntaxKind.EOF && Current.Kind != SyntaxKind.EndToken)
+            {
+                var startToken = Current;
+                var member = ParseRecipe();
+
+                recipes.Add(member);
+
+                if (Current == startToken)
+                    NextToken();
+            }
+
+            return new BlockNode(recipes);
         }
 
         private SyntaxNode ParseRemove()

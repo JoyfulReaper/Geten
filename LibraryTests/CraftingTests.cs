@@ -27,7 +27,7 @@ namespace LibraryTests
             inventory.AddItem("wood", 5);
             inventory.AddItem("iron", 4);
 
-            book = new RecipeBook();
+            book = new RecipeBook("test");
             var ingredients = new Ingredients
             {
                 ["wood"] = 4,

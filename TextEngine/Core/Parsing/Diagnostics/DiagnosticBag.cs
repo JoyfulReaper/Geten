@@ -1,4 +1,6 @@
-﻿using Geten.Core.Parsing.Text;
+﻿using Geten.Core.Crafting;
+using Geten.Core.Parsing.Text;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -44,15 +46,15 @@ namespace Geten.Core.Parsing.Diagnostics
             return _diagnostics.GetEnumerator();
         }
 
-        internal void ReportBadPlayerCharacter(string name)
-        {
-            var message = $"Character '{name}' must be player or npc";
-            Report(TextSpan.FromBounds(0, 0), message);
-        }
-
         internal void ReportBadNPC(string name)
         {
             var message = $"NPC '{name}' is not valid";
+            Report(TextSpan.FromBounds(0, 0), message);
+        }
+
+        internal void ReportBadPlayerCharacter(string name)
+        {
+            var message = $"Character '{name}' must be player or npc";
             Report(TextSpan.FromBounds(0, 0), message);
         }
 
@@ -60,6 +62,12 @@ namespace Geten.Core.Parsing.Diagnostics
         {
             var message = $"Target '{target}' is not a valid Room, NPC or ContainerItem";
             Report(TextSpan.FromBounds(0, 0), message);
+        }
+
+        internal void ReportNoRecipesInBook(TextSpan location, string book)
+        {
+            var message = $"The RecipeBook '{book}' has no Recipes.";
+            Report(location, message);
         }
 
         internal void ReportUnexpectedKeyword<KindType>(TextSpan location, Token<KindType> keywordToken, string keyword)

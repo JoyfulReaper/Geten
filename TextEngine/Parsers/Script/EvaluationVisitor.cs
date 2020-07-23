@@ -1,4 +1,5 @@
 ﻿using Geten.Core;
+using Geten.Core.Crafting;
 using Geten.Core.Parsing.Diagnostics;
 using Geten.GameObjects;
 using Geten.MapItems;
@@ -208,6 +209,23 @@ namespace Geten.Parsers.Script
         }
 
         public void Visit(WeaponDefinitionNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Visit(RecipeBookDefinition node)
+        {
+            var rb = new RecipeBook(node.NameToken.Value.ToString());
+
+            foreach (RecipeDefinitionNode r in node.Recipes)
+            {
+                var recipe = new Recipe(r.NameToken.Value.ToString(), Recipe.RecipeType.Equipment, null, SymbolTable.GetInstance<Item>(r.OuputToken.Value.ToString())); //ToDo: need a way in script to determine recipetype
+            }
+
+            SymbolTable.Add(rb.Name, rb);
+        }
+
+        public void Visit(RecipeDefinitionNode node)
         {
             throw new NotImplementedException();
         }

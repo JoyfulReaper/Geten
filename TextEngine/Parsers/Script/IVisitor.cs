@@ -43,5 +43,9 @@ namespace Geten.Parsers.Script
         void Visit(WeaponDefinitionNode node);
 
         void Visit(ExitDefinitionNode node);
+
+        void Visit(RecipeBookDefinition node);
+
+        void Visit(RecipeDefinitionNode node);
     }
 }
