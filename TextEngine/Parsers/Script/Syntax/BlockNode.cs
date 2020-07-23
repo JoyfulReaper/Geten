@@ -1,9 +1,10 @@
 ﻿using Geten.Core.Parsing;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Geten.Parsers.Script.Syntax
 {
-    public class BlockNode : SyntaxNode
+    public class BlockNode : SyntaxNode, IEnumerable<SyntaxNode>
     {
         public BlockNode(IEnumerable<SyntaxNode> children)
         {
@@ -34,6 +35,16 @@ namespace Geten.Parsers.Script.Syntax
                     yield return (T)n;
                 }
             }
+        }
+
+        public IEnumerator<SyntaxNode> GetEnumerator()
+        {
+            return Children.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Children.GetEnumerator();
         }
     }
 }

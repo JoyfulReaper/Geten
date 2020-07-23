@@ -154,9 +154,9 @@ loop until isLocked
     start print "hello world"
 end
 
-recipe book
+recipebook "main"
 
-    recipe will craft 1 of "torch"
+    recipe "great stuff" will craft 1 of "torch"
         ingrediants 
            3 of "wood" and
            1 of "stick"

@@ -54,15 +54,18 @@ namespace Geten.Core.Crafting
     {
         private List<Recipe> list;
 
-        public RecipeBook()
+        public RecipeBook(string name)
         {
             this.list = new List<Recipe>();
+            Name = name;
         }
 
         public List<Recipe> Contents
         {
             get { return this.list; }
         }
+
+        public string Name { get; }
 
         public RecipeBook Add(Recipe recipe)
         {
