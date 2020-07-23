@@ -7,64 +7,8 @@ using System.Linq;
 
 namespace Geten.Parsers.Script
 {
-    public class ScriptParser : BaseParser<SyntaxKind, ScriptLexer, SyntaxNode>
+    public partial class ScriptParser : BaseParser<SyntaxKind, ScriptLexer, SyntaxNode>
     {
-        public bool AcceptKeyword(string keyword, out Token<SyntaxKind> token)
-        {
-            token = Peek(0);
-            if (token.Kind == SyntaxKind.Keyword && token.Text == keyword)
-            {
-                token = MatchKeyword(keyword);
-                return true;
-            }
-
-            token = new Token<SyntaxKind>(SyntaxKind.BadToken, -1, null, null);
-            return false;
-
-            /*
-            try
-            {
-                token = MatchKeyword(keyword);
-                return true;
-            }
-            catch
-            {
-                token = new Token<SyntaxKind>(SyntaxKind.BadToken, -1, null, null);
-                return false;
-            }
-            */
-        }
-
-        public bool MatchCurrentKeyword(string keyword)
-        {
-            return Current.Kind == SyntaxKind.Keyword && Current.Text == keyword;
-        }
-
-        public Token<SyntaxKind> MatchKeyword(string keyword)
-        {
-            var keywordToken = MatchToken(SyntaxKind.Keyword);
-            if (keywordToken.Text == keyword)
-            {
-                return keywordToken;
-            }
-
-            Diagnostics.ReportUnexpectedKeyword(Current.Span, keywordToken, keyword);
-
-            return null;
-        }
-
-        public bool MatchNextKeyword(string keyword)
-        {
-            return Peek(0).Kind == SyntaxKind.Keyword && Peek(0).Text == keyword;
-        }
-
-        public SyntaxNode ParseBlock()
-        {
-            var members = ParseMembers();
-
-            return new BlockNode(members);
-        }
-
         protected override SyntaxNode InternalParse()
         {
             var value = ParseBlock();
@@ -87,27 +31,6 @@ namespace Geten.Parsers.Script
             var slotname = MatchToken(SyntaxKind.String);
 
             return new AskForInputNode(askkeyword, forKeyword, message, toKeyword, slotname);
-        }
-
-        private SyntaxNode ParseCharacter()
-        {
-            var characterKeyword = MatchKeyword("character");
-            var name = MatchToken(SyntaxKind.String);
-            var asKeyword = MatchKeyword("as");
-            var asWhat = MatchToken(SyntaxKind.Keyword);
-
-            if (asWhat.Text != "npc" && asWhat.Text != "player")
-            {
-                // Log?
-                // thow exception?
-                Diagnostics.ReportUnexpectedKeyword(Current.Span, asWhat, "npc or player");
-            }
-
-            var withToken = MatchKeyword("with");
-            var properties = ParsePropertyList();
-            var endToken = MatchToken(SyntaxKind.EndToken);
-
-            return new CharacterDefinitionNode(characterKeyword, name, asKeyword, asWhat, withToken, properties);
         }
 
         private SyntaxNode ParseCommand()
@@ -189,98 +112,6 @@ namespace Geten.Parsers.Script
             NextToken();
 
             return result;
-        }
-
-        private SyntaxNode ParseMember()
-        {
-            //ToDo: refactor ParseMember to a Dictionary to reduce branches
-            if (MatchCurrentKeyword("character"))
-            {
-                //return ParsePropertyOnly<CharacterDefinitionNode>("character");
-                return ParseCharacter();
-            }
-            else if (MatchCurrentKeyword("weapon"))
-            {
-                return ParsePropertyOnly<WeaponDefinitionNode>("weapon");
-            }
-            else if (MatchCurrentKeyword("key"))
-            {
-                return ParsePropertyOnly<KeyDefinitionNode>("key");
-            }
-            else if (MatchCurrentKeyword("include"))
-            {
-                return ParseInclude();
-            }
-            else if (MatchCurrentKeyword("tell"))
-            {
-                return ParseTell();
-            }
-            else if (MatchCurrentKeyword("memory"))
-            {
-                return ParseMemorySlot();
-            }
-            else if (MatchCurrentKeyword("on"))
-            {
-                return ParseEventSubscription();
-            }
-            else if (MatchCurrentKeyword("ask"))
-            {
-                return ParseAskFor();
-            }
-            else if (MatchCurrentKeyword("room"))
-            {
-                return ParsePropertyOnly<RoomDefinitionNode>("room");
-            }
-            else if (MatchCurrentKeyword("exit"))
-            {
-                return ParsePropertyOnly<ExitDefinitionNode>("exit");
-            }
-            else if (MatchCurrentKeyword("item"))
-            {
-                return ParsePropertyOnly<ItemDefinitionNode>("item");
-            }
-            else if (MatchCurrentKeyword("command"))
-            {
-                return ParseCommand();
-            }
-            else if (MatchCurrentKeyword("increase"))
-            {
-                return ParseIncrease();
-            }
-            else if (MatchCurrentKeyword("decrease"))
-            {
-                return ParseDecrease();
-            }
-            else if (MatchCurrentKeyword("setProperty"))
-            {
-                return ParseSetProperty();
-            }
-            else if (MatchCurrentKeyword("add"))
-            {
-                return ParseAdd();
-            }
-            else if (MatchCurrentKeyword("remove"))
-            {
-                return ParseRemove();
-            }
-            else if (MatchCurrentKeyword("dialog"))
-            {
-                return ParseDialog();
-            }
-            else if (MatchCurrentKeyword("play"))
-            {
-                return ParsePlay();
-            }
-            else if (MatchCurrentKeyword("recipebook"))
-            {
-                return ParseRecipeBook();
-            }
-            else
-            {
-                Diagnostics.ReportUnexpectedKeyword(Current.Span, Current);
-            }
-
-            return null;
         }
 
         private IEnumerable<SyntaxNode> ParseMembers()
@@ -408,55 +239,6 @@ namespace Geten.Parsers.Script
             MatchToken(SyntaxKind.EndToken);
 
             return result;
-        }
-
-        private SyntaxNode ParseRecipe()
-        {
-            var recipeKeywordToken = MatchKeyword("recipe");
-            var nameToken = MatchToken(SyntaxKind.String);
-            var willKeywordToken = MatchKeyword("will");
-            var craftKeywordToken = MatchKeyword("craft");
-            var quantityToken = MatchToken(SyntaxKind.Number);
-            var ofKeywordToken = MatchKeyword("of");
-            var ouputToken = MatchToken(SyntaxKind.String);
-            //ToDo: parse ingredients
-            var endToken = MatchToken(SyntaxKind.EndToken);
-
-            return new RecipeDefinitionNode(recipeKeywordToken, nameToken, willKeywordToken, craftKeywordToken, quantityToken, ofKeywordToken, ouputToken, endToken);
-        }
-
-        private SyntaxNode ParseRecipeBook()
-        {
-            var recipeKeyword = MatchKeyword("recipebook");
-            var name = MatchToken(SyntaxKind.String);
-            var members = ParseRecipes();
-
-            if (!members.Any())
-            {
-                Diagnostics.ReportNoRecipesInBook(name.Span, name.Value.ToString());
-            }
-
-            var endToken = MatchToken(SyntaxKind.EndToken);
-
-            return new RecipeBookDefinition(recipeKeyword, name, members, endToken); //ToDo: add members to recipebook
-        }
-
-        private BlockNode ParseRecipes()
-        {
-            var recipes = new List<SyntaxNode>();
-
-            while (Current.Kind != SyntaxKind.EOF && Current.Kind != SyntaxKind.EndToken)
-            {
-                var startToken = Current;
-                var member = ParseRecipe();
-
-                recipes.Add(member);
-
-                if (Current == startToken)
-                    NextToken();
-            }
-
-            return new BlockNode(recipes);
         }
 
         private SyntaxNode ParseRemove()

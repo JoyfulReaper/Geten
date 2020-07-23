@@ -155,12 +155,10 @@ loop until isLocked
 end
 
 recipebook "main"
-
     recipe "great stuff" will craft 1 of "torch"
-        ingrediants 
+        ingredients 
            3 of "wood" and
            1 of "stick"
         end
     end
-
 end
