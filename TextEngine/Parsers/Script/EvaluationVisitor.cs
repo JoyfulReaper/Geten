@@ -134,7 +134,7 @@ namespace Geten.Parsers.Script
                 // Add to NPC inventory
                 TextEngine.GetNPC(location).Inventory.AddItem(item, quantity);
             }
-            else if(SymbolTable.Contains(location))
+            else if (SymbolTable.Contains(location))
             {
                 SymbolTable.GetInstance<ContainerItem>(location).Inventory.AddItem(item, quantity);
             }
@@ -204,7 +204,7 @@ namespace Geten.Parsers.Script
 
         public void Visit(TellNode node)
         {
-            throw new NotImplementedException();
+            TextEngine.AddMessage(node.MessageToken.Value.ToString());
         }
 
         public void Visit(WeaponDefinitionNode node)
@@ -212,8 +212,52 @@ namespace Geten.Parsers.Script
             throw new NotImplementedException();
         }
 
+        private void ChangeQuantity<T>(T node) where T : ChangeQuantityNode
+        {
+            bool increase = node.GetType() == typeof(IncreaseNode);
+            var target = node.Target.Text?.ToString();
+            var amount = (int)node.Amount.Value;
+            var instance = node.Instance.Value?.ToString();
+
+            switch (target)
+            {
+                case "health":
+                    if (instance == "player")
+                    {
+                        if (increase)
+                        {
+                            TextEngine.Player.Health += amount;
+                        }
+                        else
+                        {
+                            TextEngine.Player.Health -= amount;
+                        }
+                    }
+                    else
+                    {
+                        var instanceTarget = TextEngine.GetNPC(instance);
+                        if (instanceTarget != null)
+                        {
+                            if (increase)
+                                instanceTarget.Health += amount;
+                            else
+                                instanceTarget.Health -= amount;
+                        }
+                        else
+                        {
+                            Diagnostics.ReportBadNPC(instance);
+                        }
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private void Targeted<T>(T node)
-            where T : TargetedNode
+                    where T : TargetedNode
         {
             var addWhat = node.Argument?.ToString();
             var name = node.Name.Value?.ToString();
@@ -263,48 +307,6 @@ namespace Geten.Parsers.Script
                         Diagnostics.ReportBadTargetInventory(target);
                     }
                 }
-            }
-        }
-
-        private void ChangeQuantity<T>(T node)                                                                                                            where T : ChangeQuantityNode
-        {
-            bool increase = node.GetType() == typeof(IncreaseNode);
-            var target = node.Target.Text?.ToString();
-            var amount = (int)node.Amount.Value;
-            var instance = node.Instance.Value?.ToString();
-
-            switch (target)
-            {
-                case "health":
-                    if (instance == "player")
-                    {
-                        if (increase)
-                        {
-                            TextEngine.Player.Health += amount;
-                        }
-                        else
-                        {
-                            TextEngine.Player.Health -= amount;
-                        }
-                    } else
-                    {
-                        var instanceTarget = TextEngine.GetNPC(instance);
-                        if(instanceTarget != null)
-                        {
-                            if (increase)
-                                instanceTarget.Health += amount;
-                            else
-                                instanceTarget.Health -= amount;
-                        } else
-                        {
-                            Diagnostics.ReportBadNPC(instance);
-                        } 
-                    }
-
-                    break;
-
-                default:
-                    break;
             }
         }
     }
