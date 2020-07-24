@@ -36,7 +36,7 @@ namespace LibraryTests
                 ["iron"] = 3
             };
 
-            recipe = new Recipe("best sword ever", Recipe.RecipeType.Equipment, ingredients, new Item("iron_sword"));
+            recipe = new Recipe("best sword ever", ingredients, new Item("iron_sword"));
 
             book.Add(recipe);
         }

@@ -73,8 +73,6 @@ namespace Geten
         /// </summary>
         public int Count { get; private set; }
 
-        ////////////////////////////////////////////////////////////////////////
-
         /// <summary>
         /// Adds an item to the inventory
         /// </summary>
@@ -98,6 +96,7 @@ namespace Geten
             Count += quantity;
         }
 
+        ////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Add Item to Inventory
         /// </summary>
@@ -108,6 +107,8 @@ namespace Geten
         {
             throw new NotImplementedException("Later, when we can load items from files, I promise!");
         }
+
+        public Dictionary<Item, int> GetAll() => items;
 
         /// <summary>
         ///
