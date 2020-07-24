@@ -54,6 +54,9 @@ namespace Geten.Parsers.Script
                     ReadVariableSymbol();
                     break;
 
+                case '[': { _kind = SyntaxKind.OpenSquare; break; }
+                case ']': { _kind = SyntaxKind.CloseSquare; break; }
+
                 case '0':
                 case '1':
                 case '2':

@@ -30,5 +30,7 @@
         EndToken,
         Boolean,
         Symbol,
+        OpenSquare,
+        CloseSquare,
     }
 }
