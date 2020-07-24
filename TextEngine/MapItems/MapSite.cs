@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.Core;
 using Geten.GameObjects;
 
 namespace Geten.MapItems
@@ -29,12 +30,11 @@ namespace Geten.MapItems
     /// <summary>
     /// Represents a "site" on the "map" can be a Room, Wall, Exit, Floor, Roof, etc which can be entered (or not)
     /// </summary>
-    public abstract class MapSite
+    public abstract class MapSite : GameObject
     {
-        /// <summary>
-        /// The name of the MapSite
-        /// </summary>
-        public string Name { get; set; }
+        public MapSite() : base(null, null)
+        {
+        }
 
         /// <summary>
         /// Attempt to enter this MapSite

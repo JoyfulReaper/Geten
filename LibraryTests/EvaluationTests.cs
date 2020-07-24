@@ -1,5 +1,6 @@
 ﻿using Geten;
 using Geten.Core;
+using Geten.Factories;
 using Geten.GameObjects;
 using Geten.MapItems;
 using Geten.Parsers.Script;
@@ -14,101 +15,9 @@ namespace LibraryTests
     public class EvaluationTests
     {
         [TestMethod]
-        public void Evaluate_Increase_Player_Health_Should_Pass()
-        {
-            var player = new Player("TestPlayer1", "He likes to test!", 90, 100);
-            TextEngine.Player = player;
-
-            var src = "increase health of 'player' by 10";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
-            AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.Player.Health == 100);
-        }
-
-        [TestMethod]
-        public void Evaluate_Increase_NPC_Health_Should_Pass()
-        {
-            var npc = new NPC("TestNPC1", "He likes to test", 90, 100);
-            TextEngine.AddNPC(npc);
-
-            var src = "increase health of 'TestNPC1' by 10";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
-            AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.GetNPC("TestNPC1").Health == 100);
-        }
-
-        [TestMethod]
-        public void Evaluate_Decrease_Player_Health_Should_Pass()
-        {
-            var player = new Player("TestPlayer2", "He likes to test!", 90, 100);
-            TextEngine.Player = player;
-
-            var src = "decrease health of 'player' by 10";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
-            AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.Player.Health == 80);
-        }
-
-        [TestMethod]
-        public void Evaluate_Decrease_NPC_Health_Should_Pass()
-        {
-            var npc = new NPC("TestNPC2", "He likes to test", 90, 100);
-            TextEngine.AddNPC(npc);
-
-            var src = "decrease health of 'TestNPC2' by 10";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
-            AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.GetNPC("TestNPC2").Health == 80);
-        }
-
-        [TestMethod]
-        public void Evaluate_Decrease_Bad_NPC_Health_Should_Pass()
-        {
-            var src = "decrease health of 'NOTestNPC' by 10";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-            try
-            {
-                r.Accept(new EvaluationVisitor(p.Diagnostics));
-                AssertNoDiagnostics(p);
-            } catch (Exception e)
-            {
-                Assert.AreEqual(e.Message, "NPC 'NOTestNPC' is not valid");
-            }
-        }
-
-        [TestMethod]
         public void Evaluate_Add_Item_BadTarget_Should_Pass()
         {
             var src = "item 'Book' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'Book' to 'badTarget'";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-            try
-            {
-                r.Accept(new EvaluationVisitor(p.Diagnostics));
-                AssertNoDiagnostics(p);
-            } catch (Exception e)
-            {
-                Assert.AreEqual(e.Message, "Target 'badTarget' is not a valid Room, NPC or ContainerItem");
-            }
-        }
-
-        [TestMethod]
-        public void Evaluate_Remove_Item_BadTarget_Should_Pass()
-        {
-            var src = "item 'remBook' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'remBook' to 'badTarget'";
             var p = new ScriptParser();
             var r = p.Parse(src);
             try
@@ -139,28 +48,6 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        public void Evaluate_Remove_Item_From_ContainerItem_Should_Pass()
-        {
-            ContainerItem ci = new ContainerItem("Empty Bag", "It's empty", true, true);
-            SymbolTable.Add(ci.Name, ci);
-            string src = "item 'cookie2' with description 'chocolate chip' end end add item 'cookie2' to 'Empty Bag'";
-
-            ScriptParser p = new ScriptParser();
-            var res = p.Parse(src);
-            res.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            Assert.IsTrue(ci.Inventory.HasItem("cookie2"));
-
-            p = new ScriptParser();
-            res = p.Parse("remove item 'cookie2' from 'Empty Bag'");
-            res.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            Assert.IsFalse(ci.Inventory.HasItem("cookie2"));
-
-            AssertNoDiagnostics(p);
-        }
-
-        [TestMethod]
         public void Evaluate_Add_Item_to_NPC_Should_Pass()
         {
             NPC npc = new NPC("Some Guy", "He looks nice", 100, 100);
@@ -173,30 +60,6 @@ namespace LibraryTests
             res.Accept(new EvaluationVisitor(p.Diagnostics));
 
             Assert.IsTrue(npc.Inventory.HasItem("Bag of Chips"));
-
-            AssertNoDiagnostics(p);
-        }
-
-        [TestMethod]
-        public void Evaluate_Remove_Item_From_NPC_Should_Pass()
-        {
-            NPC npc = new NPC("Remove Guy", "He looks nice", 100, 100);
-            Item item = new Item("Empty Bag of Chips", "Just air.");
-            SymbolTable.Add(item.Name, item);
-            TextEngine.AddNPC(npc);
-            string src = "add item 'Empty Bag of Chips' to 'Remove Guy'";
-            ScriptParser p = new ScriptParser();
-            var res = p.Parse(src);
-            res.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            Assert.IsTrue(npc.Inventory.HasItem("Empty Bag of Chips"));
-
-            src = "remove item 'Empty Bag of Chips' from 'Remove Guy'";
-            p = new ScriptParser();
-            res = p.Parse(src);
-            res.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            Assert.IsFalse(npc.Inventory.HasItem("Empty Bag of Chips"));
 
             AssertNoDiagnostics(p);
         }
@@ -217,33 +80,6 @@ namespace LibraryTests
             pRes.Accept(new EvaluationVisitor(p.Diagnostics));
 
             Assert.IsTrue(r.Inventory.HasItem("sword"));
-
-            AssertNoDiagnostics(p);
-        }
-
-        [TestMethod]
-        public void Evaluate_Remove_Item_From_Room_Should_Pass()
-        {
-            Room r = new Room("Test Room2", "test2", "For testing!", "It looks boring :(");
-            Item s = new Weapon("toothpick", null, "It looks kind of dull...", 1, 2, true, true);
-
-            //TextEngine.Parsing.SymbolTable.Add(r.Name, r);
-            SymbolTable.Add(s.Name, s);
-            TextEngine.AddRoom(r);
-
-            var src = "add item 'toothpick' to 'test2'";
-            var p = new ScriptParser();
-            var pRes = p.Parse(src);
-            pRes.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            Assert.IsTrue(r.Inventory.HasItem("toothpick"));
-
-            src = "remove item 'toothpick' from 'test2'";
-            p = new ScriptParser();
-            pRes = p.Parse(src);
-            pRes.Accept(new EvaluationVisitor(p.Diagnostics));
-
-            Assert.IsFalse(r.Inventory.HasItem("toothpick"));
 
             AssertNoDiagnostics(p);
         }
@@ -282,6 +118,53 @@ namespace LibraryTests
         }
 
         [TestMethod]
+        public void Evaluate_Decrease_Bad_NPC_Health_Should_Pass()
+        {
+            var src = "decrease health of 'NOTestNPC' by 10";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            try
+            {
+                r.Accept(new EvaluationVisitor(p.Diagnostics));
+                AssertNoDiagnostics(p);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "NPC 'NOTestNPC' is not valid");
+            }
+        }
+
+        [TestMethod]
+        public void Evaluate_Decrease_NPC_Health_Should_Pass()
+        {
+            var npc = new NPC("TestNPC2", "He likes to test", 90, 100);
+            TextEngine.AddNPC(npc);
+
+            var src = "decrease health of 'TestNPC2' by 10";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            AssertNoDiagnostics(p);
+            Assert.IsTrue(Geten.TextEngine.GetNPC("TestNPC2").Health == 80);
+        }
+
+        [TestMethod]
+        public void Evaluate_Decrease_Player_Health_Should_Pass()
+        {
+            var player = new Player("TestPlayer2", "He likes to test!", 90, 100);
+            TextEngine.Player = player;
+
+            var src = "decrease health of 'player' by 10";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            AssertNoDiagnostics(p);
+            Assert.IsTrue(Geten.TextEngine.Player.Health == 80);
+        }
+
+        [TestMethod]
         public void Evaluate_Exit_Should_Pass()
         {
             Room kitchen = new Room("Kitchen", "kitchen");
@@ -316,26 +199,45 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        public void Evaluate_Item_Should_Pass()
+        public void Evaluate_Increase_NPC_Health_Should_Pass()
         {
-            var src = "item 'pencil' with pluralName 'pencils' and obtainable true and visible true and description 'you write with it' end end";
+            var npc = new NPC("TestNPC1", "He likes to test", 90, 100);
+            TextEngine.AddNPC(npc);
+
+            var src = "increase health of 'TestNPC1' by 10";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
 
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
+            Assert.IsTrue(Geten.TextEngine.GetNPC("TestNPC1").Health == 100);
         }
 
         [TestMethod]
-        public void Evaluate_Item_In_Room_Inv_Should_Pass()
+        public void Evaluate_Increase_Player_Health_Should_Pass()
         {
-            Room room = new Room("Item_In_Room", "In_Room_Inv");
-            TextEngine.AddRoom(room);
-            var src = "item 'roomPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'In_Room_Inv' end end";
+            var player = new Player("TestPlayer1", "He likes to test!", 90, 100);
+            TextEngine.Player = player;
+
+            var src = "increase health of 'player' by 10";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            AssertNoDiagnostics(p);
+            Assert.IsTrue(Geten.TextEngine.Player.Health == 100);
+        }
+
+        [TestMethod]
+        public void Evaluate_Item_In_ContainerItem_Inv_Should_Pass()
+        {
+            var ci = new ContainerItem("Item_In_CI", "For testing", true, false, 10);
+            SymbolTable.Add(ci.Name, ci);
+            var src = "item 'CIPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'Item_In_CI' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
-            Assert.IsTrue(TextEngine.GetRoom("In_Room_Inv").Inventory.HasItem("roomPen"));
+            Assert.IsTrue(SymbolTable.GetInstance<ContainerItem>("Item_In_CI").Inventory.HasItem("CIPen"));
             AssertNoDiagnostics(p);
         }
 
@@ -353,19 +255,6 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        public void Evaluate_Item_In_ContainerItem_Inv_Should_Pass()
-        {
-            var ci = new ContainerItem("Item_In_CI", "For testing", true, false, 10);
-            SymbolTable.Add(ci.Name, ci);
-            var src = "item 'CIPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'Item_In_CI' end end";
-            var p = new ScriptParser();
-            var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
-            Assert.IsTrue(SymbolTable.GetInstance<ContainerItem>("Item_In_CI").Inventory.HasItem("CIPen"));
-            AssertNoDiagnostics(p);
-        }
-
-        [TestMethod]
         public void Evaluate_Item_In_Player_Inv_Should_Pass()
         {
             Player pl = new Player("Fred");
@@ -379,12 +268,126 @@ namespace LibraryTests
         }
 
         [TestMethod]
+        public void Evaluate_Item_In_Room_Inv_Should_Pass()
+        {
+            Room room = new Room("Item_In_Room", "In_Room_Inv");
+            TextEngine.AddRoom(room);
+            var src = "item 'roomPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'In_Room_Inv' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            Assert.IsTrue(TextEngine.GetRoom("In_Room_Inv").Inventory.HasItem("roomPen"));
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Item_Should_Pass()
+        {
+            var src = "item 'pencil' with pluralName 'pencils' and obtainable true and visible true and description 'you write with it' end end";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
         public void Evaluate_Player_Should_Pass()
         {
             var src = "character \"Bob\" as player with health 100 and money 150 and description 'The Hero' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Remove_Item_BadTarget_Should_Pass()
+        {
+            var src = "item 'remBook' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'remBook' to 'badTarget'";
+            var p = new ScriptParser();
+            var r = p.Parse(src);
+            try
+            {
+                r.Accept(new EvaluationVisitor(p.Diagnostics));
+                AssertNoDiagnostics(p);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, "Target 'badTarget' is not a valid Room, NPC or ContainerItem");
+            }
+        }
+
+        [TestMethod]
+        public void Evaluate_Remove_Item_From_ContainerItem_Should_Pass()
+        {
+            ContainerItem ci = new ContainerItem("Empty Bag", "It's empty", true, true);
+            SymbolTable.Add(ci.Name, ci);
+            string src = "item 'cookie2' with description 'chocolate chip' end end add item 'cookie2' to 'Empty Bag'";
+
+            ScriptParser p = new ScriptParser();
+            var res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(ci.Inventory.HasItem("cookie2"));
+
+            p = new ScriptParser();
+            res = p.Parse("remove item 'cookie2' from 'Empty Bag'");
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsFalse(ci.Inventory.HasItem("cookie2"));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Remove_Item_From_NPC_Should_Pass()
+        {
+            NPC npc = new NPC("Remove Guy", "He looks nice", 100, 100);
+            Item item = new Item("Empty Bag of Chips", "Just air.");
+            SymbolTable.Add(item.Name, item);
+            TextEngine.AddNPC(npc);
+            string src = "add item 'Empty Bag of Chips' to 'Remove Guy'";
+            ScriptParser p = new ScriptParser();
+            var res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(npc.Inventory.HasItem("Empty Bag of Chips"));
+
+            src = "remove item 'Empty Bag of Chips' from 'Remove Guy'";
+            p = new ScriptParser();
+            res = p.Parse(src);
+            res.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsFalse(npc.Inventory.HasItem("Empty Bag of Chips"));
+
+            AssertNoDiagnostics(p);
+        }
+
+        [TestMethod]
+        public void Evaluate_Remove_Item_From_Room_Should_Pass()
+        {
+            Room r = new Room("Test Room2", "test2", "For testing!", "It looks boring :(");
+            Item s = new Weapon("toothpick", null, "It looks kind of dull...", 1, 2, true, true);
+
+            //TextEngine.Parsing.SymbolTable.Add(r.Name, r);
+            SymbolTable.Add(s.Name, s);
+            TextEngine.AddRoom(r);
+
+            var src = "add item 'toothpick' to 'test2'";
+            var p = new ScriptParser();
+            var pRes = p.Parse(src);
+            pRes.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsTrue(r.Inventory.HasItem("toothpick"));
+
+            src = "remove item 'toothpick' from 'test2'";
+            p = new ScriptParser();
+            pRes = p.Parse(src);
+            pRes.Accept(new EvaluationVisitor(p.Diagnostics));
+
+            Assert.IsFalse(r.Inventory.HasItem("toothpick"));
 
             AssertNoDiagnostics(p);
         }
@@ -405,6 +408,15 @@ namespace LibraryTests
 
             Assert.IsTrue(TextEngine.RoomExists("DiningRoom"));
             AssertNoDiagnostics(p);
+        }
+
+        [TestInitialize]
+        public void Init()
+        {
+            if (!ObjectFactory.IsRegisteredFor<GameObject>())
+            {
+                ObjectFactory.Register<GameObjectFactory, GameObject>();
+            }
         }
 
         private void AssertNoDiagnostics(ScriptParser parser)

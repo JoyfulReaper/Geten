@@ -1,6 +1,7 @@
 ﻿using Geten.Core;
 using Geten.Core.Crafting;
 using Geten.Core.Parsing.Diagnostics;
+using Geten.Factories;
 using Geten.GameObjects;
 using Geten.MapItems;
 using Geten.Parsers.Script.Syntax;
@@ -174,7 +175,8 @@ namespace Geten.Parsers.Script
             var lookDesc = node.Properties["lookDescription"]?.ToString();
             var startRoom = (bool)(node.Properties["startLocation"] ?? false);
 
-            Room r = new Room(name, shortName, desc, lookDesc);
+            var r = GameObject.Create<Room>(name, shortName, desc, lookDesc);
+            //Room r = new Room(name, shortName, desc, lookDesc);
             //SymbolTable.Add(name, r); //TextEngine.AddRoom does this
             TextEngine.AddRoom(r);
             if (startRoom)

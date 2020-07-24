@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Geten.Core;
+using Geten.Factories;
 using Geten.GameObjects;
 using Geten.MapItems;
 using Geten.Parsers.Script;
@@ -35,6 +36,9 @@ namespace Geten
     {
         private static void Main(string[] args)
         {
+            //needed to create new instances of all kind of gameobjects
+            ObjectFactory.Register<GameObjectFactory, GameObject>();
+
             Directory.SetCurrentDirectory(@"..\..\..\SampleGame");
             Console.WriteLine(Directory.GetCurrentDirectory());
             ShowIntro();
