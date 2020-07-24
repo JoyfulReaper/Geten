@@ -6,7 +6,8 @@ namespace Geten.Core.Crafting
     {
         public Ingredients Add(string name, int quantity = 1)
         {
-            this.Add(name, quantity);
+            //this.Add(name, quantity);
+            base.Add(name, quantity);
 
             return this;
         }

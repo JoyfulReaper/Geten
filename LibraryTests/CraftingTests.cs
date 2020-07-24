@@ -24,8 +24,10 @@ namespace LibraryTests
         public void Init()
         {
             inventory = new Inventory(10);
-            inventory.AddItem("wood", 5);
-            inventory.AddItem("iron", 4);
+            //inventory.AddItem("wood", 5);
+            //inventory.AddItem("iron", 4);
+            inventory.AddItem(new Item("wood", null, null, true, true), 5);
+            inventory.AddItem(new Item("iron", null, null, true, true), 4);
 
             book = new RecipeBook("test");
             var ingredients = new Ingredients

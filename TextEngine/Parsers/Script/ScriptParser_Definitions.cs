@@ -1,5 +1,7 @@
-﻿using Geten.Core.Parsing;
+﻿using Geten.Core.Crafting;
+using Geten.Core.Parsing;
 using Geten.Parsers.Script.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,6 +44,30 @@ namespace Geten.Parsers.Script
             var endToken = MatchToken(SyntaxKind.EndToken);
 
             return new RecipeDefinitionNode(recipeKeywordToken, nameToken, willKeywordToken, craftKeywordToken, quantityToken, ofKeywordToken, ouputToken, endToken);
+        }
+
+        private SyntaxNode ParseIngredients()
+        {
+            var result = new Ingredients();
+            bool parseNextIngredient = true;
+            var ingredientsKeyword = MatchKeyword("ingredients");
+            while(parseNextIngredient &&
+                Current.Kind != SyntaxKind.EndToken &&
+                Current.Kind != SyntaxKind.EOF)
+            { 
+                var numberRequired = MatchToken(SyntaxKind.Number);
+                var ofKeyword = MatchKeyword("of");
+                var itemRequire = MatchToken(SyntaxKind.String);
+
+                result.Add(itemRequire.Text, (int)numberRequired.Value);
+
+                if (!AcceptKeyword("and", out var andToken))
+                {
+                    parseNextIngredient = false;
+                    MatchToken(SyntaxKind.EndToken);
+                }
+            }
+            return new IngredientNode(result);
         }
 
         private SyntaxNode ParseRecipeBook()
