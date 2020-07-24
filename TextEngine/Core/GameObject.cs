@@ -1,4 +1,4 @@
-﻿using Geten.Parsers.Script.Syntax;
+using Geten.Parsers.Script.Syntax;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -33,6 +33,15 @@ namespace Geten.Core
                                             where T : GameObject
         {
             return ObjectFactory.Create<T>(args);
+        }
+
+        public static T Create<T>(PropertyList props)
+                                            where T : GameObject
+        {
+            var instance = ObjectFactory.Create<T>();
+            instance.MatchPropertyList(props);
+
+            return instance;
         }
 
         public void Add(string name, object value)
