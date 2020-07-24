@@ -32,22 +32,6 @@ namespace Geten.Parsers.Script
             return new CharacterDefinitionNode(characterKeyword, name, asKeyword, asWhat, withToken, properties);
         }
 
-        private SyntaxNode ParseRecipe()
-        {
-            var recipeKeywordToken = MatchKeyword("recipe");
-            var nameToken = MatchToken(SyntaxKind.String);
-            var willKeywordToken = MatchKeyword("will");
-            var craftKeywordToken = MatchKeyword("craft");
-            var quantityToken = MatchToken(SyntaxKind.Number);
-            var ofKeywordToken = MatchKeyword("of");
-            var ouputToken = MatchToken(SyntaxKind.String);
-
-            var ingredients = ParseIngredients(); //ToDo: parse ingredients
-            var endToken = MatchToken(SyntaxKind.EndToken);
-
-            return new RecipeDefinitionNode(recipeKeywordToken, nameToken, willKeywordToken, craftKeywordToken, quantityToken, ofKeywordToken, ouputToken, ingredients, endToken);
-        }
-
         private Ingredients ParseIngredients()
         {
             var result = new Ingredients();
@@ -57,10 +41,10 @@ namespace Geten.Parsers.Script
             if (ingredientsKeyword.Text != "ingredients")
                 Diagnostics.ReportUnexpectedKeyword(Current.Span, ingredientsKeyword, "ingredients");
 
-            while(parseNextIngredient &&
+            while (parseNextIngredient &&
                 Current.Kind != SyntaxKind.EndToken &&
                 Current.Kind != SyntaxKind.EOF)
-            { 
+            {
                 var numberRequired = MatchToken(SyntaxKind.Number);
                 var ofKeyword = MatchKeyword("of");
                 var itemRequire = MatchToken(SyntaxKind.String);
@@ -74,6 +58,22 @@ namespace Geten.Parsers.Script
                 }
             }
             return result;
+        }
+
+        private SyntaxNode ParseRecipe()
+        {
+            var recipeKeywordToken = MatchKeyword("recipe");
+            var nameToken = MatchToken(SyntaxKind.String);
+            var willKeywordToken = MatchKeyword("will");
+            var craftKeywordToken = MatchKeyword("craft");
+            var quantityToken = MatchToken(SyntaxKind.Number);
+            var ofKeywordToken = MatchKeyword("of");
+            var ouputToken = MatchToken(SyntaxKind.String);
+
+            var ingredients = ParseIngredients();
+            var endToken = MatchToken(SyntaxKind.EndToken);
+
+            return new RecipeDefinitionNode(recipeKeywordToken, nameToken, willKeywordToken, craftKeywordToken, quantityToken, ofKeywordToken, ouputToken, ingredients, endToken);
         }
 
         private SyntaxNode ParseRecipeBook()

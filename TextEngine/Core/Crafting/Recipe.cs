@@ -10,23 +10,18 @@ namespace Geten.Core.Crafting
         {
         }
 
-        public Recipe(string name, RecipeType recipeType, Ingredients ingredients, Item output)
+        public Recipe(string name, Ingredients ingredients, Item output)
         {
             this.Name = name;
-            this.Type = recipeType;
             this.Ingredients = ingredients;
             this.Items = output;
         }
-
-        public enum RecipeType { Equipment, Consumable, Upgrade };
 
         public Ingredients Ingredients { get; set; }
 
         public Item Items { get; set; }
 
         public string Name { get; set; }
-
-        public RecipeType Type { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -37,7 +32,7 @@ namespace Geten.Core.Crafting
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Name, Type, Ingredients, Items);
+            return HashCode.Combine(Name, Ingredients, Items);
         }
     }
 }

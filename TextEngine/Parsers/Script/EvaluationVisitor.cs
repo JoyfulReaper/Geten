@@ -219,7 +219,7 @@ namespace Geten.Parsers.Script
 
             foreach (RecipeDefinitionNode r in node.Recipes)
             {
-                var recipe = new Recipe(r.NameToken.Value.ToString(), Recipe.RecipeType.Equipment, null, SymbolTable.GetInstance<Item>(r.OuputToken.Value.ToString())); //ToDo: need a way in script to determine recipetype
+                var recipe = new Recipe(r.NameToken.Value.ToString(), r.Ingredients, SymbolTable.GetInstance<Item>(r.OuputToken.Value.ToString()));
                 rb.Add(recipe);
             }
 
