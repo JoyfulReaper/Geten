@@ -29,6 +29,12 @@ namespace Geten.Core
 
         public int PropertyCount => _properties.Count;
 
+        public static T Create<T>(params object[] args)
+                                            where T : GameObject
+        {
+            return ObjectFactory.Create<T>(args);
+        }
+
         public void Add(string name, object value)
         {
             SetProperty(name, value);
