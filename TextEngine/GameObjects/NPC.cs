@@ -34,6 +34,10 @@ namespace Geten.GameObjects
             CanAttack = canAttack;
         }
 
+        public NPC()
+        {
+        }
+
         /// <summary>
         /// Determine if an NPC can be Attacked
         /// </summary>

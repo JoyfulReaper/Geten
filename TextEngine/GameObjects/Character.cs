@@ -33,10 +33,6 @@ namespace Geten.GameObjects
     /// </summary>
     public abstract class Character : GameObject
     {
-        private int health;
-
-        private int maxHealth;
-
         /// <summary>
         /// Constructs a Character
         /// </summary>
@@ -49,7 +45,13 @@ namespace Geten.GameObjects
         {
             Health = health;
             MaxHealth = maxHealth;
-            Description = desc;
+            CharacterMoney = new Money(null, 0);
+            Inventory = new Inventory();
+        }
+
+        public Character()
+            : base(null, null)
+        {
             CharacterMoney = new Money(null, 0);
             Inventory = new Inventory();
         }
@@ -64,15 +66,15 @@ namespace Geten.GameObjects
         /// </summary>
         public virtual int Health
         {
-            get => health;
+            get => GetProperty<int>(nameof(Health));
             set
             {
                 if (value < 0)
-                    health = 0;
-                else if (health > MaxHealth)
-                    health = MaxHealth;
+                    SetProperty(nameof(Health), 0);
+                else if (GetProperty<int>(nameof(Health)) > MaxHealth)
+                    SetProperty(nameof(Health), MaxHealth);
                 else
-                    health = value;
+                    SetProperty(nameof(Health), value);
             }
         }
 
@@ -91,12 +93,12 @@ namespace Geten.GameObjects
         /// </summary>
         public int MaxHealth
         {
-            get => maxHealth;
+            get => GetProperty<int>(nameof(MaxHealth));
             set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException("MaxHealth must be > 0");
-                maxHealth = value;
+                SetProperty(nameof(MaxHealth), value);
             }
         }
 

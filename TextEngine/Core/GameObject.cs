@@ -1,4 +1,4 @@
-using Geten.Parsers.Script.Syntax;
+﻿using Geten.Parsers.Script.Syntax;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -56,17 +56,12 @@ namespace Geten.Core
 
         public T GetProperty<T>(string name)
         {
-            return (T)GetProperty(name);
-        }
-
-        public object GetProperty(string name)
-        {
             if (_properties.ContainsKey(name))
             {
-                return _properties[name];
+                return (T)_properties[name];
             }
 
-            return null;
+            return default;
         }
 
         public void MatchPropertyList(PropertyList list)
