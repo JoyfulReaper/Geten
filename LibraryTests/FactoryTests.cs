@@ -21,6 +21,14 @@ namespace LibraryTests
             var item = ObjectFactory.Create<int>(12);
         }
 
+        [TestMethod]
+        public void GetFactoryOf_Should_Pass()
+        {
+            var f = ObjectFactory.GetFactoryOf<Item>();
+
+            Assert.IsTrue(f is GameObjectFactory);
+        }
+
         [TestInitialize]
         public void Init()
         {
