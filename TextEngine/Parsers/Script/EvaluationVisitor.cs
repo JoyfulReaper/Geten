@@ -43,7 +43,7 @@ namespace Geten.Parsers.Script
 
             if (asWhat == "player") // It's the player
             {
-                Player player = new Player(name, description, health, maxHealth);
+                var player = GameObject.Create<Player>(name, description, health, maxHealth);
                 player.Inventory.Capacity = inventorySize;
                 TextEngine.Player = player;
 
@@ -51,7 +51,7 @@ namespace Geten.Parsers.Script
             }
             else if (asWhat == "npc") // It's an NPC
             {
-                NPC npc = new NPC(name, description, maxHealth, health);
+                var npc = GameObject.Create<NPC>(node.Properties);
                 npc.Inventory.Capacity = inventorySize;
                 TextEngine.AddNPC(npc);
 
@@ -109,11 +109,11 @@ namespace Geten.Parsers.Script
             if (container)
             {
                 var capacity = (int)(node.Properties["inventorySize"] ?? 0);
-                item = new ContainerItem(name, pluralName, desc, visible, obtainable, capacity);
+                item = GameObject.Create<ContainerItem>(name, pluralName, desc, visible, obtainable, capacity);
             }
             else
             {
-                item = new Item(name, pluralName, desc, visible, obtainable);
+                item = GameObject.Create<Item>(name, pluralName, desc, visible, obtainable);
             }
 
             SymbolTable.Add(name, item);
@@ -176,7 +176,6 @@ namespace Geten.Parsers.Script
             var startRoom = (bool)(node.Properties["startLocation"] ?? false);
 
             var r = GameObject.Create<Room>(name, shortName, desc, lookDesc);
-            //Room r = new Room(name, shortName, desc, lookDesc);
             //SymbolTable.Add(name, r); //TextEngine.AddRoom does this
             TextEngine.AddRoom(r);
             if (startRoom)
@@ -196,7 +195,7 @@ namespace Geten.Parsers.Script
             Room to = TextEngine.GetRoom(toRoom);
             Room from = TextEngine.GetRoom(fromRoom);
 
-            Exit exit = new Exit(name, to, locked, visible);
+            var exit = GameObject.Create<Exit>(name, to, locked, visible);
             from.SetSide(dirSide, exit);
         }
 
@@ -217,7 +216,7 @@ namespace Geten.Parsers.Script
 
         public void Visit(RecipeBookDefinition node)
         {
-            var rb = new RecipeBook(node.NameToken.Value.ToString());
+            var rb = ObjectFactory.Create<RecipeBook>(node.NameToken.Value.ToString());
 
             foreach (RecipeDefinitionNode r in node.Recipes)
             {
