@@ -1,11 +1,20 @@
-﻿namespace Geten.Commands
+﻿using ConsoleTables;
+
+namespace Geten.Commands
 {
     internal class ShowInventoryCommand : ITextCommand
     {
         public void Invoke()
         {
             var inv = TextEngine.Player.Inventory;
-            //ToDo: show inventory in a table
+            var table = new ConsoleTable("Item", "Quantity");
+
+            foreach (var item in inv.GetAll())
+            {
+                table.AddRow(item.Key.Name, item.Value);
+            }
+
+            table.Write();
         }
     }
 }

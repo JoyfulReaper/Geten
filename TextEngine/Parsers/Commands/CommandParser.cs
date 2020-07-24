@@ -74,7 +74,14 @@ namespace Geten.Parsers.Commands
 
         private ITextCommand ParseShowCommand()
         {
-            return new ShowInventoryCommand();
+            var arg = MatchToken(CommandKind.Identifier);
+
+            if (arg.Text == "inventory")
+            {
+                return new ShowInventoryCommand();
+            }
+
+            return null;
         }
     }
 }

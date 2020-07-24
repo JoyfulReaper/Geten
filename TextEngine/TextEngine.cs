@@ -251,6 +251,7 @@ namespace Geten
                 "look",
                 "pickup",
                 "take",
+                "show",
             };
 
             return cmds.Contains(name.ToLower());
