@@ -1,13 +1,13 @@
 ﻿using Geten.Parsers.Script.Syntax;
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace Geten.Core
 {
     public abstract class GameObject : IEnumerable
     {
         //property bag for mutable properties by script
-        private readonly Dictionary<CaseInsensitiveString, object> _properties = new Dictionary<CaseInsensitiveString, object>();
+        private readonly ConcurrentDictionary<CaseInsensitiveString, object> _properties = new ConcurrentDictionary<CaseInsensitiveString, object>();
 
         public GameObject(string name, string descr)
         {
@@ -80,7 +80,7 @@ namespace Geten.Core
             }
             else
             {
-                _properties.Add(name, value);
+                _properties.TryAdd(name, value);
             }
         }
     }
