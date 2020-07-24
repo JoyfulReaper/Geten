@@ -28,6 +28,9 @@ namespace Geten.Parsers.Commands
                     case "quit":
                         return ParseQuit();
 
+                    case "show":
+                        return ParseShowCommand();
+
                     default:
                         return null;
                 }
@@ -67,6 +70,11 @@ namespace Geten.Parsers.Commands
         private ITextCommand ParseQuit()
         {
             return new QuitCommand();
+        }
+
+        private ITextCommand ParseShowCommand()
+        {
+            return new ShowInventoryCommand();
         }
     }
 }
