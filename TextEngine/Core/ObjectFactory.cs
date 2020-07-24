@@ -20,7 +20,7 @@ namespace Geten.Core
             throw new ObjectFactoryException($"No Factory registered for Type '{type}'");
         }
 
-        public static IObjectFactory? GetFactoryOf<T>()
+        public static IObjectFactory GetFactoryOf<T>()
         {
             var baseType = GetBaseType<T>();
             if (_factories.ContainsKey(baseType))
@@ -29,6 +29,12 @@ namespace Geten.Core
             }
 
             return null;
+        }
+
+        public static UFactory GetFactoryOf<T, UFactory>()
+            where UFactory : IObjectFactory
+        {
+            return (UFactory)GetFactoryOf<T>();
         }
 
         public static bool IsRegisteredFor<TObject>()
