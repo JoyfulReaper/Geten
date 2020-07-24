@@ -11,7 +11,7 @@ namespace Geten.Parsers.Script
         void Visit(CharacterDefinitionNode node);
 
         void Visit(AskForInputNode node);
-        void Visit(IngredientNode ingredientNode);
+
         void Visit(CommandNode node);
 
         void Visit(DecreaseNode node);

@@ -4,7 +4,7 @@ namespace Geten.Core.Crafting
 {
     public class Ingredients : Dictionary<string, int>
     {
-        public Ingredients Add(string name, int quantity = 1)
+        public Ingredients Add(string name, int quantity = 1) // Is this needed?
         {
             //this.Add(name, quantity);
             base.Add(name, quantity);

@@ -1,8 +1,10 @@
 ﻿using Geten.Core.Crafting;
 using Geten.Core.Parsing;
+using Geten.Core.Parsing.Diagnostics;
 using Geten.Parsers.Script.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Geten.Parsers.Script
@@ -40,17 +42,21 @@ namespace Geten.Parsers.Script
             var ofKeywordToken = MatchKeyword("of");
             var ouputToken = MatchToken(SyntaxKind.String);
 
-            var ingrediants = ParseIngredients(); //ToDo: parse ingredients
+            var ingredients = ParseIngredients(); //ToDo: parse ingredients
             var endToken = MatchToken(SyntaxKind.EndToken);
 
-            return new RecipeDefinitionNode(recipeKeywordToken, nameToken, willKeywordToken, craftKeywordToken, quantityToken, ofKeywordToken, ouputToken, endToken);
+            return new RecipeDefinitionNode(recipeKeywordToken, nameToken, willKeywordToken, craftKeywordToken, quantityToken, ofKeywordToken, ouputToken, ingredients, endToken);
         }
 
-        private SyntaxNode ParseIngredients()
+        private Ingredients ParseIngredients()
         {
             var result = new Ingredients();
             bool parseNextIngredient = true;
-            var ingredientsKeyword = MatchKeyword("ingredients");
+            var ingredientsKeyword = MatchToken(SyntaxKind.Keyword);
+
+            if (ingredientsKeyword.Text != "ingredients")
+                Diagnostics.ReportUnexpectedKeyword(Current.Span, ingredientsKeyword, "ingredients");
+
             while(parseNextIngredient &&
                 Current.Kind != SyntaxKind.EndToken &&
                 Current.Kind != SyntaxKind.EOF)
@@ -67,7 +73,7 @@ namespace Geten.Parsers.Script
                     MatchToken(SyntaxKind.EndToken);
                 }
             }
-            return new IngredientNode(result);
+            return result;
         }
 
         private SyntaxNode ParseRecipeBook()

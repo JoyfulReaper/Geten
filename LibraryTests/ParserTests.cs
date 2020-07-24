@@ -221,9 +221,11 @@ namespace LibraryTests
             var src =
             @"recipebook ""armory""
                 recipe ""test"" will craft 1 of ""helm""
-
+                    ingredients
+                        3 of ""iron""
+                    end
                 end
-            end"; //ToDo: add ingredients to test script
+            end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
 

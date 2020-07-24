@@ -231,11 +231,6 @@ namespace Geten.Parsers.Script
             throw new NotImplementedException();
         }
 
-        public void Visit(IngredientNode ingredientNode)
-        {
-            throw new NotImplementedException();
-        }
-
         private void ChangeQuantity<T>(T node) where T : ChangeQuantityNode
         {
             bool increase = node.GetType() == typeof(IncreaseNode);

@@ -1,10 +1,11 @@
-﻿using Geten.Core.Parsing;
+﻿using Geten.Core.Crafting;
+using Geten.Core.Parsing;
 
 namespace Geten.Parsers.Script.Syntax
 {
     public class RecipeDefinitionNode : SyntaxNode
     {
-        public RecipeDefinitionNode(Token<SyntaxKind> recipeKeywordToken, Token<SyntaxKind> nameToken, Token<SyntaxKind> willKeywordToken, Token<SyntaxKind> craftKeywordToken, Token<SyntaxKind> quantityToken, Token<SyntaxKind> ofKeywordToken, Token<SyntaxKind> ouputToken, Token<SyntaxKind> endToken)
+        public RecipeDefinitionNode(Token<SyntaxKind> recipeKeywordToken, Token<SyntaxKind> nameToken, Token<SyntaxKind> willKeywordToken, Token<SyntaxKind> craftKeywordToken, Token<SyntaxKind> quantityToken, Token<SyntaxKind> ofKeywordToken, Token<SyntaxKind> ouputToken, Ingredients ingredients, Token<SyntaxKind> endToken)
         {
             RecipeKeywordToken = recipeKeywordToken;
             NameToken = nameToken;
@@ -12,6 +13,7 @@ namespace Geten.Parsers.Script.Syntax
             CraftKeywordToken = craftKeywordToken;
             QuantityToken = quantityToken;
             OuputToken = ouputToken;
+            Ingredients = ingredients;
             EndToken = endToken;
         }
 
@@ -19,6 +21,7 @@ namespace Geten.Parsers.Script.Syntax
         public Token<SyntaxKind> EndToken { get; }
         public Token<SyntaxKind> NameToken { get; }
         public Token<SyntaxKind> OuputToken { get; }
+        public Ingredients Ingredients { get; }
         public Token<SyntaxKind> QuantityToken { get; }
         public Token<SyntaxKind> RecipeKeywordToken { get; }
         public Token<SyntaxKind> WillKeywordToken { get; }
