@@ -2,6 +2,7 @@
 using Geten.Core;
 using Geten.Core.Parsing;
 using Geten.Factories;
+using Geten.GameObjects;
 using Geten.MapItems;
 using Geten.Parsers.Script;
 using Geten.Parsers.Script.Syntax;
@@ -32,6 +33,15 @@ namespace LibraryTests
             var result = root.Descendants<CommandNode>();
 
             Assert.AreEqual(result.First().KeywordToken.Text.ToString(), "command");
+        }
+
+        [TestMethod]
+        public void SetDynamicProperty_On_GameObject_Should_Pass()
+        {
+            dynamic go = GameObject.Create<Item>();
+            go.isidiot = true;
+
+            Assert.AreEqual(go.isidiot, true);
         }
 
         [TestMethod]

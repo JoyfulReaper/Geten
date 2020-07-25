@@ -32,24 +32,11 @@ namespace Geten.MapItems
     /// </summary>
     public abstract class MapSite : GameObject
     {
-        public MapSite() : base(null, null)
-        {
-        }
-
         /// <summary>
         /// Attempt to enter this MapSite
         /// </summary>
         /// <param name="character">The Character that is entering the MapSite</param>
         /// <param name="heading">The Direction the Character is heading</param>
         public abstract void Enter(Character character, Direction heading);
-
-        /// <summary>
-        /// String representation of a MapSite
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return $"[{this.GetType().Name}] Name: {Name}";
-        }
     }
 }

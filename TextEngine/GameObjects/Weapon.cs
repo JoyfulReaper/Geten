@@ -31,34 +31,17 @@ namespace Geten.GameObjects
     /// </summary>
     public class Weapon : Item
     {
-        private int maxDamage;
-
-        private int minDamage;
-
-        public Weapon(string name, string pluralName, string desc, int minDamage, int maxDamage, bool visible, bool obtainable)
-                        : base(name, pluralName, desc, visible, obtainable)
-        {
-            MinDamage = minDamage;
-            MaxDamage = maxDamage;
-        }
-
-        /// <summary>
-        /// Construct a weapon
-        /// </summary>
-        /// <param name="name">The name of the weapon</param>
-        public Weapon(string name) : base(name) { }
-
         /// <summary>
         /// The maximum amount of Dmage a weapon is capable of inflicting
         /// </summary>
         public int MaxDamage
         {
-            get => maxDamage;
+            get => GetProperty<int>(nameof(MaxDamage));
             set
             {
                 if (value < 0)
                     throw (new ArgumentOutOfRangeException("MaxDamage must be >= 0"));
-                maxDamage = value;
+                SetProperty(nameof(MaxDamage), value);
             }
         }
 
@@ -67,12 +50,12 @@ namespace Geten.GameObjects
         /// </summary>
         public int MinDamage
         {
-            get => minDamage;
+            get => GetProperty<int>(nameof(MinDamage));
             set
             {
                 if (value < 0)
                     throw (new ArgumentOutOfRangeException("MinDamage must be >= 0"));
-                minDamage = value;
+                SetProperty(nameof(MinDamage), value);
             }
         }
     }

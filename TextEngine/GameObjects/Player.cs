@@ -29,13 +29,5 @@ namespace Geten.GameObjects
     /// </summary>
     public class Player : Character
     {
-        /// <summary>
-        /// Construct a playable character
-        /// </summary>
-        /// <param name="name">Player's name</param>
-        /// <param name="health">Staring health (any int > 0)</param>
-        /// <param name="maxHealth">Player's Maximum Health</param>
-        /// <param name="desc">The Character's description</param>
-        public Player(string name = "Player", string desc = "", int health = 100, int maxHealth = 100) : base(name, desc, health, maxHealth) { }
     }
 }
