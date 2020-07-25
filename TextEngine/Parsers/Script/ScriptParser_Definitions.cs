@@ -1,4 +1,5 @@
-﻿using Geten.Core.Crafting;
+﻿using Geten.Core;
+using Geten.Core.Crafting;
 using Geten.Core.Parsing;
 using Geten.Core.Parsing.Diagnostics;
 using Geten.Parsers.Script.Syntax;
@@ -15,21 +16,32 @@ namespace Geten.Parsers.Script
         {
             var characterKeyword = MatchKeyword("character");
             var name = MatchToken(SyntaxKind.String);
-            var asKeyword = MatchKeyword("as");
-            var asWhat = MatchToken(SyntaxKind.Keyword);
 
-            if (asWhat.Text != "npc" && asWhat.Text != "player")
+            Token<SyntaxKind> asKeyword = null;
+            Token<SyntaxKind> asWhat = null;
+
+            if (MatchNextKeyword("as"))
             {
-                // Log?
-                // thow exception?
-                Diagnostics.ReportUnexpectedKeyword(Current.Span, asWhat, "npc or player");
+                asKeyword = MatchKeyword("as");
+                asWhat = MatchToken(SyntaxKind.Keyword);
+
+                if (asWhat.Text != "npc" && asWhat.Text != "player")
+                {
+                    Diagnostics.ReportUnexpectedKeyword(Current.Span, asWhat, "npc or player");
+                }
+            }
+            else
+            {
+                asWhat = new Token<SyntaxKind>(SyntaxKind.Keyword, name.Position + 2, "npc", null);
             }
 
             var withToken = MatchKeyword("with");
             var properties = ParsePropertyList();
+            var optEvent = ParseOptionalEvent(); //ToDo:may allow multiple event subscriptions?
+
             var endToken = MatchToken(SyntaxKind.EndToken);
 
-            return new CharacterDefinitionNode(characterKeyword, name, asKeyword, asWhat, withToken, properties);
+            return new CharacterDefinitionNode(characterKeyword, name, asKeyword, asWhat, withToken, properties, optEvent);
         }
 
         private Ingredients ParseIngredients()
@@ -58,6 +70,16 @@ namespace Geten.Parsers.Script
                 }
             }
             return result;
+        }
+
+        private Optional<SyntaxNode> ParseOptionalEvent()
+        {
+            if (MatchCurrentKeyword("on"))
+            {
+                return Optional.Some(ParseEventSubscription());
+            }
+
+            return Optional.None<SyntaxNode>();
         }
 
         private SyntaxNode ParseRecipe()
