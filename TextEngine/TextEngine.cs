@@ -43,14 +43,7 @@ namespace Geten
     /// </summary>
     public static class TextEngine
     {
-        /// <summary>
-        /// List containing all rooms on the map
-        /// </summary>
-        private static readonly List<MapSite> map = new List<MapSite>();
-
         private static readonly Queue<string> messages = new Queue<string>();
-
-        private static readonly List<NPC> npcs = new List<NPC>();
 
         private static Player player = null;
 
@@ -86,7 +79,7 @@ namespace Geten
                 if (player == null)
                     throw new InvalidCharacterException("Player must be set before setting StartRoom");
 
-                if (map.Contains(value))
+                if (SymbolTable.Contains(value.Name))
                 {
                     startRoom = value;
                     Player.Location = startRoom;
@@ -94,7 +87,7 @@ namespace Geten
                 }
                 else
                 {
-                    throw new RoomDoesNotExisitException(value.ShortName + " has not been added to the map");
+                    throw new RoomDoesNotExisitException(value.Name + " has not been added to the map");
                 }
             }
         }
@@ -103,30 +96,6 @@ namespace Geten
 
         public static void AddMessage(string message) => messages.Enqueue(message);
 
-        public static void AddNPC(NPC npc)
-        {
-            SymbolTable.Add(npc.Name, npc);
-
-            if (NpcExists(npc)) // ToDo: Check should no longer be needed, replace holding npcs with SymbolTable
-                throw new ArgumentException($"NPC {npc.Name} has already been added");
-
-            npcs.Add(npc);
-        }
-
-        /// <summary>
-        /// Add a room to the map
-        /// </summary>
-        /// <param name="room">The room to add</param>
-        /// <returns>true on success, false on failure</returns>
-        public static void AddRoom(Room room)
-        {
-            SymbolTable.Add(room.ShortName, room);
-
-            if (RoomExists(room)) // Check should no longer be needed
-                throw new ArgumentException(room.ShortName + " already exisits in map");
-
-            map.Add(room);
-        }
 
         /// <summary>
         /// Get the name of a direction
@@ -169,14 +138,9 @@ namespace Geten
             }
         }
 
-        public static List<Room> GetAllRooms()
+        public static IEnumerable<Room> GetAllRooms()
         {
-            // Is there a one liner for this?
-            List<Room> result = new List<Room>();
-            var rooms = map.Where(_ => _ is Room);
-            foreach (var room in rooms)
-                result.Add((Room)room);
-            return result;
+            return SymbolTable.GetAll<Room>();
         }
 
         public static Direction GetDirectionFromChar(char c)
@@ -235,10 +199,6 @@ namespace Geten
 
         public static string GetMessage() => messages.Dequeue();
 
-        public static NPC GetNPC(string name) => npcs.Find(_ => _.Name == name);
-
-        public static Room GetRoom(string shortName) => (Room)map.Where(_ => _ is Room).FirstOrDefault(_ => ((Room)_).ShortName == shortName);
-
         //////////////////////////////////////////////////////////////////////////////////////////////////////
         public static bool HasMessage() => messages.Count > 0;
 
@@ -257,27 +217,11 @@ namespace Geten
             return cmds.Contains(name.ToLower());
         }
 
-        public static bool NpcExists(NPC npc) => npcs.Contains(npc);
-
-        public static bool NpcExists(string name) =>
-                    !npcs.Any(_ => _ is NPC && ((NPC)_).Name == name) ? false : true;
-
         public static void ProccessCommand(string command)
         {
             CommandProccessor.ProcessCommand(command);
         }
 
-        /// <summary>
-        /// Check if a room exists
-        /// </summary>
-        /// <param name="room">Room to check for</param>
-        /// <returns>true on success, false on failure</returns>
-        public static bool RoomExists(Room room) => map.Contains(room);
-
-        public static bool RoomExists(string shortName)
-        {
-            return !map.Any(_ => _ is Room && ((Room)_).ShortName == shortName) ? false : true;
-        }
 
         /// <summary>
         /// Preform any setup and prepare fot the game to begin
