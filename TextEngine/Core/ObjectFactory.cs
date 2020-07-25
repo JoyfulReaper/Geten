@@ -11,6 +11,12 @@ namespace Geten.Core
         public static T Create<T>(params object[] args)
         {
             var type = typeof(T);
+
+            if (type.IsAbstract)
+            {
+                throw new ObjectFactoryException($"Can't create instance of abstract class '{type}'");
+            }
+
             var baseType = GetBaseType<T>();
             if (_factories.ContainsKey(baseType))
             {
@@ -39,7 +45,7 @@ namespace Geten.Core
 
         public static bool IsRegisteredFor<TObject>()
         {
-            return _factories.ContainsKey(typeof(TObject));
+            return _factories.ContainsKey(GetBaseType<TObject>());
         }
 
         public static void Register<TFactory, UResult>()
