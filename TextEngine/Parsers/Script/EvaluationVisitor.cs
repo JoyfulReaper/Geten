@@ -35,27 +35,25 @@ namespace Geten.Parsers.Script
         {
             var asWhat = node.AsWhatToken.Text?.ToString();
             var name = node.NameToken.Value?.ToString();
-            var description = node.Properties["description"]?.ToString();
-            var maxHealth = (int)(node.Properties["maxHealth"] ?? 100);
-            var health = (int)(node.Properties["health"] ?? 100);
-            var inventorySize = (int)(node.Properties["inventorySize"] ?? 10);
-            var money = (int)(node.Properties["money"] ?? 0); // not used right now
+
+            Character character = null;
 
             if (asWhat == "player") // It's the player
             {
-                var player = GameObject.Create<Player>(name, description, health, maxHealth);
-                player.Inventory.Capacity = inventorySize;
-                TextEngine.Player = player;
+                character = GameObject.Create<Player>(name, node.Properties);
+
+                TextEngine.Player = (Player)character;
             }
             else if (asWhat == "npc") // It's an NPC
             {
-                var npc = GameObject.Create<NPC>(name, description, health, maxHealth);
-                npc.Inventory.Capacity = inventorySize;
+                character = GameObject.Create<NPC>(name, node.Properties);
             }
             else
             {
                 Diagnostics.ReportBadPlayerCharacter(name);
             }
+
+            character.Inventory.Capacity = character.GetProperty<int>("inventorysize");
         }
 
         public void Visit(AskForInputNode node)
@@ -90,48 +88,42 @@ namespace Geten.Parsers.Script
 
         public void Visit(ItemDefinitionNode node)
         {
-            // What about adding multiple items at one time? number property?
             var name = node.NameToken.Value?.ToString();
-            var pluralName = node.Properties["pluralName"]?.ToString(); // null is okay
-            var obtainable = (bool)(node.Properties["obtainable"] ?? true);
-            var visible = (bool)(node.Properties["visible"] ?? true);
-            var desc = node.Properties["description"]?.ToString();
-            var location = node.Properties["location"]?.ToString();
             var container = (bool)(node.Properties["container"] ?? false);
-            var quantity = (int)(node.Properties["quantity"] ?? 1);
 
             Item item;
             if (container)
             {
-                var capacity = (int)(node.Properties["inventorySize"] ?? 0);
-                item = GameObject.Create<ContainerItem>(name, pluralName, desc, visible, obtainable, capacity);
+                item = GameObject.Create<ContainerItem>(name, node.Properties);
             }
             else
             {
-                item = GameObject.Create<Item>(name, pluralName, desc, visible, obtainable);
+                item = GameObject.Create<Item>(name, node.Properties);
             }
 
-            if (location == null) // Just add it to the SymbolTable
+            dynamic i = item;
+
+            if (i.location == null)
                 return;
 
-            if (location == "player")
+            if (i.location == "player")
             {
                 // Add to player inventory
-                TextEngine.Player.Inventory.AddItem(item, quantity);
+                TextEngine.Player.Inventory.AddItem(item, i.quantity);
             }
-            else if (SymbolTable.Contains<Room>(location))
+            else if (SymbolTable.Contains<Room>(i.location))
             {
                 // Add to Room Inventory
-                SymbolTable.GetInstance<Room>(location).Inventory.AddItem(item, quantity);
+                SymbolTable.GetInstance<Room>(i.location).Inventory.AddItem(item, i.quantity);
             }
-            else if (SymbolTable.Contains<NPC>(location))
+            else if (SymbolTable.Contains<NPC>(i.location))
             {
                 // Add to NPC inventory
-                SymbolTable.GetInstance<NPC>(location).Inventory.AddItem(item, quantity);
+                SymbolTable.GetInstance<NPC>(i.location).Inventory.AddItem(item, i.quantity);
             }
-            else if (SymbolTable.Contains<ContainerItem>(location))
+            else if (SymbolTable.Contains<ContainerItem>(i.location))
             {
-                SymbolTable.GetInstance<ContainerItem>(location).Inventory.AddItem(item, quantity);
+                SymbolTable.GetInstance<ContainerItem>(i.location).Inventory.AddItem(item, i.quantity);
             }
         }
 
@@ -163,20 +155,15 @@ namespace Geten.Parsers.Script
         public void Visit(RoomDefinitionNode node)
         {
             var name = node.NameToken.Value.ToString();
-            var desc = node.Properties["description"]?.ToString();
-            var lookDesc = node.Properties["lookDescription"]?.ToString();
-            var startRoom = (bool)(node.Properties["startLocation"] ?? false);
 
-            var r = GameObject.Create<Room>(name, desc, lookDesc);
-            if (startRoom)
+            dynamic r = GameObject.Create<Room>(name, node.Properties);
+            if (r.startRoom)
                 TextEngine.StartRoom = r;
         }
 
         public void Visit(ExitDefinitionNode node)
         {
             var name = node.NameToken.Value.ToString();
-            var locked = (bool)(node.Properties["locked"] ?? false);
-            var visible = (bool)(node.Properties["visible"] ?? true);
             var side = node.Properties["side"]?.ToString();
             var toRoom = node.Properties["toRoom"]?.ToString();
             var fromRoom = node.Properties["fromRoom"]?.ToString();
@@ -185,7 +172,8 @@ namespace Geten.Parsers.Script
             Room to = SymbolTable.GetInstance<Room>(toRoom);
             Room from = SymbolTable.GetInstance<Room>(fromRoom);
 
-            var exit = GameObject.Create<Exit>(name, to, locked, visible);
+            var exit = GameObject.Create<Exit>(name, node.Properties);
+
             from.SetSide(dirSide, exit);
         }
 

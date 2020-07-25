@@ -11,39 +11,10 @@ namespace Geten.Core
 {
     public abstract class GameObject : DynamicObject, IEnumerable
     {
+        private readonly ConcurrentDictionary<CaseInsensitiveString, object> _defaultValues = new ConcurrentDictionary<CaseInsensitiveString, object>();
+
         //property bag for mutable properties by script
         private readonly ConcurrentDictionary<CaseInsensitiveString, object> _properties = new ConcurrentDictionary<CaseInsensitiveString, object>();
-
-        public override IEnumerable<string> GetDynamicMemberNames()
-        {
-            foreach (var prop in _properties)
-            {
-                yield return prop.Key;
-            }
-        }
-
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
-        {
-            result = GetProperty<Object>(binder.Name);
-            return true;
-        }
-
-        public override bool TrySetMember(SetMemberBinder binder, object value)
-        {
-            SetProperty(binder.Name, value);
-            return true;
-        }
-
-        public virtual void Initialize(PropertyList properties)
-        {
-            foreach (var item in properties)
-            {
-                SetProperty(item.Key.Value.ToString(), properties[item.Key.Value.ToString()]);
-            }
-        }
-
-        public bool HasProperty(string property) => _properties.ContainsKey(property);
-        
 
         public string Description
         {
@@ -59,17 +30,20 @@ namespace Geten.Core
 
         public int PropertyCount => _properties.Count;
 
-        public static T Create<T>(params object[] args)
-                                            where T : GameObject
+        public static T Create<T>(object arg)
+            where T : GameObject
         {
-            return ObjectFactory.Create<T>(args);
+            var instance = ObjectFactory.Create<T>(arg);
+            instance.Initialize(new PropertyList());
+
+            return instance;
         }
 
-        public static T Create<T>(PropertyList props)
-                                            where T : GameObject
+        public static T Create<T>(string name, PropertyList properties)
+            where T : GameObject
         {
-            var instance = ObjectFactory.Create<T>();
-            instance.MatchPropertyList(props);
+            var instance = ObjectFactory.Create<T>(new object[] { name, properties });
+            instance.Initialize(properties);
 
             return instance;
         }
@@ -77,6 +51,19 @@ namespace Geten.Core
         public void Add(string name, object value)
         {
             SetProperty(name, value);
+        }
+
+        public void AddDefaultValue(string name, object value)
+        {
+            _defaultValues.TryAdd(name, value);
+        }
+
+        public override IEnumerable<string> GetDynamicMemberNames()
+        {
+            foreach (var prop in _properties)
+            {
+                yield return prop.Key;
+            }
         }
 
         public IEnumerator GetEnumerator()
@@ -90,8 +77,22 @@ namespace Geten.Core
             {
                 return (T)_properties[name];
             }
+            else if (_defaultValues.ContainsKey(name))
+            {
+                return (T)_defaultValues[name];
+            }
 
             return default;
+        }
+
+        public bool HasProperty(string property) => _properties.ContainsKey(property);
+
+        public virtual void Initialize(PropertyList properties)
+        {
+            foreach (var item in properties)
+            {
+                SetProperty(item.Key.Text.ToString(), properties[item.Key.Text.ToString()]);
+            }
         }
 
         public void MatchPropertyList(PropertyList list)
@@ -118,11 +119,23 @@ namespace Geten.Core
         {
             StringBuilder sb = new StringBuilder();
             sb.Append($"[{this.GetType()}] ");
-            foreach(var prop in _properties)
+            foreach (var prop in _properties)
             {
                 sb.Append($"{prop.Key}: {prop.Value} ");
             }
             return sb.ToString();
+        }
+
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            result = GetProperty<Object>(binder.Name);
+            return true;
+        }
+
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            SetProperty(binder.Name, value);
+            return true;
         }
     }
 }

@@ -24,6 +24,7 @@ SOFTWARE.
 
 using Geten.Core;
 using Geten.MapItems;
+using Geten.Parsers.Script.Syntax;
 using System;
 
 namespace Geten.GameObjects
@@ -33,8 +34,6 @@ namespace Geten.GameObjects
     /// </summary>
     public abstract class Character : GameObject
     {
-
-
         /// <summary>
         /// The amount of local currence that the character has
         /// </summary>
@@ -85,6 +84,13 @@ namespace Geten.GameObjects
         /// The Room that the Character was in previously
         /// </summary>
         public Room PreviousLocation { get; private set; }
+
+        public override void Initialize(PropertyList properties)
+        {
+            AddDefaultValue("maxhealth", 100);
+            AddDefaultValue("health", 100);
+            AddDefaultValue("inventoryize", 10);
+        }
 
         /// <summary>
         /// Check if the chacater is alive

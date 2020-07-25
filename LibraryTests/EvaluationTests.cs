@@ -20,21 +20,19 @@ namespace LibraryTests
             var src = "item 'Book' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'Book' to 'badTarget'";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            try
+            Assert.ThrowsException<Exception>(new Action(() =>
             {
                 r.Accept(new EvaluationVisitor(p.Diagnostics));
-                AssertNoDiagnostics(p);
-            }
-            catch (Exception e)
-            {
-                Assert.AreEqual(e.Message, "Target 'badTarget' is not a valid Room, NPC or ContainerItem");
-            }
+            }));
+
+            AssertNoDiagnostics(p);
         }
 
         [TestMethod]
         public void Evaluate_Add_Item_to_ContainerItem_Should_Pass()
         {
-            ContainerItem ci = GameObject.Create<ContainerItem>("Brown Bag", "It has a cookie in it", true, true);
+            // ContainerItem ci = GameObject.Create<ContainerItem>("Brown Bag", "It has a cookie in it", true, true);
+            ContainerItem ci = GameObject.Create<ContainerItem>("Brown Bag");
             string src = "item 'cookie' with description 'chocolate chip' end end add item 'cookie' to 'Brown Bag'";
 
             ScriptParser p = new ScriptParser();
@@ -49,8 +47,8 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Add_Item_to_NPC_Should_Pass()
         {
-            GameObject.Create<NPC>("Some Guy", "He looks nice", 100, 100, false);
-            GameObject.Create<Item>("Bag of Chips", "They look crunchy!");
+            GameObject.Create<NPC>("Some Guy");
+            GameObject.Create<Item>("Bag of Chips");
 
             string src = "add item 'Bag of Chips' to 'Some Guy'";
             ScriptParser p = new ScriptParser();
@@ -65,8 +63,8 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Add_Item_to_Room_Should_Pass()
         {
-            GameObject.Create<Room>("Test Room1", "For testing!", "It looks boring: (");
-            GameObject.Create<Weapon>("sword", "swords", "It looks kind of dull...", 5, 10, true, true);
+            GameObject.Create<Room>("Test Room1");
+            GameObject.Create<Weapon>("sword");
 
             var src = "add item 'sword' to 'Test Room1'";
             var p = new ScriptParser();
@@ -131,7 +129,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Decrease_NPC_Health_Should_Pass()
         {
-            var npc = GameObject.Create<NPC>("TestNPC2", "He likes to test", 90, 100);
+            var npc = GameObject.Create<NPC>("TestNPC2");
 
             var src = "decrease health of 'TestNPC2' by 10";
             var p = new ScriptParser();
@@ -145,7 +143,8 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Decrease_Player_Health_Should_Pass()
         {
-            var player = new Player("TestPlayer2", "He likes to test!", 90, 100);
+            //var player = GameObject.Create<Player>("TestPlayer2", "He likes to test!", 90, 100);
+            var player = GameObject.Create<Player>("TestPlayer2");
             TextEngine.Player = player;
 
             var src = "decrease health of 'player' by 10";
@@ -160,8 +159,8 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Exit_Should_Pass()
         {
-            Room kitchen = GameObject.Create<Room>("Kitchen", "kitchen");
-            Room dining = GameObject.Create<Room>("Dining Room", "dining");
+            Room kitchen = GameObject.Create<Room>("Kitchen");
+            Room dining = GameObject.Create<Room>("Dining Room");
             var src = "exit 'DiningRoomE' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'Dining Room' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
@@ -192,7 +191,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Increase_NPC_Health_Should_Pass()
         {
-            var npc = GameObject.Create<NPC>("TestNPC1", "He likes to test", 90, 100);
+            var npc = GameObject.Create<NPC>("TestNPC1");
 
             var src = "increase health of 'TestNPC1' by 10";
             var p = new ScriptParser();
@@ -206,7 +205,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Increase_Player_Health_Should_Pass()
         {
-            var player = new Player("TestPlayer1", "He likes to test!", 90, 100);
+            var player = GameObject.Create<Player>("TestPlayer1");
             TextEngine.Player = player;
 
             var src = "increase health of 'player' by 10";
@@ -221,7 +220,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Item_In_ContainerItem_Inv_Should_Pass()
         {
-            var ci = GameObject.Create<ContainerItem>("Item_In_CI", "For testing", true, false, 10);
+            var ci = GameObject.Create<ContainerItem>("Item_In_CI");
             var src = "item 'CIPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'Item_In_CI' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
@@ -245,7 +244,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Item_In_Player_Inv_Should_Pass()
         {
-            Player pl = new Player("Fred");
+            var pl = GameObject.Create<Player>("Fred");
             TextEngine.Player = pl;
             var src = "item 'pen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'player' end end";
             var p = new ScriptParser();
@@ -309,7 +308,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Remove_Item_From_ContainerItem_Should_Pass()
         {
-            ContainerItem ci = GameObject.Create<ContainerItem>("Empty Bag", "It's empty", true, true);
+            ContainerItem ci = GameObject.Create<ContainerItem>("Empty Bag");
             string src = "item 'cookie2' with description 'chocolate chip' end end add item 'cookie2' to 'Empty Bag'";
 
             ScriptParser p = new ScriptParser();
@@ -330,8 +329,8 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Remove_Item_From_NPC_Should_Pass()
         {
-            NPC npc = GameObject.Create<NPC>("Remove Guy", "He looks nice", 100, 100);
-            Item item = GameObject.Create<Item>("Empty Bag of Chips", "Just air.");
+            NPC npc = GameObject.Create<NPC>("Remove Guy");
+            Item item = GameObject.Create<Item>("Empty Bag of Chips");
             string src = "add item 'Empty Bag of Chips' to 'Remove Guy'";
             ScriptParser p = new ScriptParser();
             var res = p.Parse(src);
@@ -352,8 +351,8 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Remove_Item_From_Room_Should_Pass()
         {
-            Room r = GameObject.Create<Room>("Test Room2", "For testing!", "It looks boring :(");
-            Item s = GameObject.Create<Weapon>("toothpick", null, "It looks kind of dull...", 1, 2, true, true);
+            Room r = GameObject.Create<Room>("Test Room2");
+            Item s = GameObject.Create<Weapon>("toothpick");
 
             var src = "add item 'toothpick' to 'Test Room2'";
             var p = new ScriptParser();

@@ -36,25 +36,6 @@ namespace LibraryTests
         }
 
         [TestMethod]
-        public void SetDynamicProperty_On_GameObject_Should_Pass()
-        {
-            dynamic go = GameObject.Create<Item>();
-            go.isidiot = true;
-
-            Assert.AreEqual(go.isidiot, true);
-        }
-
-        [TestMethod]
-        public void Get_All_Rooms_Should_Pass()
-        {
-            SymbolTable.ClearAllSymbols();
-            GameObject.Create<Room>("Test Room", "test1");
-            GameObject.Create<Room>("Another Test Room", "test2");
-            var rooms = TextEngine.GetAllRooms();
-            Assert.AreEqual(rooms.Count(), 2);
-        }
-
-        [TestMethod]
         public void Compare_CaseInsensitiveString_Should_Pass()
         {
             Assert.IsTrue("hElLO WoRld" == (CaseInsensitiveString)"hello world");
@@ -71,6 +52,16 @@ namespace LibraryTests
             Assert.AreEqual(go.PropertyCount, 3);
         }
 
+        [TestMethod]
+        public void Get_All_Rooms_Should_Pass()
+        {
+            SymbolTable.ClearAllSymbols();
+            GameObject.Create<Room>("Test Room");
+            GameObject.Create<Room>("Another Test Room");
+            var rooms = TextEngine.GetAllRooms();
+            Assert.AreEqual(rooms.Count(), 2);
+        }
+
         [TestInitialize]
         public void Init()
         {
@@ -79,14 +70,18 @@ namespace LibraryTests
                 ObjectFactory.Register<GameObjectFactory, GameObject>();
             }
         }
+
+        [TestMethod]
+        public void SetDynamicProperty_On_GameObject_Should_Pass()
+        {
+            dynamic go = GameObject.Create<Item>("empty");
+            go.isidiot = true;
+
+            Assert.AreEqual(go.isidiot, true);
+        }
     }
-
-
 
     internal class TestObject : GameObject
     {
-        public TestObject() : base("test", "nothing")
-        {
-        }
     }
 }

@@ -12,13 +12,17 @@ namespace Geten.Parsers.Script.Syntax
             {
                 foreach (var kvp in this)
                 {
-                    if(kvp.Key.Text == key)
+                    if (kvp.Key.Text == key)
                     {
                         return ((LiteralNode)kvp.Value).ValueToken.Value;
                     }
                 }
 
                 return null;
+            }
+            set
+            {
+                this[key] = value;
             }
         }
     }

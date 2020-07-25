@@ -37,9 +37,13 @@ namespace Geten.GameObjects
         {
             base.Initialize(properties);
 
+            AddDefaultValue("visible", true);
+            AddDefaultValue("obtainable", true);
+            AddDefaultValue("quantity", 1);
+
             string pluralName = GetProperty<string>("PluralName");
             if (pluralName == null || pluralName.Length == 0)
-               SetProperty("PluralName",  Name + "s");
+                SetProperty("PluralName", Name + "s");
         }
 
         /// <summary>
@@ -49,6 +53,5 @@ namespace Geten.GameObjects
         {
             throw new NotImplementedException();
         }
-
     }
 }

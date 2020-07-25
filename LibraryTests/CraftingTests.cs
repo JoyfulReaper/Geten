@@ -1,6 +1,7 @@
 ﻿using Geten;
 using Geten.Core;
 using Geten.Core.Crafting;
+using Geten.Factories;
 using Geten.GameObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,12 +19,17 @@ namespace LibraryTests
         {
             var output = CraftingTable.Craft(recipe, inventory);
 
-            Assert.AreEqual(output.Name, "iron_sword");
+            Assert.AreEqual(output.Name, "iron sword");
         }
 
         [TestInitialize]
         public void Init()
         {
+            if (!ObjectFactory.IsRegisteredFor<GameObject>())
+            {
+                ObjectFactory.Register<GameObjectFactory, GameObject>();
+            }
+
             inventory = new Inventory(10);
             inventory.AddItem(GameObject.Create<Item>("wood"));
             inventory.AddItem(GameObject.Create<Item>("iron"));
@@ -35,7 +41,7 @@ namespace LibraryTests
                 ["iron"] = 3
             };
 
-            recipe = new Recipe("best sword ever", ingredients, new Item("iron_sword"));
+            recipe = new Recipe("best sword ever", ingredients, GameObject.Create<Weapon>("iron sword"));
 
             book.Add(recipe);
         }

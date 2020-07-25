@@ -24,6 +24,7 @@ SOFTWARE.
 
 using Geten.Core;
 using Geten.GameObjects;
+using Geten.Parsers.Script.Syntax;
 
 namespace Geten.MapItems
 {
@@ -32,7 +33,6 @@ namespace Geten.MapItems
     /// </summary>
     public class Exit : MapSite
     {
-
         /// <summary>
         /// The Room on the other side of the exit
         /// </summary>
@@ -49,6 +49,12 @@ namespace Geten.MapItems
                 ToRoom.Enter(character, heading);
             else
                 TextEngine.AddMessage("You try to go though the " + Name + ", but it is locked.");
+        }
+
+        public override void Initialize(PropertyList properties)
+        {
+            base.Initialize(properties);
+            AddDefaultValue("visible", true);
         }
     }
 }

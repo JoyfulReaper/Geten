@@ -31,12 +31,13 @@ namespace Geten.GameObjects
     /// </summary>
     public class ContainerItem : Item
     {
+        public Inventory Inventory { get; private set; }
+
         public override void Initialize(PropertyList properties)
         {
             base.Initialize(properties);
+            AddDefaultValue("inventorysize", 10);
             Inventory = new Inventory(GetProperty<int>("inventorySize"));
         }
-
-        public Inventory Inventory { get; private set; }
     }
 }
