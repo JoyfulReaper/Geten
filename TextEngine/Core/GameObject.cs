@@ -2,17 +2,37 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Dynamic;
 using System.Text;
 
 namespace Geten.Core
 {
-    public abstract class GameObject : IEnumerable
+    public abstract class GameObject : DynamicObject, IEnumerable
     {
         //property bag for mutable properties by script
         private readonly ConcurrentDictionary<CaseInsensitiveString, object> _properties = new ConcurrentDictionary<CaseInsensitiveString, object>();
 
+        public override IEnumerable<string> GetDynamicMemberNames()
+        {
+            foreach (var prop in _properties)
+            {
+                yield return prop.Key;
+            }
+        }
 
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            result = GetProperty<Object>(binder.Name);
+            return true;
+        }
+
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            SetProperty(binder.Name, value);
+            return true;
+        }
 
         public virtual void Initialize(PropertyList properties)
         {
@@ -21,6 +41,9 @@ namespace Geten.Core
                 SetProperty(item.Key.Value.ToString(), properties[item.Key.Value.ToString()]);
             }
         }
+
+        public bool HasProperty(string property) => _properties.ContainsKey(property);
+        
 
         public string Description
         {
