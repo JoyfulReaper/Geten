@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Geten.Core;
+using Geten.Parsers.Script.Syntax;
 using System;
 
 namespace Geten.GameObjects
@@ -32,97 +33,13 @@ namespace Geten.GameObjects
     /// </summary>
     public class Item : GameObject
     {
-        /// <summary>
-        /// Construct an Item
-        /// </summary>
-        /// <param name="name">Item's Name</param>
-        /// <param name="pluralName">Item's plural name</param>
-        /// <param name="desc">Item's description</param>
-        /// <param name="visible">Determine if the Item is Visible</param>
-        /// <param name="obtainable">Determine if the Item can be added to an Inventory</param>
-        public Item(string name, string pluralName, string desc, bool visible, bool obtainable)
-            : base(name, desc)
+        public override void Initialize(PropertyList properties)
         {
-            if (pluralName == null || pluralName.Length <= 0)
-                PluralName = name + "s";
-            else
-                PluralName = pluralName;
-            Description = desc;
-            Visible = visible;
-            Obtainable = obtainable;
-        }
+            base.Initialize(properties);
 
-        /// <summary>
-        /// Construct an Item
-        /// </summary>
-        /// <param name="name">Item's Name</param>
-        /// <param name="pluralName">Item's plural name</param>
-        /// <param name="des">Item's description</param>
-        public Item(string name, string pluralName, string des) : this(name, null, des, true, true) { }
-
-        /// <summary>
-        /// Construct an Item
-        /// </summary>
-        /// <param name="name">Item's name</param>
-        /// <param name="desc">Item's description</param>
-        /// <param name="visible">Is the Item visible?</param>
-        /// <param name="obtainable">Can the Item be added to an Inventory?</param>
-        public Item(string name, string desc, bool visible, bool obtainable) : this(name, null, desc, visible, obtainable) { }
-
-        /// <summary>
-        /// Construct an Item
-        /// </summary>
-        /// <param name="name">Item's name</param>
-        /// <param name="des">Item's description</param>
-        public Item(string name, string des) : this(name, null, des, true, true) { }
-
-        /// <summary>
-        /// Construct an Item
-        /// </summary>
-        /// <param name="name">The name of the Item</param>
-        public Item(string name) : this(name, "") { }
-
-        /// <value>Allows the item to be added to an Inventory</value>
-        public bool Obtainable { get; set; }
-
-        /// <summary>
-        /// The plural name of this item
-        /// </summary>
-        public string PluralName { get; set; }
-
-        /// <value>If true the object is visible when looking</value>
-        public bool Visible { get; set; }
-
-        /// <summary>
-        /// Check if this item is equal to another item
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns>true if equal</returns>
-        public override bool Equals(object obj)
-        {
-            return obj is Item item &&
-                   Obtainable == item.Obtainable &&
-                   Visible == item.Visible &&
-                   Name == item.Name &&
-                   Description == item.Description;
-        }
-
-        /// <summary>
-        /// Get this Item's hashcode
-        /// </summary>
-        /// <returns>Item's hashcode</returns>
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Obtainable, Visible, Name, Description);
-        }
-
-        /// <summary>
-        /// A String representation of this Item
-        /// </summary>
-        /// <returns>A String representation of this Item</returns>
-        public override string ToString()
-        {
-            return "Name: " + Name + ", Plural name " + PluralName + ", Description: " + Description + ", Visible: " + Visible + ", Obtainable: " + Obtainable;
+            string pluralName = GetProperty<string>("PluralName");
+            if (pluralName == null || pluralName.Length == 0)
+               SetProperty("PluralName",  Name + "s");
         }
 
         /// <summary>
@@ -132,5 +49,6 @@ namespace Geten.GameObjects
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Geten.Parsers.Script.Syntax;
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.ComponentModel.Design;
+using System.Text;
 
 namespace Geten.Core
 {
@@ -9,10 +12,14 @@ namespace Geten.Core
         //property bag for mutable properties by script
         private readonly ConcurrentDictionary<CaseInsensitiveString, object> _properties = new ConcurrentDictionary<CaseInsensitiveString, object>();
 
-        public GameObject(string name, string descr)
+
+
+        public virtual void Initialize(PropertyList properties)
         {
-            Name = name;
-            Description = descr;
+            foreach (var item in properties)
+            {
+                SetProperty(item.Key.Value.ToString(), properties[item.Key.Value.ToString()]);
+            }
         }
 
         public string Description
@@ -82,6 +89,17 @@ namespace Geten.Core
             {
                 _properties.TryAdd(name, value);
             }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"[{this.GetType()}] ");
+            foreach(var prop in _properties)
+            {
+                sb.Append($"{prop.Key}: {prop.Value} ");
+            }
+            return sb.ToString();
         }
     }
 }

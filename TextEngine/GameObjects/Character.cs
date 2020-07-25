@@ -33,33 +33,12 @@ namespace Geten.GameObjects
     /// </summary>
     public abstract class Character : GameObject
     {
-        /// <summary>
-        /// Constructs a Character
-        /// </summary>
-        /// <param name="name">The Character's name</param>
-        /// <param name="health">The Character's initial health</param>
-        /// <param name="maxHealth">The Character's maximum health</param>
-        /// <param name="desc">The Character's description</param>
-        public Character(string name = "Character", string desc = "", int health = 100, int maxHealth = 100)
-          : base(name, desc)
-        {
-            Health = health;
-            MaxHealth = maxHealth;
-            CharacterMoney = new Money(null, 0);
-            Inventory = new Inventory();
-        }
 
-        public Character()
-            : base(null, null)
-        {
-            CharacterMoney = new Money(null, 0);
-            Inventory = new Inventory();
-        }
 
         /// <summary>
         /// The amount of local currence that the character has
         /// </summary>
-        public Money CharacterMoney { get; set; }
+        public Money CharacterMoney { get; set; } = new Money("", 0);
 
         /// <summary>
         /// Health can be any vaild int > 0. I would suggest using 0 - 100. 0 is dead
@@ -81,7 +60,7 @@ namespace Geten.GameObjects
         /// <summary>
         /// The Character's Inventory
         /// </summary>
-        public Inventory Inventory { get; }
+        public Inventory Inventory { get; } = new Inventory();
 
         /// <summary>
         /// The room that the Character is in

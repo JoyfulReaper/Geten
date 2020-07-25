@@ -1,4 +1,5 @@
-﻿using Geten.GameObjects;
+﻿using Geten.Core;
+using Geten.GameObjects;
 
 namespace Geten.Commands
 {
@@ -7,7 +8,7 @@ namespace Geten.Commands
         public void Invoke()
         {
             TextEngine.AddMessage("You have pickup an axe");
-            TextEngine.Player.Inventory.AddItem(new Item("axe"), 3);
+            TextEngine.Player.Inventory.AddItem(GameObject.Create<Item>("axe"), 3);
         }
     }
 }

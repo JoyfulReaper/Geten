@@ -84,7 +84,7 @@ namespace Geten
             if (Count + quantity > Capacity)
                 throw new InvalidQuantityException("Inventory can not hold that many itmes");
 
-            if (!item.Obtainable)
+            if (!item.GetProperty<bool>("obtainable"))
                 throw new InvalidOperationException(item.Name + " is not obtainable!");
 
             if (items.ContainsKey(item))

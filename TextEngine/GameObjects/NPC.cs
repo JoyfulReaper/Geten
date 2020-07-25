@@ -31,21 +31,5 @@ namespace Geten.GameObjects
     /// </summary>
     public class NPC : Character
     {
-        public NPC(string name = "NPC", string desc = "", int health = 100, int maxHealth = 100, bool canAttack = false) : base(name, desc, health, maxHealth)
-        {
-            CanAttack = canAttack;
-        }
-
-        public NPC(string name = "NPC", string desc = "", int health = 100, int maxHealth = 100) : base (name, desc, health, maxHealth)
-        {
-            CanAttack = false;
-        }
-
-        public NPC(string name = "NPC") : this(name, "", 100, 100) { }
-
-        /// <summary>
-        /// Determine if an NPC can be Attacked
-        /// </summary>
-        private bool CanAttack { get; }
     }
 }

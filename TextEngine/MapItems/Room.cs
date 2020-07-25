@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Geten.GameObjects;
+using Geten.Parsers.Script.Syntax;
 using System.Collections.Generic;
 
 namespace Geten.MapItems
@@ -32,45 +33,19 @@ namespace Geten.MapItems
     /// </summary>
     public class Room : MapSite
     {
-        private readonly Dictionary<Direction, MapSite> sides;
+        private readonly Dictionary<Direction, MapSite> sides = new Dictionary<Direction, MapSite>();
 
-        /// <summary>
-        /// Construct a Room
-        /// </summary>
-        /// <param name="name">The Room's name</param>
-        /// <param name="desc">The description shown when entering the room</param>
-        /// <param name="lookDesc">The description shown when issuing the LOOK command</param>
-        public Room(string name, string desc, string lookDesc)
+        public override void Initialize(PropertyList properties)
         {
-            Name = name;
-            Description = desc;
-
-            if (lookDesc == null || lookDesc.Length <= 0)
-                if (Description?.Length >= 1)
-                    LookDescription = Description;
-                else
-                    LookDescription = "You look around, but don't see anything of any significance";
-            else
-                LookDescription = lookDesc;
-
-            Visisted = false;
-            Inventory = new Inventory();
-            sides = new Dictionary<Direction, MapSite>();
+            SetProperty("Visited", false);
+            base.Initialize(properties);
             InitializeSides();
         }
-
-        public Room(string name, string desc) : this(name, desc, "") { }
-
-        /// <summary>
-        /// Construct a Room
-        /// </summary>
-        /// <param name="name">The name of the Room</param>
-        public Room(string name) : this(name, "", "") { }
 
         /// <summary>
         /// The Items contained in the Room's Inventory
         /// </summary>
-        public Inventory Inventory { get; }
+        public Inventory Inventory { get; } = new Inventory();
 
         /// <summary>
         /// The desciption shows when the LOOK command is given

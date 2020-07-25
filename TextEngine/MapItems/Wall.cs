@@ -32,12 +32,6 @@ namespace Geten.MapItems
     public class Wall : MapSite
     {
         /// <summary>
-        /// Wall Constructor
-        /// </summary>
-        /// <param name="name">name of the wall</param>
-        public Wall(string name = "wall") => Name = name;
-
-        /// <summary>
         /// Enter this Wall
         /// </summary>
         /// <param name="character">The Character Entering</param>

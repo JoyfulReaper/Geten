@@ -32,12 +32,6 @@ namespace Geten.MapItems
     public class Floor : MapSite
     {
         /// <summary>
-        /// Construct a Floor
-        /// </summary>
-        /// <param name="name">The name of the Floor</param>
-        public Floor(string name = "floor") => Name = name;
-
-        /// <summary>
         /// Attempt to enter this floor
         /// </summary>
         /// <param name="character">The Character entering</param>

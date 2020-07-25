@@ -4,17 +4,9 @@ using System.Collections.Generic;
 namespace Geten.Core.Crafting
 {
 
-    public class RecipeBook
+    public class RecipeBook : Item
     {
-        public RecipeBook(string name)
-        {
-            this.Contents = new List<Recipe>();
-            Name = name;
-        }
-
-        public List<Recipe> Contents { get; }
-
-        public string Name { get; }
+        public List<Recipe> Contents { get; } = new List<Recipe>();
 
         public RecipeBook Add(Recipe recipe)
         {

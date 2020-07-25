@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.Parsers.Script.Syntax;
+
 namespace Geten.GameObjects
 {
     /// <summary>
@@ -29,27 +31,12 @@ namespace Geten.GameObjects
     /// </summary>
     public class ContainerItem : Item
     {
-        public ContainerItem(string name, string pluralName, string desc, bool visible, bool obtainable, int cap) : base(name, pluralName, desc, visible, obtainable)
+        public override void Initialize(PropertyList properties)
         {
-            Inventory = new Inventory(cap);
+            base.Initialize(properties);
+            Inventory = new Inventory(GetProperty<int>("inventorySize"));
         }
 
-        public ContainerItem(string name, string desc, bool visible, bool obtainable, int cap) : base(name, desc, visible, obtainable)
-        {
-            Inventory = new Inventory(cap);
-        }
-
-        public ContainerItem(string name, string desc, bool visible, bool obtainable) : base(name, desc, visible, obtainable)
-        {
-            Inventory = new Inventory();
-        }
-
-        public ContainerItem(string name) : this(name, "", true, true)
-        {
-            Inventory = new Inventory();
-        }
-
-        public Inventory Inventory { get; }
-        public bool Locked { get; set; }
+        public Inventory Inventory { get; private set; }
     }
 }

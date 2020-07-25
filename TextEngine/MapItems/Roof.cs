@@ -32,12 +32,6 @@ namespace Geten.MapItems
     public class Roof : MapSite
     {
         /// <summary>
-        /// Construct a Roof
-        /// </summary>
-        /// <param name="name">The name of the Roof</param>
-        public Roof(string name = "roof") => Name = name;
-
-        /// <summary>
         /// Attempt to enter this Roof
         /// </summary>
         /// <param name="character">The Chacater entering</param>

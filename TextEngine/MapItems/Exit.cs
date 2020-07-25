@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.Core;
 using Geten.GameObjects;
 
 namespace Geten.MapItems
@@ -31,41 +32,11 @@ namespace Geten.MapItems
     /// </summary>
     public class Exit : MapSite
     {
-        /// <summary>
-        /// Construct an Exit
-        /// </summary>
-        /// <param name="name">The name of the Exit</param>
-        /// <param name="toRoom">The room that the Exit leads to</param>
-        /// <param name="locked">Whether or not the Exit is locked</param>
-        /// <param name="visible">Whether or not the Exit is visible</param>
-        public Exit(string name, Room toRoom, bool locked, bool visible)
-        {
-            Name = name;
-            ToRoom = toRoom;
-            Locked = locked;
-            Visible = visible;
-        }
-
-        /// <summary>
-        /// Create an exit
-        /// </summary>
-        /// <param name="toRoom">The MapSite on the other side of the exit</param>
-        public Exit(Room toRoom) : this("door", toRoom, false, true) { }
-
-        /// <summary>
-        /// Weather or not the exit is locked
-        /// </summary>
-        public bool Locked { get; set; }
 
         /// <summary>
         /// The Room on the other side of the exit
         /// </summary>
-        public Room ToRoom { get; set; }
-
-        /// <summary>
-        /// Weather or not the exit is visible
-        /// </summary>
-        public bool Visible { get; set; }
+        public Room ToRoom => SymbolTable.GetInstance<Room>(GetProperty<string>("toroom"));
 
         /// <summary>
         /// Attempt to Enter (Use) this exit
@@ -74,19 +45,10 @@ namespace Geten.MapItems
         /// <param name="heading">The Character's heading</param>
         public override void Enter(Character character, Direction heading)
         {
-            if (!Locked)
+            if (GetProperty<bool>("islocked"))
                 ToRoom.Enter(character, heading);
             else
                 TextEngine.AddMessage("You try to go though the " + Name + ", but it is locked.");
-        }
-
-        /// <summary>
-        /// A string representation of this Exit
-        /// </summary>
-        /// <returns>A string representation of this Exit</returns>
-        public override string ToString()
-        {
-            return base.ToString() + $", toRoom: {ToRoom.Name}, Locked {Locked}, Visible {Visible}";
         }
     }
 }
