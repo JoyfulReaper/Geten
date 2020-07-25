@@ -50,7 +50,6 @@ on "exit"
 end
 
 room "kitchen" with 
-    shortName "kitchen" and
     description "It looks modren" and
     lookDescription "Uhh. It smells very tasty"
 
@@ -71,7 +70,6 @@ end
 room "Modren Bathroom" 
     with
         name "Modren Bathroom" and
-        shortName "Bathroom1" and
         description "Everything looks shiny!" and
         lookDescription "You look around, but you can't find anything that isn't sparkling clean!" and
         startLocation true

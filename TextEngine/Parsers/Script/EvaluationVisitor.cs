@@ -46,16 +46,11 @@ namespace Geten.Parsers.Script
                 var player = GameObject.Create<Player>(name, description, health, maxHealth);
                 player.Inventory.Capacity = inventorySize;
                 TextEngine.Player = player;
-
-                SymbolTable.Add(name, player);
             }
             else if (asWhat == "npc") // It's an NPC
             {
-                var npc = GameObject.Create<NPC>(node.Properties);
+                var npc = GameObject.Create<NPC>(name, description, health, maxHealth);
                 npc.Inventory.Capacity = inventorySize;
-                TextEngine.AddNPC(npc);
-
-                //SymbolTable.Add(name, npc); // AddNPC() does this now, hopefully that is the "correct" thing to do
             }
             else
             {
@@ -116,8 +111,6 @@ namespace Geten.Parsers.Script
                 item = GameObject.Create<Item>(name, pluralName, desc, visible, obtainable);
             }
 
-            SymbolTable.Add(name, item);
-
             if (location == null) // Just add it to the SymbolTable
                 return;
 
@@ -126,17 +119,17 @@ namespace Geten.Parsers.Script
                 // Add to player inventory
                 TextEngine.Player.Inventory.AddItem(item, quantity);
             }
-            else if (TextEngine.RoomExists(location))
+            else if (SymbolTable.Contains<Room>(location))
             {
                 // Add to Room Inventory
-                TextEngine.GetRoom(location).Inventory.AddItem(item, quantity);
+                SymbolTable.GetInstance<Room>(location).Inventory.AddItem(item, quantity);
             }
-            else if (TextEngine.NpcExists(location))
+            else if (SymbolTable.Contains<NPC>(location))
             {
                 // Add to NPC inventory
-                TextEngine.GetNPC(location).Inventory.AddItem(item, quantity);
+                SymbolTable.GetInstance<NPC>(location).Inventory.AddItem(item, quantity);
             }
-            else if (SymbolTable.Contains(location))
+            else if (SymbolTable.Contains<ContainerItem>(location))
             {
                 SymbolTable.GetInstance<ContainerItem>(location).Inventory.AddItem(item, quantity);
             }
@@ -170,14 +163,11 @@ namespace Geten.Parsers.Script
         public void Visit(RoomDefinitionNode node)
         {
             var name = node.NameToken.Value.ToString();
-            var shortName = node.Properties["shortName"]?.ToString();
             var desc = node.Properties["description"]?.ToString();
             var lookDesc = node.Properties["lookDescription"]?.ToString();
             var startRoom = (bool)(node.Properties["startLocation"] ?? false);
 
-            var r = GameObject.Create<Room>(name, shortName, desc, lookDesc);
-            //SymbolTable.Add(name, r); //TextEngine.AddRoom does this
-            TextEngine.AddRoom(r);
+            var r = GameObject.Create<Room>(name, desc, lookDesc);
             if (startRoom)
                 TextEngine.StartRoom = r;
         }
@@ -192,8 +182,8 @@ namespace Geten.Parsers.Script
             var fromRoom = node.Properties["fromRoom"]?.ToString();
 
             Direction dirSide = TextEngine.GetDirectionFromChar(Char.ToUpper(side[0]));
-            Room to = TextEngine.GetRoom(toRoom);
-            Room from = TextEngine.GetRoom(fromRoom);
+            Room to = SymbolTable.GetInstance<Room>(toRoom);
+            Room from = SymbolTable.GetInstance<Room>(fromRoom);
 
             var exit = GameObject.Create<Exit>(name, to, locked, visible);
             from.SetSide(dirSide, exit);
@@ -223,8 +213,6 @@ namespace Geten.Parsers.Script
                 var recipe = new Recipe(r.NameToken.Value.ToString(), r.Ingredients, SymbolTable.GetInstance<Item>(r.OuputToken.Value.ToString()));
                 rb.Add(recipe);
             }
-
-            SymbolTable.Add(rb.Name, rb);
         }
 
         public void Visit(RecipeDefinitionNode node)
@@ -255,7 +243,7 @@ namespace Geten.Parsers.Script
                     }
                     else
                     {
-                        var instanceTarget = TextEngine.GetNPC(instance);
+                        var instanceTarget = SymbolTable.GetInstance<NPC>(instance);
                         if (instanceTarget != null)
                         {
                             if (increase)
@@ -296,7 +284,7 @@ namespace Geten.Parsers.Script
             }
             else
             {
-                if (TextEngine.RoomExists(target))
+                if (SymbolTable.Contains<Room>(target))
                 {
                     // Add item to Room's inv
                     if (add)
@@ -304,7 +292,7 @@ namespace Geten.Parsers.Script
                     else
                         SymbolTable.GetInstance<Room>(target).Inventory.RemoveItem(item);
                 }
-                else if (TextEngine.NpcExists(target))
+                else if (SymbolTable.Contains<NPC>(target))
                 {
                     // Get all NPCs and check for one with name
                     if (add)

@@ -9,7 +9,9 @@ namespace Geten.Factories
         {
             if (typeof(GameObject).IsAssignableFrom(typeof(T)))
             {
-                return Activator.CreateInstance(typeof(T), args);
+                var instance = (GameObject)Activator.CreateInstance(typeof(T), args);
+                SymbolTable.Add(instance.Name, instance);
+                return instance;
             }
 
             return null;

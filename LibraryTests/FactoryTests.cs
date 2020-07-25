@@ -23,7 +23,7 @@ namespace LibraryTests
         [TestMethod]
         public void Create_GameObject_Item_Should_Pass()
         {
-            var item = ObjectFactory.Create<Item>("sword");
+            var item = ObjectFactory.Create<Item>("sword object");
         }
 
         [TestMethod]

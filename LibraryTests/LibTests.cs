@@ -1,5 +1,8 @@
-﻿using Geten.Core;
+﻿using Geten;
+using Geten.Core;
 using Geten.Core.Parsing;
+using Geten.Factories;
+using Geten.MapItems;
 using Geten.Parsers.Script;
 using Geten.Parsers.Script.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,6 +35,16 @@ namespace LibraryTests
         }
 
         [TestMethod]
+        public void Get_All_Rooms_Should_Pass()
+        {
+            SymbolTable.ClearAllSymbols();
+            GameObject.Create<Room>("Test Room", "test1");
+            GameObject.Create<Room>("Another Test Room", "test2");
+            var rooms = TextEngine.GetAllRooms();
+            Assert.AreEqual(rooms.Count(), 2);
+        }
+
+        [TestMethod]
         public void Compare_CaseInsensitiveString_Should_Pass()
         {
             Assert.IsTrue("hElLO WoRld" == (CaseInsensitiveString)"hello world");
@@ -47,7 +60,18 @@ namespace LibraryTests
 
             Assert.AreEqual(go.PropertyCount, 3);
         }
+
+        [TestInitialize]
+        public void Init()
+        {
+            if (!ObjectFactory.IsRegisteredFor<GameObject>())
+            {
+                ObjectFactory.Register<GameObjectFactory, GameObject>();
+            }
+        }
     }
+
+
 
     internal class TestObject : GameObject
     {

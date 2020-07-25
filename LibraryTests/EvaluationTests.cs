@@ -34,8 +34,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Add_Item_to_ContainerItem_Should_Pass()
         {
-            ContainerItem ci = new ContainerItem("Brown Bag", "It has a cookie in it", true, true);
-            SymbolTable.Add(ci.Name, ci);
+            ContainerItem ci = GameObject.Create<ContainerItem>("Brown Bag", "It has a cookie in it", true, true);
             string src = "item 'cookie' with description 'chocolate chip' end end add item 'cookie' to 'Brown Bag'";
 
             ScriptParser p = new ScriptParser();
@@ -50,16 +49,15 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Add_Item_to_NPC_Should_Pass()
         {
-            NPC npc = new NPC("Some Guy", "He looks nice", 100, 100);
-            Item item = new Item("Bag of Chips", "They look crunchy!");
-            SymbolTable.Add(item.Name, item);
-            TextEngine.AddNPC(npc);
+            GameObject.Create<NPC>("Some Guy", "He looks nice", 100, 100, false);
+            GameObject.Create<Item>("Bag of Chips", "They look crunchy!");
+
             string src = "add item 'Bag of Chips' to 'Some Guy'";
             ScriptParser p = new ScriptParser();
             var res = p.Parse(src);
             res.Accept(new EvaluationVisitor(p.Diagnostics));
 
-            Assert.IsTrue(npc.Inventory.HasItem("Bag of Chips"));
+            Assert.IsTrue(SymbolTable.GetInstance<NPC>("Some Guy").Inventory.HasItem("Bag of Chips"));
 
             AssertNoDiagnostics(p);
         }
@@ -67,19 +65,15 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Add_Item_to_Room_Should_Pass()
         {
-            Room r = new Room("Test Room1", "test1", "For testing!", "It looks boring :(");
-            Item s = new Weapon("sword", "swords", "It looks kind of dull...", 5, 10, true, true);
+            GameObject.Create<Room>("Test Room1", "For testing!", "It looks boring: (");
+            GameObject.Create<Weapon>("sword", "swords", "It looks kind of dull...", 5, 10, true, true);
 
-            //TextEngine.Parsing.SymbolTable.Add(r.Name, r);
-            SymbolTable.Add(s.Name, s);
-            TextEngine.AddRoom(r);
-
-            var src = "add item 'sword' to 'test1'";
+            var src = "add item 'sword' to 'Test Room1'";
             var p = new ScriptParser();
             var pRes = p.Parse(src);
             pRes.Accept(new EvaluationVisitor(p.Diagnostics));
 
-            Assert.IsTrue(r.Inventory.HasItem("sword"));
+            Assert.IsTrue(SymbolTable.GetInstance<Room>("Test Room1").Inventory.HasItem("sword"));
 
             AssertNoDiagnostics(p);
         }
@@ -130,15 +124,14 @@ namespace LibraryTests
             }
             catch (Exception e)
             {
-                Assert.AreEqual(e.Message, "NPC 'NOTestNPC' is not valid");
+                Assert.AreEqual(e.Message, "'notestnpc' is not declared");
             }
         }
 
         [TestMethod]
         public void Evaluate_Decrease_NPC_Health_Should_Pass()
         {
-            var npc = new NPC("TestNPC2", "He likes to test", 90, 100);
-            TextEngine.AddNPC(npc);
+            var npc = GameObject.Create<NPC>("TestNPC2", "He likes to test", 90, 100);
 
             var src = "decrease health of 'TestNPC2' by 10";
             var p = new ScriptParser();
@@ -146,7 +139,7 @@ namespace LibraryTests
 
             r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.GetNPC("TestNPC2").Health == 80);
+            Assert.IsTrue(SymbolTable.GetInstance<NPC>("TestNPC2").Health == 80);
         }
 
         [TestMethod]
@@ -167,11 +160,9 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Exit_Should_Pass()
         {
-            Room kitchen = new Room("Kitchen", "kitchen");
-            Room dining = new Room("Dining", "dining");
-            TextEngine.AddRoom(kitchen);
-            TextEngine.AddRoom(dining);
-            var src = "exit 'DiningRoomE' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'DiningRoom' end end";
+            Room kitchen = GameObject.Create<Room>("Kitchen", "kitchen");
+            Room dining = GameObject.Create<Room>("Dining Room", "dining");
+            var src = "exit 'DiningRoomE' with fromRoom 'kitchen' and locked false and visible true and side 'north' and toRoom 'Dining Room' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
@@ -183,8 +174,8 @@ namespace LibraryTests
         public void Evaluate_Full_Room_Should_Pass()
         {
             string room =
-                @"room 'kitchen'
-                    with shortName 'kitchen2' and
+                @"room 'test kitchen'
+                    with
                         description 'It looks modren' and
                         lookDescription 'Uhh. It smells very tasty'
                     end
@@ -194,15 +185,14 @@ namespace LibraryTests
             var r = p.Parse(room);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
 
-            Assert.IsTrue(TextEngine.RoomExists("kitchen"));
+            Assert.IsTrue(SymbolTable.Contains("test kitchen"));
             AssertNoDiagnostics(p);
         }
 
         [TestMethod]
         public void Evaluate_Increase_NPC_Health_Should_Pass()
         {
-            var npc = new NPC("TestNPC1", "He likes to test", 90, 100);
-            TextEngine.AddNPC(npc);
+            var npc = GameObject.Create<NPC>("TestNPC1", "He likes to test", 90, 100);
 
             var src = "increase health of 'TestNPC1' by 10";
             var p = new ScriptParser();
@@ -210,7 +200,7 @@ namespace LibraryTests
 
             r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.GetNPC("TestNPC1").Health == 100);
+            Assert.IsTrue(SymbolTable.GetInstance<NPC>("TestNPC1").Health == 100);
         }
 
         [TestMethod]
@@ -231,8 +221,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Item_In_ContainerItem_Inv_Should_Pass()
         {
-            var ci = new ContainerItem("Item_In_CI", "For testing", true, false, 10);
-            SymbolTable.Add(ci.Name, ci);
+            var ci = GameObject.Create<ContainerItem>("Item_In_CI", "For testing", true, false, 10);
             var src = "item 'CIPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'Item_In_CI' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
@@ -244,13 +233,12 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Item_In_NPC_Inv_Should_Pass()
         {
-            var npc = new NPC("Item_In_NPC");
-            TextEngine.AddNPC(npc);
+            var npc = GameObject.Create<NPC>("Item_In_NPC");
             var src = "item 'NPCPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'Item_In_NPC' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
-            Assert.IsTrue(TextEngine.GetNPC("Item_In_NPC").Inventory.HasItem("NPCPen"));
+            Assert.IsTrue(SymbolTable.GetInstance<NPC>("Item_In_NPC").Inventory.HasItem("NPCPen"));
             AssertNoDiagnostics(p);
         }
 
@@ -270,13 +258,12 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Item_In_Room_Inv_Should_Pass()
         {
-            Room room = new Room("Item_In_Room", "In_Room_Inv");
-            TextEngine.AddRoom(room);
-            var src = "item 'roomPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'In_Room_Inv' end end";
+            Room room = GameObject.Create<Room>("Item_In_Room");
+            var src = "item 'roomPen' with pluralName 'pens' and obtainable true and visible true and description 'you write with it' and location 'Item_In_Room' end end";
             var p = new ScriptParser();
             var r = p.Parse(src);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
-            Assert.IsTrue(TextEngine.GetRoom("In_Room_Inv").Inventory.HasItem("roomPen"));
+            Assert.IsTrue(SymbolTable.GetInstance<Room>("Item_In_Room").Inventory.HasItem("roomPen"));
             AssertNoDiagnostics(p);
         }
 
@@ -322,8 +309,7 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Remove_Item_From_ContainerItem_Should_Pass()
         {
-            ContainerItem ci = new ContainerItem("Empty Bag", "It's empty", true, true);
-            SymbolTable.Add(ci.Name, ci);
+            ContainerItem ci = GameObject.Create<ContainerItem>("Empty Bag", "It's empty", true, true);
             string src = "item 'cookie2' with description 'chocolate chip' end end add item 'cookie2' to 'Empty Bag'";
 
             ScriptParser p = new ScriptParser();
@@ -344,10 +330,8 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Remove_Item_From_NPC_Should_Pass()
         {
-            NPC npc = new NPC("Remove Guy", "He looks nice", 100, 100);
-            Item item = new Item("Empty Bag of Chips", "Just air.");
-            SymbolTable.Add(item.Name, item);
-            TextEngine.AddNPC(npc);
+            NPC npc = GameObject.Create<NPC>("Remove Guy", "He looks nice", 100, 100);
+            Item item = GameObject.Create<Item>("Empty Bag of Chips", "Just air.");
             string src = "add item 'Empty Bag of Chips' to 'Remove Guy'";
             ScriptParser p = new ScriptParser();
             var res = p.Parse(src);
@@ -368,21 +352,17 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Remove_Item_From_Room_Should_Pass()
         {
-            Room r = new Room("Test Room2", "test2", "For testing!", "It looks boring :(");
-            Item s = new Weapon("toothpick", null, "It looks kind of dull...", 1, 2, true, true);
+            Room r = GameObject.Create<Room>("Test Room2", "For testing!", "It looks boring :(");
+            Item s = GameObject.Create<Weapon>("toothpick", null, "It looks kind of dull...", 1, 2, true, true);
 
-            //TextEngine.Parsing.SymbolTable.Add(r.Name, r);
-            SymbolTable.Add(s.Name, s);
-            TextEngine.AddRoom(r);
-
-            var src = "add item 'toothpick' to 'test2'";
+            var src = "add item 'toothpick' to 'Test Room2'";
             var p = new ScriptParser();
             var pRes = p.Parse(src);
             pRes.Accept(new EvaluationVisitor(p.Diagnostics));
 
             Assert.IsTrue(r.Inventory.HasItem("toothpick"));
 
-            src = "remove item 'toothpick' from 'test2'";
+            src = "remove item 'toothpick' from 'Test Room2'";
             p = new ScriptParser();
             pRes = p.Parse(src);
             pRes.Accept(new EvaluationVisitor(p.Diagnostics));
@@ -396,8 +376,8 @@ namespace LibraryTests
         public void Evaluate_Room_Should_Pass()
         {
             string room =
-                @"room 'Dining Room'
-                    with shortName 'DiningRoom' and
+                @"room 'Test Dining Room'
+                    with
                         lookDescription 'It has a table and four chairs.'
                     end
                    end";
@@ -406,7 +386,7 @@ namespace LibraryTests
             var r = p.Parse(room);
             r.Accept(new EvaluationVisitor(p.Diagnostics));
 
-            Assert.IsTrue(TextEngine.RoomExists("DiningRoom"));
+            Assert.IsTrue(SymbolTable.Contains("Test Dining Room"));
             AssertNoDiagnostics(p);
         }
 
