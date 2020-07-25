@@ -86,7 +86,7 @@ namespace Geten.MapItems
         /// <returns>A string representation of this Exit</returns>
         public override string ToString()
         {
-            return base.ToString() + $", toRoom: {ToRoom.ShortName}, Locked {Locked}, Visible {Visible}";
+            return base.ToString() + $", toRoom: {ToRoom.Name}, Locked {Locked}, Visible {Visible}";
         }
     }
 }

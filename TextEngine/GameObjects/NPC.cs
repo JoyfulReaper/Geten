@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System.Security.Cryptography;
+
 namespace Geten.GameObjects
 {
     /// <summary>
@@ -34,9 +36,12 @@ namespace Geten.GameObjects
             CanAttack = canAttack;
         }
 
-        public NPC()
+        public NPC(string name = "NPC", string desc = "", int health = 100, int maxHealth = 100) : base (name, desc, health, maxHealth)
         {
+            CanAttack = false;
         }
+
+        public NPC(string name = "NPC") : this(name, "", 100, 100) { }
 
         /// <summary>
         /// Determine if an NPC can be Attacked

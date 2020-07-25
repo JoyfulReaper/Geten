@@ -38,13 +38,11 @@ namespace Geten.MapItems
         /// Construct a Room
         /// </summary>
         /// <param name="name">The Room's name</param>
-        /// <param name="shortName">The Room's short name</param>
         /// <param name="desc">The description shown when entering the room</param>
         /// <param name="lookDesc">The description shown when issuing the LOOK command</param>
-        public Room(string name, string shortName, string desc, string lookDesc)
+        public Room(string name, string desc, string lookDesc)
         {
             Name = name;
-            ShortName = shortName;
             Description = desc;
 
             if (lookDesc == null || lookDesc.Length <= 0)
@@ -61,23 +59,13 @@ namespace Geten.MapItems
             InitializeSides();
         }
 
+        public Room(string name, string desc) : this(name, desc, "") { }
+
         /// <summary>
         /// Construct a Room
         /// </summary>
         /// <param name="name">The name of the Room</param>
-        public Room(string name) : this(name, name, "", "") { }
-
-        /// <summary>
-        /// Construct a Rooom
-        /// </summary>
-        /// <param name="name">The Name of the room</param>
-        /// <param name="shortName">The short name of the room</param>
-        public Room(string name, string shortName) : this(name, shortName, "", "") { }
-
-        /// <summary>
-        /// The Room's description, to be shown when the room is Entered
-        /// </summary>
-        public string Description { get; set; }
+        public Room(string name) : this(name, "", "") { }
 
         /// <summary>
         /// The Items contained in the Room's Inventory
@@ -88,11 +76,6 @@ namespace Geten.MapItems
         /// The desciption shows when the LOOK command is given
         /// </summary>
         public string LookDescription { get; set; }
-
-        /// <summary>
-        /// The Short Name for this room. May possible show this when the room is entered, have not decided.
-        /// </summary>
-        public string ShortName { get; set; }
 
         /// <summary>
         /// True if the Character has been in the room before, false is not
@@ -139,7 +122,7 @@ namespace Geten.MapItems
         /// <returns></returns>
         public override string ToString()
         {
-            return base.ToString() + $", ShortName: {ShortName}, Description {Description}, LookDescription: {LookDescription}, Visited: {Visisted}";
+            return base.ToString() + $", Name: {Name}, Description {Description}, LookDescription: {LookDescription}, Visited: {Visisted}";
         }
 
         // Should we allow this to be set as well?
