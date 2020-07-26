@@ -42,6 +42,8 @@ namespace Geten.Core
         public static T Create<T>(string name, PropertyList properties)
             where T : GameObject
         {
+            if (properties == null)
+                properties = new PropertyList();
             var instance = ObjectFactory.Create<T>(new object[] { name, properties });
             instance.Initialize(properties);
 
