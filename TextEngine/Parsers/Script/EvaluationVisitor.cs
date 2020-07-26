@@ -58,7 +58,9 @@ namespace Geten.Parsers.Script
 
         public void Visit(AskForInputNode node)
         {
-            throw new NotImplementedException();
+            TextEngine.AddMessage(node.Message.Value.ToString());
+            var input = TextEngine.GetInput();
+            // Save the input to a table of variables?
         }
 
         public void Visit(CommandNode node)

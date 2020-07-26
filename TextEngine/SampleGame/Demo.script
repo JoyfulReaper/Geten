@@ -1,4 +1,7 @@
-﻿character "Fred" as player
+﻿tell "Hello to my RPG"
+ask for "What is your name" to 'name'
+
+character "Fred" as player
 	with
 		health 100 and
 		maxHealth 100 and
@@ -48,5 +51,3 @@ exit "toKitchen"
 		side "north"
 	end
 end
-
-tell "Hello to my RPG"

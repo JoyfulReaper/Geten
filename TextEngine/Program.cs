@@ -32,30 +32,31 @@ namespace Geten
 {
     internal static class Program
     {
+        private static string GetInput()
+        {
+            return Console.ReadLine();
+        }
+
         private static void Main(string[] args)
         {
             //needed to create new instances of all kind of gameobjects
             ObjectFactory.Register<GameObjectFactory, GameObject>();
-
             Directory.SetCurrentDirectory(@"..\..\..\SampleGame");
-            //Console.WriteLine(Directory.GetCurrentDirectory());
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            string script = System.IO.File.ReadAllText(@"Demo.script");
+
+            TextEngine.Input = GetInput;
+            TextEngine.Output = ShowMessage;
+
             ShowIntro();
 
-            string script = System.IO.File.ReadAllText(@"Demo.script");
             ScriptParser scriptParser = new ScriptParser();
             var result = scriptParser.Parse(script);
             result.Accept(new EvaluationVisitor(scriptParser.Diagnostics));
 
-            GreedyWrap wrapper = new GreedyWrap(Console.WindowWidth);
             TextEngine.StartGame();
             while (!TextEngine.GameOver)
             {
-                wrapper.LineWidth = Console.WindowWidth;
-                while (TextEngine.HasMessage())
-                {
-                    Console.WriteLine(wrapper.LineWrap((TextEngine.GetMessage())));
-                }
-
                 Console.Write("\nEnter command: ");
                 string input = Console.ReadLine();
                 TextEngine.ProccessCommand(input);
@@ -67,6 +68,12 @@ namespace Geten
             Console.WriteLine("----------------------------------------------------");
             Console.WriteLine("\nGeten - General Text Adventure Engine\n");
             Console.WriteLine("----------------------------------------------------\n\n");
+        }
+
+        private static void ShowMessage(string message)
+        {
+            GreedyWrap wrapper = new GreedyWrap(Console.WindowWidth);
+            Console.WriteLine(wrapper.LineWrap(message));
         }
     }
 }

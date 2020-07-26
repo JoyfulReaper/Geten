@@ -41,16 +41,24 @@ namespace Geten
     /// </summary>
     public static class TextEngine
     {
-        private static readonly Queue<string> messages = new Queue<string>();
+        //private static readonly Queue<string> messages = new Queue<string>();
 
         private static Player player = null;
 
         private static Room startRoom = null;
 
+        public delegate string InputDelegate();
+
+        public delegate void OutputDelegate(string message);
+
         /// <value>
         /// Flag indicating if the game has ended
         /// </value>
         public static bool GameOver { get; private set; } = true;
+
+        public static InputDelegate Input { get; set; } = null;
+
+        public static OutputDelegate Output { get; set; } = null;
 
         /// <summary>
         /// The active playable character
@@ -74,6 +82,8 @@ namespace Geten
             get { return startRoom; }
             set
             {
+                if (Input == null || Output == null)
+                    throw new Exception("Input and Output delegates must be set");
                 if (player == null)
                     throw new InvalidCharacterException("Player must be set before setting StartRoom");
 
@@ -90,9 +100,12 @@ namespace Geten
             }
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////
+        // public static void AddMessage(string message) => messages.Enqueue(message);
 
-        public static void AddMessage(string message) => messages.Enqueue(message);
+        public static void AddMessage(string message)
+        {
+            Output(message);
+        }
 
         /// <summary>
         /// Get the name of a direction
@@ -194,10 +207,10 @@ namespace Geten
             }
         }
 
-        public static string GetMessage() => messages.Dequeue();
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
-        public static bool HasMessage() => messages.Count > 0;
+        public static string GetInput()
+        {
+            return Input();
+        }
 
         public static bool IsCommand(string name)
         {
@@ -220,6 +233,12 @@ namespace Geten
             CommandProccessor.ProcessCommand(command);
         }
 
+        /*
+        public static string GetMessage() => messages.Dequeue();
+
+        public static bool HasMessage() => messages.Count > 0;
+        */
+
         /// <summary>
         /// Preform any setup and prepare fot the game to begin
         /// </summary>
@@ -235,7 +254,5 @@ namespace Geten
 
             // TODO: Any critical start up such as loading/placing/creating rooms, NPCs, items, ETC
         }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
