@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Geten.Core;
 using Geten.GameObjects;
 using Geten.Parsers.Script.Syntax;
 using System.Collections.Generic;
@@ -85,12 +86,43 @@ namespace Geten.MapItems
         // Should we allow this to be set as well?
         private void InitializeSides()
         {
-            SetSide(Direction.Up, new Roof());
-            SetSide(Direction.Down, new Floor());
-            SetSide(Direction.North, new Wall());
-            SetSide(Direction.South, new Wall());
-            SetSide(Direction.East, new Wall());
-            SetSide(Direction.West, new Wall());
+            Wall wall = null;
+            Roof roof = null;
+            Floor floor = null;
+
+            if (SymbolTable.Contains<Wall>("wall"))
+            {
+                wall = SymbolTable.GetInstance<Wall>("wall");
+            }
+            else
+            {
+                wall = GameObject.Create<Wall>("wall", null);
+            }
+
+            if (SymbolTable.Contains<Roof>("roof"))
+            {
+                roof = SymbolTable.GetInstance<Roof>("roof");
+            }
+            else
+            {
+                roof = GameObject.Create<Roof>("roof", null);
+            }
+
+            if (SymbolTable.Contains<Floor>("floor"))
+            {
+                floor = SymbolTable.GetInstance<Floor>("floor");
+            }
+            else
+            {
+                floor = GameObject.Create<Floor>("floor", null);
+            }
+
+            SetSide(Direction.Up, roof);
+            SetSide(Direction.Down, floor);
+            SetSide(Direction.North, wall);
+            SetSide(Direction.South, wall);
+            SetSide(Direction.East, wall);
+            SetSide(Direction.West, wall);
         }
     }
 }
