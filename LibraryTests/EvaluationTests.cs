@@ -6,6 +6,7 @@ using Geten.MapItems;
 using Geten.Parsers.Script;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 
@@ -86,6 +87,8 @@ namespace LibraryTests
         [TestMethod]
         public void Evaluate_Command_Should_Pass()
         {
+            var room = GameObject.Create<Room>("TestLookRoom");
+            TextEngine.StartRoom = room;
             var src = "command 'look'";
             var p = new ScriptParser();
             var r = p.Parse(src);
@@ -393,6 +396,25 @@ namespace LibraryTests
             {
                 ObjectFactory.Register<GameObjectFactory, GameObject>();
             }
+            if (TextEngine.Player == null)
+            {
+                TextEngine.Player = GameObject.Create<Player>("Player");
+            }
+            TextEngine.Output = ShowMessage;
+            TextEngine.Input = GetInput;
+        }
+
+        private static string GetInput(string prompt)
+        {
+            Console.Write(prompt);
+            var input = Console.ReadLine();
+            Console.WriteLine();
+            return input;
+        }
+
+        private static void ShowMessage(string message)
+        {
+            Debug.WriteLine(message);
         }
 
         private void AssertNoDiagnostics(ScriptParser parser)
