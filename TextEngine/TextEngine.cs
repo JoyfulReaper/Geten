@@ -47,7 +47,7 @@ namespace Geten
 
         private static Room startRoom = null;
 
-        public delegate string InputDelegate();
+        public delegate string InputDelegate(string prompt);
 
         public delegate void OutputDelegate(string message);
 
@@ -207,9 +207,9 @@ namespace Geten
             }
         }
 
-        public static string GetInput()
+        public static string GetInput(string prompt)
         {
-            return Input();
+            return Input(prompt);
         }
 
         public static bool IsCommand(string name)

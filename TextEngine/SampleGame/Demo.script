@@ -1,5 +1,5 @@
 ﻿tell "Hello to my RPG"
-ask for "What is your name" to 'name'
+ask for "What is your name: " to 'name'
 
 character "Fred" as player
 	with

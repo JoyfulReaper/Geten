@@ -32,9 +32,12 @@ namespace Geten
 {
     internal static class Program
     {
-        private static string GetInput()
+        private static string GetInput(string prompt)
         {
-            return Console.ReadLine();
+            Console.Write(prompt);
+            var input = Console.ReadLine();
+            Console.WriteLine();
+            return input;
         }
 
         private static void Main(string[] args)
