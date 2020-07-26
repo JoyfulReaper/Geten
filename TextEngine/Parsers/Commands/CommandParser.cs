@@ -10,6 +10,10 @@ namespace Geten.Parsers.Commands
     {
         protected override ITextCommand InternalParse()
         {
+            if (Current.Kind == CommandKind.Direction)
+            {
+                ParseGoCommand();
+            }
             if (Current.Kind == CommandKind.Command)
             {
                 NextToken();
@@ -26,7 +30,11 @@ namespace Geten.Parsers.Commands
                         return ParsePickup();
 
                     case "quit":
+                    case "exit":
                         return ParseQuit();
+
+                    case "inv":
+                        return new ShowInventoryCommand();
 
                     case "show":
                         return ParseShowCommand();
@@ -43,9 +51,17 @@ namespace Geten.Parsers.Commands
 
         private ITextCommand ParseGoCommand()
         {
-            var direction = MatchToken(CommandKind.Direction);
+            Direction dir = Direction.Invalid;
+            if (Peek(-1).Kind == CommandKind.Direction)
+            {
+                dir = (Direction)Peek(-1).Value;
+            }
+            else
+            {
+                dir = (Direction)MatchToken(CommandKind.Direction).Value;
+            }
 
-            return new GoCommand((Direction)direction.Value);
+            return new GoCommand(dir);
         }
 
         private ITextCommand ParseLookAt()
@@ -76,7 +92,7 @@ namespace Geten.Parsers.Commands
         {
             var arg = MatchToken(CommandKind.Identifier);
 
-            if (arg.Text == "inventory")
+            if (arg.Text == "inventory" || arg.Text == "inv")
             {
                 return new ShowInventoryCommand();
             }

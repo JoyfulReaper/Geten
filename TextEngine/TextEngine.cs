@@ -204,11 +204,12 @@ namespace Geten
             var cmds = new List<string>
             {
                 "quit", "exit",
-                "go", "n", "s", "e", "w", "u", "down",
+                "go", "n", "s", "e", "w", "u", "d",
                 "look",
                 "pickup",
                 "take",
                 "show",
+                "inv",
             };
 
             return cmds.Contains(name.ToLower());
