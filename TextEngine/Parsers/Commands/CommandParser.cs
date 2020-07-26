@@ -12,7 +12,7 @@ namespace Geten.Parsers.Commands
         {
             if (Current.Kind == CommandKind.Direction)
             {
-                ParseGoCommand();
+                return ParseGoCommand();
             }
             if (Current.Kind == CommandKind.Command)
             {
@@ -52,9 +52,9 @@ namespace Geten.Parsers.Commands
         private ITextCommand ParseGoCommand()
         {
             Direction dir = Direction.Invalid;
-            if (Peek(-1).Kind == CommandKind.Direction)
+            if (Peek(0).Kind == CommandKind.Direction)
             {
-                dir = (Direction)Peek(-1).Value;
+                dir = (Direction)Peek(0).Value;
             }
             else
             {
