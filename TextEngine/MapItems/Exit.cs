@@ -45,16 +45,21 @@ namespace Geten.MapItems
         /// <param name="heading">The Character's heading</param>
         public override void Enter(Character character, Direction heading)
         {
-            if (GetProperty<bool>("islocked"))
-                ToRoom.Enter(character, heading);
-            else
+            if (GetProperty<bool>("locked"))
+            {
                 TextEngine.AddMessage("You try to go though the " + Name + ", but it is locked.");
+            }
+            else
+            {
+                ToRoom.Enter(character, heading);
+            }
         }
 
         public override void Initialize(PropertyList properties)
         {
             base.Initialize(properties);
             AddDefaultValue("visible", true);
+            AddDefaultValue("locked", false);
         }
     }
 }

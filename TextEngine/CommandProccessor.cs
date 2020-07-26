@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Geten.Parsers.Commands;
+using System;
 
 namespace Geten
 {
@@ -31,8 +32,15 @@ namespace Geten
         public static void ProcessCommand(string command)
         {
             var parser = new CommandParser();
-            var result = parser.Parse(command);
-            result.Invoke();
+            try
+            {
+                var result = parser.Parse(command);
+                result.Invoke();
+            }
+            catch (Exception e)
+            {
+                TextEngine.AddMessage("What?");
+            }
         }
     }
 }

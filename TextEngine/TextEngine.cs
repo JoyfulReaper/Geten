@@ -28,8 +28,6 @@ using Geten.GameObjects;
 using Geten.MapItems;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 
 namespace Geten
 {
@@ -95,7 +93,6 @@ namespace Geten
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
         public static void AddMessage(string message) => messages.Enqueue(message);
-
 
         /// <summary>
         /// Get the name of a direction
@@ -221,7 +218,6 @@ namespace Geten
         {
             CommandProccessor.ProcessCommand(command);
         }
-
 
         /// <summary>
         /// Preform any setup and prepare fot the game to begin

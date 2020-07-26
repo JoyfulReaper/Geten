@@ -157,7 +157,7 @@ namespace Geten.Parsers.Script
             var name = node.NameToken.Value.ToString();
 
             dynamic r = GameObject.Create<Room>(name, node.Properties);
-            if (r.startRoom)
+            if (r.startLocation)
                 TextEngine.StartRoom = r;
         }
 

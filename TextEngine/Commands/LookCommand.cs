@@ -12,7 +12,10 @@
         public void Invoke()
         {
             if (LookAt == null)
-                TextEngine.AddMessage(TextEngine.Player?.Location.LookDescription);
+            {
+                dynamic loc = TextEngine.Player?.Location;
+                TextEngine.AddMessage(loc.LookDescription);
+            }
         }
     }
 }

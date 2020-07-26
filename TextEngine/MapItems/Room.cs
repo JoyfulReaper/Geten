@@ -41,16 +41,6 @@ namespace Geten.MapItems
         public Inventory Inventory { get; } = new Inventory();
 
         /// <summary>
-        /// The desciption shows when the LOOK command is given
-        /// </summary>
-        public string LookDescription { get; set; }
-
-        /// <summary>
-        /// True if the Character has been in the room before, false is not
-        /// </summary>
-        public bool Visisted { get; private set; }
-
-        /// <summary>
         /// Enter the room
         /// </summary>
         /// <param name="character">The Character entering the room</param>
@@ -58,7 +48,7 @@ namespace Geten.MapItems
         public override void Enter(Character character, Direction heading)
         {
             if (character == TextEngine.Player)
-                Visisted = true;
+                SetProperty("Visisted", true);
 
             character.Move(this);
             TextEngine.AddMessage(Description);
@@ -77,7 +67,7 @@ namespace Geten.MapItems
         public override void Initialize(PropertyList properties)
         {
             AddDefaultValue("Visited", false);
-            AddDefaultValue("startRoom", false);
+            AddDefaultValue("startLocation", false);
             base.Initialize(properties);
             InitializeSides();
         }
@@ -90,15 +80,6 @@ namespace Geten.MapItems
         public void SetSide(Direction dir, MapSite site)
         {
             sides[dir] = site;
-        }
-
-        /// <summary>
-        /// A String representation of this Room
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return base.ToString() + $", Name: {Name}, Description {Description}, LookDescription: {LookDescription}, Visited: {Visisted}";
         }
 
         // Should we allow this to be set as well?

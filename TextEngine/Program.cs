@@ -24,8 +24,6 @@ SOFTWARE.
 
 using Geten.Core;
 using Geten.Factories;
-using Geten.GameObjects;
-using Geten.MapItems;
 using Geten.Parsers.Script;
 using System;
 using System.IO;
@@ -40,7 +38,7 @@ namespace Geten
             ObjectFactory.Register<GameObjectFactory, GameObject>();
 
             Directory.SetCurrentDirectory(@"..\..\..\SampleGame");
-            Console.WriteLine(Directory.GetCurrentDirectory());
+            //Console.WriteLine(Directory.GetCurrentDirectory());
             ShowIntro();
 
             string script = System.IO.File.ReadAllText(@"Demo.script");
