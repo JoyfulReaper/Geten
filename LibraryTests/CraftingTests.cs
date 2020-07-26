@@ -25,14 +25,15 @@ namespace LibraryTests
         [TestInitialize]
         public void Init()
         {
+            SymbolTable.ClearAllSymbols();
             if (!ObjectFactory.IsRegisteredFor<GameObject>())
             {
                 ObjectFactory.Register<GameObjectFactory, GameObject>();
             }
 
             inventory = new Inventory(10);
-            inventory.AddItem(GameObject.Create<Item>("wood"));
-            inventory.AddItem(GameObject.Create<Item>("iron"));
+            inventory.AddItem(GameObject.Create<Item>("wood"), 4);
+            inventory.AddItem(GameObject.Create<Item>("iron"), 3);
 
             book = GameObject.Create<RecipeBook>("test");
             var ingredients = new Ingredients

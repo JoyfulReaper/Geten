@@ -20,12 +20,8 @@ namespace LibraryTests
             var src = "item 'Book' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'Book' to 'badTarget'";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            Assert.ThrowsException<Exception>(new Action(() =>
-            {
-                r.Accept(new EvaluationVisitor(p.Diagnostics));
-            }));
-
-            AssertNoDiagnostics(p);
+            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            Assert.AreEqual(p.Diagnostics.First().ToString(), "Target 'badTarget' is not a valid Room, NPC or ContainerItem");
         }
 
         [TestMethod]
@@ -137,7 +133,7 @@ namespace LibraryTests
 
             r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
-            Assert.IsTrue(SymbolTable.GetInstance<NPC>("TestNPC2").Health == 80);
+            Assert.IsTrue(SymbolTable.GetInstance<NPC>("TestNPC2").Health == 90);
         }
 
         [TestMethod]
@@ -153,7 +149,7 @@ namespace LibraryTests
 
             r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.Player.Health == 80);
+            Assert.IsTrue(Geten.TextEngine.Player.Health == 90);
         }
 
         [TestMethod]
@@ -206,6 +202,7 @@ namespace LibraryTests
         public void Evaluate_Increase_Player_Health_Should_Pass()
         {
             var player = GameObject.Create<Player>("TestPlayer1");
+            player.Health = 90;
             TextEngine.Player = player;
 
             var src = "increase health of 'player' by 10";

@@ -49,7 +49,7 @@ namespace Geten.GameObjects
             {
                 if (value < 0)
                     SetProperty(nameof(Health), 0);
-                else if (GetProperty<int>(nameof(Health)) > MaxHealth)
+                else if (value > MaxHealth)
                     SetProperty(nameof(Health), MaxHealth);
                 else
                     SetProperty(nameof(Health), value);

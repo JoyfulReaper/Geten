@@ -35,13 +35,6 @@ namespace Geten.MapItems
     {
         private readonly Dictionary<Direction, MapSite> sides = new Dictionary<Direction, MapSite>();
 
-        public override void Initialize(PropertyList properties)
-        {
-            SetProperty("Visited", false);
-            base.Initialize(properties);
-            InitializeSides();
-        }
-
         /// <summary>
         /// The Items contained in the Room's Inventory
         /// </summary>
@@ -79,6 +72,14 @@ namespace Geten.MapItems
         public MapSite GetSide(Direction dir)
         {
             return sides[dir];
+        }
+
+        public override void Initialize(PropertyList properties)
+        {
+            AddDefaultValue("Visited", false);
+            AddDefaultValue("startRoom", false);
+            base.Initialize(properties);
+            InitializeSides();
         }
 
         /// <summary>

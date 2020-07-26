@@ -49,7 +49,7 @@ namespace LibraryTests
                 { "attackable", false }
             };
 
-            Assert.AreEqual(go.PropertyCount, 3);
+            Assert.AreEqual(go.PropertyCount, 2);
         }
 
         [TestMethod]
