@@ -15,7 +15,13 @@ namespace Geten.Factories
             {
                 if (args.Length > 2)
                 {
-                    throw new ObjectFactoryException("More arguments given than expected");
+                    instance = (GameObject)Activator.CreateInstance(typeof(T));
+                    var propertyMap = instance.GetPropertyPositionMap();
+                    if (propertyMap == null)
+                    {
+                        throw new ObjectFactoryException($"Property Map for type {instance.GetType().Name}");
+                    }
+                    throw new NotImplementedException();
                 }
                 else
                 {

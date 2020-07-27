@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Dynamic;
 using System.Text;
 
@@ -86,6 +85,11 @@ namespace Geten.Core
             }
 
             return default;
+        }
+
+        public virtual string[] GetPropertyPositionMap()
+        {
+            return null;
         }
 
         public bool HasProperty(string property) => _properties.ContainsKey(property);
