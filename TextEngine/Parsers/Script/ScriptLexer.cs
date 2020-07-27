@@ -54,6 +54,10 @@ namespace Geten.Parsers.Script
                     ReadVariableSymbol();
                     break;
 
+                case '#':
+                    ReadComment();
+                    break;
+
                 case '[': { _kind = SyntaxKind.OpenSquare; break; }
                 case ']': { _kind = SyntaxKind.CloseSquare; break; }
 
@@ -100,6 +104,13 @@ namespace Geten.Parsers.Script
             var text = _text.ToString(_start, length);
 
             return new Token<SyntaxKind>(_kind, _start, text, _value);
+        }
+
+        private void ReadComment()
+        {
+            while (Current != '\n')
+                _position++;
+            Lex();
         }
 
         private void ReadDoubleQuotedString()

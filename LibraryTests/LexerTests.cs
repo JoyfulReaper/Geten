@@ -11,6 +11,23 @@ namespace LibraryTests
     public class LexerTests
     {
         [TestMethod]
+        public void Lex_Comment_Should_Pass()
+        {
+            string src =
+                @"#this is comment
+                  room ""Short Hallway""
+                    with
+                        description ""It's a short hallway!"" and
+                        lookDescription ""It looks like there is another room to the north!"" and
+                     end
+                end";
+            var l = new ScriptLexer(SourceText.From(src));
+            var token = l.GetAllTokens().First();
+            Assert.AreEqual(SyntaxKind.Keyword, token.Kind);
+            Assert.AreEqual("room", token.Text.ToString());
+        }
+
+        [TestMethod]
         public void Lex_Symbol_Should_Pass()
         {
             var l = new ScriptLexer(SourceText.From("@name"));
