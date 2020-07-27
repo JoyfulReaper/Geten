@@ -204,7 +204,7 @@ namespace Geten
             var cmds = new List<string>
             {
                 "quit", "exit",
-                "go", "n", "s", "e", "w", "u", "d",
+                "go", "n", "s", "e", "w", "up", "down",
                 "look",
                 "pickup",
                 "take",
