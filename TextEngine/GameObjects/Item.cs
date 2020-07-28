@@ -25,6 +25,7 @@ SOFTWARE.
 using Geten.Core;
 using Geten.Parsers.Script.Syntax;
 using System;
+using System.Collections.Generic;
 
 namespace Geten.GameObjects
 {
@@ -33,6 +34,11 @@ namespace Geten.GameObjects
     /// </summary>
     public class Item : GameObject
     {
+        public override List<string> GetPropertyPositionMap()
+        {
+            return new List<string> { "name", "pluralname", "description", "visible", "obtainable" };
+        }
+
         public override void Initialize(PropertyList properties)
         {
             base.Initialize(properties);

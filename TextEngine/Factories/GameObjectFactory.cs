@@ -16,12 +16,24 @@ namespace Geten.Factories
                 if (args.Length > 2)
                 {
                     instance = (GameObject)Activator.CreateInstance(typeof(T));
-                    var propertyMap = instance.GetPropertyPositionMap();
-                    if (propertyMap == null)
+                    var map = instance.GetPropertyPositionMap();
+                    if (map == null)
                     {
-                        throw new ObjectFactoryException($"Property Map for type {instance.GetType().Name}");
+                        throw new ObjectFactoryException($"No property map exists for type: {instance.GetType().Name}");
                     }
-                    throw new NotImplementedException();
+
+                    if (args.Length > map.Count)
+                    {
+                        throw new ArgumentOutOfRangeException("More arguments supplied than expected.");
+                    }
+
+                    for (int i = 0; i < map.Count; i++)
+                    {
+                        if (i > args.Length)
+                            break;
+
+                        instance.SetProperty(map[i], args[i]);
+                    }
                 }
                 else
                 {

@@ -15,6 +15,8 @@ namespace Geten.Core
         //property bag for mutable properties by script
         private readonly ConcurrentDictionary<CaseInsensitiveString, object> _properties = new ConcurrentDictionary<CaseInsensitiveString, object>();
 
+        private readonly List<string> _propertyMap = new List<string>();
+
         public string Description
         {
             get { return GetProperty<string>(nameof(Description)); }
@@ -87,9 +89,9 @@ namespace Geten.Core
             return default;
         }
 
-        public virtual string[] GetPropertyPositionMap()
+        public virtual List<string> GetPropertyPositionMap()
         {
-            return null;
+            return new List<string> { "name" };
         }
 
         public bool HasProperty(string property) => _properties.ContainsKey(property);

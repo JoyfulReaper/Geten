@@ -55,6 +55,14 @@ namespace Geten.MapItems
             TextEngine.AddMessage(Description);
         }
 
+        public override List<string> GetPropertyPositionMap()
+        {
+            var map = base.GetPropertyPositionMap();
+            map.Add("description");
+            map.Add("lookDescription");
+            return map;
+        }
+
         /// <summary>
         /// Get a side of the room
         /// </summary>
