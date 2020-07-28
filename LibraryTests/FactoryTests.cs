@@ -1,9 +1,8 @@
-﻿using Geten;
-using Geten.Core;
+﻿using Geten.Core;
 using Geten.Core.Exceptions;
-using Geten.Factories;
-using Geten.GameObjects;
-using Geten.MapItems;
+using Geten.Core.Factories;
+using Geten.Core.GameObjects;
+using Geten.Core.MapItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 

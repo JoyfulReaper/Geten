@@ -1,11 +1,10 @@
-﻿using Geten;
-using Geten.Core;
+﻿using Geten.Core;
+using Geten.Core.Factories;
+using Geten.Core.GameObjects;
+using Geten.Core.MapItems;
+using Geten.Core.Parsers.Script;
+using Geten.Core.Parsers.Script.Syntax;
 using Geten.Core.Parsing;
-using Geten.Factories;
-using Geten.GameObjects;
-using Geten.MapItems;
-using Geten.Parsers.Script;
-using Geten.Parsers.Script.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;

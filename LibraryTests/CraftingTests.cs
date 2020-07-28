@@ -1,8 +1,7 @@
-﻿using Geten;
-using Geten.Core;
+﻿using Geten.Core;
 using Geten.Core.Crafting;
-using Geten.Factories;
-using Geten.GameObjects;
+using Geten.Core.Factories;
+using Geten.Core.GameObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LibraryTests

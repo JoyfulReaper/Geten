@@ -1,8 +1,8 @@
 ﻿using Geten.Core;
+using Geten.Core.Parsers.Script;
+using Geten.Core.Parsers.Script.Syntax;
 using Geten.Core.Parsing;
 using Geten.Core.Parsing.Text;
-using Geten.Parsers.Script;
-using Geten.Parsers.Script.Syntax;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +10,7 @@ namespace DumbTests
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             CaseInsensitiveString a = new CaseInsensitiveString("TeSt");
             Console.WriteLine(a);
@@ -44,20 +44,20 @@ namespace DumbTests
             {
                 foreach (var child in bn.Children)
                     VistChildNode(child);
-            } else
+            }
+            else
             {
                 var type = node.GetType();
                 var properties = type.GetProperties();
-                foreach(var prop in properties)
+                foreach (var prop in properties)
                 {
                     if (prop.DeclaringType == typeof(TextSpan)) continue;
-                    if(prop.Name == "Properties")
-                    { 
-                        Dictionary<string, object> dict = (Dictionary<string, object>) prop.GetValue(node);
+                    if (prop.Name == "Properties")
+                    {
+                        Dictionary<string, object> dict = (Dictionary<string, object>)prop.GetValue(node);
                         foreach (KeyValuePair<string, object> entry in dict)
                         {
                             Console.WriteLine(entry.Key + " " + entry.Value);
-
                         }
                     }
                     Console.WriteLine($"{prop.Name}: {prop.GetValue(node)}");

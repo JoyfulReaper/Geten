@@ -1,13 +1,11 @@
-﻿using Geten;
-using Geten.Core;
-using Geten.Factories;
-using Geten.GameObjects;
-using Geten.MapItems;
-using Geten.Parsers.Script;
+﻿using Geten.Core;
+using Geten.Core.Factories;
+using Geten.Core.GameObjects;
+using Geten.Core.MapItems;
+using Geten.Core.Parsers.Script;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using System.Net;
 
 namespace LibraryTests
 {
@@ -20,7 +18,7 @@ namespace LibraryTests
             var src = "item 'Book' with pluralName 'Books' and obtainable true and visible true and description 'you can read it' end end add item 'Book' to 'badTarget'";
             var p = new ScriptParser();
             var r = p.Parse(src);
-            r.Accept(new EvaluationVisitor(p.Diagnostics));
+            r.Accept(visitor: new EvaluationVisitor(p.Diagnostics));
             Assert.AreEqual(p.Diagnostics.First().ToString(), "Target 'badTarget' is not a valid Room, NPC or ContainerItem");
         }
 
@@ -149,7 +147,7 @@ namespace LibraryTests
 
             r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.Player.Health == 90);
+            Assert.IsTrue(TextEngine.Player.Health == 90);
         }
 
         [TestMethod]
@@ -211,7 +209,7 @@ namespace LibraryTests
 
             r.Accept(new EvaluationVisitor(p.Diagnostics));
             AssertNoDiagnostics(p);
-            Assert.IsTrue(Geten.TextEngine.Player.Health == 100);
+            Assert.IsTrue(TextEngine.Player.Health == 100);
         }
 
         [TestMethod]

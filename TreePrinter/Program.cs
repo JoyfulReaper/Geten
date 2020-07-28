@@ -1,6 +1,6 @@
 ﻿using Geten.Core;
+using Geten.Core.Parsers.Script;
 using Geten.Core.Parsing;
-using Geten.Parsers.Script;
 using System;
 using System.Linq;
 

@@ -1,4 +1,4 @@
-﻿using Geten.Parsers.Script;
+﻿using Geten.Core.Parsers.Script;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -12,24 +12,6 @@ namespace LibraryTests
         public void Parse_Add_Item_Should_Pass()
         {
             var src = "add item \"apple\" to 'player'";
-            var parser = new ScriptParser();
-            var result = parser.Parse(src);
-
-            AssertNoDiagnostics(parser);
-        }
-
-        [TestMethod]
-        public void Parse_RecipeBook2_Should_Pass()
-        {
-            var src =
-                @"recipebook ""main""
-                    recipe ""great stuff"" will craft 1 of ""torch""
-                        ingredients
-                            3 of ""wood"" and
-                            1 of ""stick""
-                        end
-                    end
-                end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
 
@@ -226,6 +208,24 @@ namespace LibraryTests
                     end
                 end
             end";
+            var parser = new ScriptParser();
+            var result = parser.Parse(src);
+
+            AssertNoDiagnostics(parser);
+        }
+
+        [TestMethod]
+        public void Parse_RecipeBook2_Should_Pass()
+        {
+            var src =
+                @"recipebook ""main""
+                    recipe ""great stuff"" will craft 1 of ""torch""
+                        ingredients
+                            3 of ""wood"" and
+                            1 of ""stick""
+                        end
+                    end
+                end";
             var parser = new ScriptParser();
             var result = parser.Parse(src);
 

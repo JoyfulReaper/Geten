@@ -23,8 +23,8 @@ SOFTWARE.
 */
 
 using Geten.Core;
-using Geten.Factories;
-using Geten.Parsers.Script;
+using Geten.Core.Factories;
+using Geten.Core.Parsers.Script;
 using System;
 using System.IO;
 
