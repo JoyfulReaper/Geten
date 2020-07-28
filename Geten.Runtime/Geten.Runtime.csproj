@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BinaryHandlers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Geten.Core\Geten.Core.csproj" />
   </ItemGroup>
 
