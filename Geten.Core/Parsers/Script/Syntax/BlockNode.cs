@@ -1,6 +1,7 @@
 ﻿using Geten.Core.Parsing;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Geten.Core.Parsers.Script.Syntax
 {
@@ -12,6 +13,11 @@ namespace Geten.Core.Parsers.Script.Syntax
         }
 
         public IEnumerable<SyntaxNode> Children { get; }
+
+        public static BlockNode Concat(BlockNode first, BlockNode second)
+        {
+            return new BlockNode(first.Children.Concat(second.Children));
+        }
 
         public override void Accept(IScriptVisitor visitor)
         {
