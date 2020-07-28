@@ -59,6 +59,7 @@ namespace Geten.Core.MapItems
             var map = base.GetPropertyPositionMap();
             map.Add("description");
             map.Add("lookDescription");
+            map.Add("startLocation");
             return map;
         }
 

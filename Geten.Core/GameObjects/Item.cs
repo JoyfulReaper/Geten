@@ -35,7 +35,12 @@ namespace Geten.Core.GameObjects
     {
         public override List<string> GetPropertyPositionMap()
         {
-            return new List<string> { "name", "pluralname", "description", "visible", "obtainable" };
+            var map = base.GetPropertyPositionMap();
+            map.Add("pluralName");
+            map.Add("description");
+            map.Add("visible");
+            map.Add("obtainable");
+            return map;
         }
 
         public override void Initialize(PropertyList properties)

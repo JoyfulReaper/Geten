@@ -24,6 +24,7 @@ SOFTWARE.
 
 using Geten.Core.GameObjects;
 using Geten.Core.Parsers.Script.Syntax;
+using System.Collections.Generic;
 
 namespace Geten.Core.MapItems
 {
@@ -52,6 +53,16 @@ namespace Geten.Core.MapItems
             {
                 ToRoom.Enter(character, heading);
             }
+        }
+
+        public override List<string> GetPropertyPositionMap()
+        {
+            var map = base.GetPropertyPositionMap();
+            map.Add("toRoom");
+            map.Add("side");
+            map.Add("locked");
+            map.Add("visible");
+            return map;
         }
 
         public override void Initialize(PropertyList properties)

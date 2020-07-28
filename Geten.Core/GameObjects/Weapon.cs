@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace Geten.Core.GameObjects
 {
@@ -57,6 +58,14 @@ namespace Geten.Core.GameObjects
                     throw (new ArgumentOutOfRangeException("MinDamage must be >= 0"));
                 SetProperty(nameof(MinDamage), value);
             }
+        }
+
+        public override List<string> GetPropertyPositionMap()
+        {
+            var map = base.GetPropertyPositionMap();
+            map.Add("minDamage");
+            map.Add("maxDamage");
+            return map;
         }
     }
 }

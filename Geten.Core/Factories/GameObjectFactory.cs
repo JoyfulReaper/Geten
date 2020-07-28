@@ -28,7 +28,7 @@ namespace Geten.Core.Factories
 
                     for (int i = 0; i < map.Count; i++)
                     {
-                        if (i > args.Length)
+                        if (i == args.Length)
                             break;
 
                         instance.SetProperty(map[i], args[i]);

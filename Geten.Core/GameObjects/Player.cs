@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System.Collections.Generic;
+
 namespace Geten.Core.GameObjects
 {
     /// <summary>
@@ -29,5 +31,9 @@ namespace Geten.Core.GameObjects
     /// </summary>
     public class Player : Character
     {
+        public override List<string> GetPropertyPositionMap()
+        {
+            return base.GetPropertyPositionMap();
+        }
     }
 }

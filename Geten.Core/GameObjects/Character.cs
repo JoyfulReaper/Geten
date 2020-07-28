@@ -25,6 +25,7 @@ SOFTWARE.
 using Geten.Core.MapItems;
 using Geten.Core.Parsers.Script.Syntax;
 using System;
+using System.Collections.Generic;
 
 namespace Geten.Core.GameObjects
 {
@@ -83,6 +84,15 @@ namespace Geten.Core.GameObjects
         /// The Room that the Character was in previously
         /// </summary>
         public Room PreviousLocation { get; private set; }
+
+        public override List<string> GetPropertyPositionMap()
+        {
+            var map = base.GetPropertyPositionMap();
+            map.Add("health");
+            map.Add("maxHealth");
+            map.Add("money");
+            return map;
+        }
 
         public override void Initialize(PropertyList properties)
         {

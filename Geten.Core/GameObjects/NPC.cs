@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace Geten.Core.GameObjects
@@ -31,5 +32,11 @@ namespace Geten.Core.GameObjects
     /// </summary>
     public class NPC : Character
     {
+        public override List<string> GetPropertyPositionMap()
+        {
+            var map = base.GetPropertyPositionMap();
+            map.Add("attackable");
+            return map;
+        }
     }
 }

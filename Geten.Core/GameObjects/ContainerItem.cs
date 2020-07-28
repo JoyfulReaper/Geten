@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Geten.Core.Parsers.Script.Syntax;
+using System.Collections.Generic;
 
 namespace Geten.Core.GameObjects
 {
@@ -32,6 +33,13 @@ namespace Geten.Core.GameObjects
     public class ContainerItem : Item
     {
         public Inventory Inventory { get; private set; }
+
+        public override List<string> GetPropertyPositionMap()
+        {
+            var map = base.GetPropertyPositionMap();
+            map.Add("inventorySize");
+            return map;
+        }
 
         public override void Initialize(PropertyList properties)
         {
