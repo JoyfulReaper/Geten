@@ -193,6 +193,33 @@ namespace Geten.Core
 
         public static string GetMessage() => messages.Dequeue();
 
+        public static Direction GetOppositeDirection(Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.Down:
+                    return Direction.Up;
+
+                case Direction.Up:
+                    return Direction.Down;
+
+                case Direction.North:
+                    return Direction.South;
+
+                case Direction.South:
+                    return Direction.North;
+
+                case Direction.East:
+                    return Direction.West;
+
+                case Direction.West:
+                    return Direction.East;
+
+                default:
+                    return Direction.Invalid;
+            }
+        }
+
         public static bool HasMessage() => messages.Count > 0;
 
         public static bool IsCommand(string name)

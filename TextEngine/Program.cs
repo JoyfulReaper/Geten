@@ -89,8 +89,10 @@ namespace Geten
         private static void ShowIntro()
         {
             Console.WriteLine("----------------------------------------------------");
-            Console.WriteLine("\nGeten - General Text Adventure Engine\n");
-            Console.WriteLine("----------------------------------------------------\n\n");
+            Console.WriteLine("Geten - General Text Adventure Engine");
+            Console.WriteLine("MIT License Copyright 2020 Kyle Givler and filmee24");
+            Console.WriteLine("https://github.com/JoyfulReaper/Geten");
+            Console.WriteLine("----------------------------------------------------\n");
         }
     }
 }

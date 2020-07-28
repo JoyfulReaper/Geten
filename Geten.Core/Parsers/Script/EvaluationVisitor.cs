@@ -164,10 +164,15 @@ namespace Geten.Core.Parsers.Script
             var name = node.NameToken.Value.ToString();
             var side = node.Properties["side"]?.ToString();
             var fromRoom = node.Properties["fromRoom"]?.ToString();
+            var toRoom = node.Properties["toRoom"]?.ToString();
 
             Direction dirSide = TextEngine.GetDirectionFromChar(Char.ToUpper(side[0]));
+
             Room from = SymbolTable.GetInstance<Room>(fromRoom);
+            Room to = SymbolTable.GetInstance<Room>(toRoom);
+
             var exit = GameObject.Create<Exit>(name, node.Properties);
+            // Need an exit in the opposite direction to go back, but can't have the same name.... TODO
 
             from.SetSide(dirSide, exit);
         }
