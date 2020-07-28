@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TreePrinter", "TreePrinter\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DumbTests", "DumbTests\DumbTests.csproj", "{86D55D2C-4A2E-4BD0-A1FC-69C9E963F9DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geten.Engine", "Geten.Engine\Geten.Engine.csproj", "{30119210-D1A6-470F-9C74-29F72565801E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{86D55D2C-4A2E-4BD0-A1FC-69C9E963F9DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86D55D2C-4A2E-4BD0-A1FC-69C9E963F9DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86D55D2C-4A2E-4BD0-A1FC-69C9E963F9DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30119210-D1A6-470F-9C74-29F72565801E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30119210-D1A6-470F-9C74-29F72565801E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30119210-D1A6-470F-9C74-29F72565801E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30119210-D1A6-470F-9C74-29F72565801E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
