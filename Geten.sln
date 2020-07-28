@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TreePrinter", "TreePrinter\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DumbTests", "DumbTests\DumbTests.csproj", "{86D55D2C-4A2E-4BD0-A1FC-69C9E963F9DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geten.Core", "Geten.Core\Geten.Core.csproj", "{4CAC8A98-D815-400D-886D-F45024C5F06B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geten.Core", "Geten.Core\Geten.Core.csproj", "{4CAC8A98-D815-400D-886D-F45024C5F06B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{3409F2C8-7817-4CD4-B748-C6B25FBFF45D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9522CF45-2846-418F-B1D7-1EF0689FA1D7} = {3409F2C8-7817-4CD4-B748-C6B25FBFF45D}
+		{86D55D2C-4A2E-4BD0-A1FC-69C9E963F9DF} = {3409F2C8-7817-4CD4-B748-C6B25FBFF45D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {406A92A8-27FD-4593-889A-484750EE865C}
