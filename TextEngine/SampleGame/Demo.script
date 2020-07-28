@@ -1,4 +1,6 @@
-﻿character "Fred" as player
+﻿tell "Hello to my RPG"
+
+character "Fred" as player
 	with
 		health 100 and
 		maxHealth 100 and
@@ -49,4 +51,11 @@ exit "toKitchen"
 	end
 end
 
-tell "Hello to my RPG"
+item "pickle"
+	with
+		obtainable false and
+		visible true and
+		description "An old looking pickle" and
+		location "kitchen" and
+	end
+end
