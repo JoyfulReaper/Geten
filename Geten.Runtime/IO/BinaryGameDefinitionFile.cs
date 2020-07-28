@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Geten.Core;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Geten.Runtime.IO
@@ -13,7 +14,7 @@ namespace Geten.Runtime.IO
             return null;
         }
 
-        public byte[] GetBodyOfSection(string name)
+        public byte[] GetBodyOfSection(CaseInsensitiveString name)
         {
             foreach (var s in Sections)
             {
@@ -24,6 +25,10 @@ namespace Geten.Runtime.IO
             }
 
             throw new System.Exception("No Section called '{name}' found");
+        }
+
+        public void Save(Stream str)
+        {
         }
     }
 }
