@@ -24,6 +24,7 @@ SOFTWARE.
 
 using Geten.Core;
 using Geten.Core.Factories;
+using Geten.Core.MapItems;
 using Geten.Core.Parsers.Script;
 using System;
 using System.IO;
@@ -56,10 +57,33 @@ namespace Geten
                     Console.WriteLine(wrapper.LineWrap((TextEngine.GetMessage())));
                 }
 
+                ProcessExits(TextEngine.Player.Location);
+
                 Console.Write("\nEnter command: ");
                 string input = Console.ReadLine();
+                Console.WriteLine();
+
                 TextEngine.ProccessCommand(input);
             }
+        }
+
+        private static void ProcessExits(Room room)
+        {
+            if (room.GetProperty<bool>("lookedAt") == false)
+            {
+                return;
+            }
+
+            Console.Write("\nExits: ");
+            var sides = room.GetAllSides();
+            foreach (var side in sides)
+            {
+                if (side.Value is Exit e && e.GetProperty<bool>("visible"))
+                {
+                    Console.Write(side.Key.ToString() + " ");
+                }
+            }
+            Console.WriteLine();
         }
 
         private static void ShowIntro()

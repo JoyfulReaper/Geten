@@ -84,8 +84,9 @@ namespace Geten.Core
             if (Count + quantity > Capacity)
                 throw new InvalidQuantityException("Inventory can not hold that many itmes");
 
-            if (!item.GetProperty<bool>("obtainable"))
-                throw new InvalidOperationException(item.Name + " is not obtainable!");
+            // This check should be when picking up the item not when adding it!
+            //if (!item.GetProperty<bool>("obtainable"))
+            //    throw new InvalidOperationException(item.Name + " is not obtainable!");
 
             if (items.ContainsKey(item))
                 items[item] += quantity;

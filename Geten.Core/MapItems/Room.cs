@@ -54,6 +54,24 @@ namespace Geten.Core.MapItems
             TextEngine.AddMessage(Description);
         }
 
+        public List<Exit> GetAllExits()
+        {
+            var exits = new List<Exit>();
+            foreach (var item in sides)
+            {
+                if (item.Value is Exit e)
+                {
+                    exits.Add(e);
+                }
+            }
+            return exits;
+        }
+
+        public Dictionary<Direction, MapSite> GetAllSides()
+        {
+            return sides;
+        }
+
         public override List<string> GetPropertyPositionMap()
         {
             var map = base.GetPropertyPositionMap();
@@ -77,6 +95,7 @@ namespace Geten.Core.MapItems
         {
             AddDefaultValue("Visited", false);
             AddDefaultValue("startLocation", false);
+            AddDefaultValue("lookedAt", false);
             base.Initialize(properties);
             InitializeSides();
         }

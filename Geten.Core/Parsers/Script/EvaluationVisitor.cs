@@ -163,13 +163,10 @@ namespace Geten.Core.Parsers.Script
         {
             var name = node.NameToken.Value.ToString();
             var side = node.Properties["side"]?.ToString();
-            var toRoom = node.Properties["toRoom"]?.ToString();
             var fromRoom = node.Properties["fromRoom"]?.ToString();
 
             Direction dirSide = TextEngine.GetDirectionFromChar(Char.ToUpper(side[0]));
-            Room to = SymbolTable.GetInstance<Room>(toRoom);
             Room from = SymbolTable.GetInstance<Room>(fromRoom);
-
             var exit = GameObject.Create<Exit>(name, node.Properties);
 
             from.SetSide(dirSide, exit);

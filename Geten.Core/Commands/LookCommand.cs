@@ -16,6 +16,7 @@ namespace Geten.Core.Commands
             if (LookAt == null)
             {
                 dynamic loc = TextEngine.Player?.Location;
+                loc.lookedAt = true;
                 TextEngine.AddMessage(loc.LookDescription);
             }
         }

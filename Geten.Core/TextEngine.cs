@@ -89,8 +89,6 @@ namespace Geten.Core
             }
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-
         public static void AddMessage(string message) => messages.Enqueue(message);
 
         /// <summary>
@@ -195,7 +193,6 @@ namespace Geten.Core
 
         public static string GetMessage() => messages.Dequeue();
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
         public static bool HasMessage() => messages.Count > 0;
 
         public static bool IsCommand(string name)
@@ -234,7 +231,5 @@ namespace Geten.Core
 
             // TODO: Any critical start up such as loading/placing/creating rooms, NPCs, items, ETC
         }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

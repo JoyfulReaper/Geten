@@ -60,7 +60,7 @@ end
 
 exit "toDiningRoom" from "kitchen" 
     with
-        isLocked false and
+        locked false and
         visible true and
         toRoom 'diningRoom' and
         side "north"
