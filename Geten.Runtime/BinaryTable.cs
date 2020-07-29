@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Geten.Runtime
 {
-    public abstract class BinaryTable<TKey, TValue> : Dictionary<TKey, TValue>
+    public abstract class BinaryTable<TKey, TValue> : Dictionary<TKey, TValue>, IBinaryTable
     {
         public void Load(byte[] raw)
         {
@@ -27,7 +27,7 @@ namespace Geten.Runtime
         {
             var ms = new MemoryStream();
             var bw = new BinaryWriter(ms);
-            ;
+
             bw.Write(Count);
             foreach (var item in this)
             {
@@ -42,6 +42,6 @@ namespace Geten.Runtime
 
         public abstract void WriteKey(BinaryWriter bw, TKey key);
 
-        public abstract void WriteValue(BinaryWriter bw, TValue key);
+        public abstract void WriteValue(BinaryWriter bw, TValue value);
     }
 }
