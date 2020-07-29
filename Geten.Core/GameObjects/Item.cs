@@ -52,8 +52,8 @@ namespace Geten.Core.GameObjects
 			AddDefaultValue("obtainable", true);
 			AddDefaultValue("quantity", 1);
 
-			string pluralName = GetProperty<string>("PluralName");
-			if (pluralName == null || pluralName.Length == 0)
+			var pluralName = GetProperty<string>("PluralName");
+			if (string.IsNullOrEmpty(pluralName))
 				SetProperty("PluralName", Name + "s");
 		}
 
