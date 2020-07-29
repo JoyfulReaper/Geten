@@ -8,7 +8,7 @@ using Geten.Core.Parsers.Script;
 
 namespace Geten.Runtime.Tables
 {
-	public class GameObjectTable : BinaryTable<GameObjectKind, PropertyList>
+	public class GameObjectTable : BinaryTable<GameObjectKind, PropertyList> //ToDo: need to rethink
 	{
 		public void Add(GameObject obj)
 		{
@@ -19,6 +19,11 @@ namespace Geten.Runtime.Tables
 			}
 
 			throw new Exception($"Object '{obj.GetType().Name}' does not have a object kind.");
+		}
+
+		public T GetObjectsByKind<T>(GameObjectKind)
+					where T : GameObject
+		{
 		}
 
 		public override GameObjectKind ReadKey(BinaryReader br)
