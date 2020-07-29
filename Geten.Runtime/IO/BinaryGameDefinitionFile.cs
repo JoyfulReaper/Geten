@@ -9,6 +9,22 @@ namespace Geten.Runtime.IO
         public BinaryGameFileHeader Header { get; set; } = new BinaryGameFileHeader();
         public List<BinaryGameSection> Sections { get; set; } = new List<BinaryGameSection>();
 
+        public BinaryGameSection this[CaseInsensitiveString name]
+        {
+            get
+            {
+                foreach (var s in Sections)
+                {
+                    if (s.Header.Name == name)
+                    {
+                        return s;
+                    }
+                }
+
+                throw new System.Exception($"No Section called '{name}' found");
+            }
+        }
+
         public static BinaryGameDefinitionFile Load(Stream strm)
         {
             var br = new BinaryReader(strm);
@@ -31,7 +47,7 @@ namespace Geten.Runtime.IO
                 }
             }
 
-            throw new System.Exception("No Section called '{name}' found");
+            throw new System.Exception($"No Section called '{name}' found");
         }
 
         public void Save(Stream strm)
