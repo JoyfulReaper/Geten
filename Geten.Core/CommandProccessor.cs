@@ -27,20 +27,20 @@ using System;
 
 namespace Geten.Core
 {
-    public static class CommandProccessor
-    {
-        public static void ProcessCommand(string command)
-        {
-            var parser = new CommandParser();
-            try
-            {
-                var result = parser.Parse(command);
-                result.Invoke();
-            }
-            catch (Exception e)
-            {
-                TextEngine.AddMessage("What?");
-            }
-        }
-    }
+	public static class CommandProccessor
+	{
+		public static void ProcessCommand(string command)
+		{
+			var parser = new CommandParser();
+			try
+			{
+				var result = parser.Parse(command);
+				result.Invoke();
+			}
+			catch (Exception)
+			{
+				TextEngine.AddMessage("What?");
+			}
+		}
+	}
 }

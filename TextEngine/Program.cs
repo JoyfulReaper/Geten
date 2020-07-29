@@ -31,68 +31,68 @@ using System.IO;
 
 namespace Geten
 {
-    internal static class Program
-    {
-        private static void Main(string[] args)
-        {
-            //needed to create new instances of all kind of gameobjects
-            ObjectFactory.Register<GameObjectFactory, GameObject>();
+	internal static class Program
+	{
+		private static void Main()
+		{
+			//needed to create new instances of all kind of gameobjects
+			ObjectFactory.Register<GameObjectFactory, GameObject>();
 
-            Directory.SetCurrentDirectory(@"..\..\..\SampleGame");
-            //Console.WriteLine(Directory.GetCurrentDirectory());
-            ShowIntro();
+			Directory.SetCurrentDirectory(@"..\..\..\SampleGame");
+			//Console.WriteLine(Directory.GetCurrentDirectory());
+			ShowIntro();
 
-            string script = System.IO.File.ReadAllText(@"Demo.script");
-            ScriptParser scriptParser = new ScriptParser();
-            var result = scriptParser.Parse(script);
-            result.Accept(new EvaluationVisitor(scriptParser.Diagnostics));
+			var script = System.IO.File.ReadAllText("Demo.script");
+			var scriptParser = new ScriptParser();
+			var result = scriptParser.Parse(script);
+			result.Accept(new EvaluationVisitor(scriptParser.Diagnostics));
 
-            GreedyWrap wrapper = new GreedyWrap(Console.WindowWidth);
-            TextEngine.StartGame();
-            while (!TextEngine.GameOver)
-            {
-                wrapper.LineWidth = Console.WindowWidth;
-                while (TextEngine.HasMessage())
-                {
-                    Console.WriteLine(wrapper.LineWrap((TextEngine.GetMessage())));
-                }
+			var wrapper = new GreedyWrap(Console.WindowWidth);
+			TextEngine.StartGame();
+			while (!TextEngine.GameOver)
+			{
+				wrapper.LineWidth = Console.WindowWidth;
+				while (TextEngine.HasMessage())
+				{
+					Console.WriteLine(wrapper.LineWrap(TextEngine.GetMessage()));
+				}
 
-                ProcessExits(TextEngine.Player.Location);
+				ProcessExits(TextEngine.Player.Location);
 
-                Console.Write("\nEnter command: ");
-                string input = Console.ReadLine();
-                Console.WriteLine();
+				Console.Write("\nEnter command: ");
+				var input = Console.ReadLine();
+				Console.WriteLine();
 
-                TextEngine.ProccessCommand(input);
-            }
-        }
+				TextEngine.ProccessCommand(input);
+			}
+		}
 
-        private static void ProcessExits(Room room)
-        {
-            if (room.GetProperty<bool>("lookedAt") == false)
-            {
-                return;
-            }
+		private static void ProcessExits(Room room)
+		{
+			if (!room.GetProperty<bool>("lookedAt"))
+			{
+				return;
+			}
 
-            Console.Write("\nExits: ");
-            var sides = room.GetAllSides();
-            foreach (var side in sides)
-            {
-                if (side.Value is Exit e && e.GetProperty<bool>("visible"))
-                {
-                    Console.Write(side.Key.ToString() + " ");
-                }
-            }
-            Console.WriteLine();
-        }
+			Console.Write("\nExits: ");
+			var sides = room.GetAllSides();
+			foreach (var side in sides)
+			{
+				if (side.Value is Exit e && e.GetProperty<bool>("visible"))
+				{
+					Console.Write(side.Key.ToString() + " ");
+				}
+			}
+			Console.WriteLine();
+		}
 
-        private static void ShowIntro()
-        {
-            Console.WriteLine("----------------------------------------------------");
-            Console.WriteLine("Geten - General Text Adventure Engine");
-            Console.WriteLine("MIT License Copyright 2020 Kyle Givler and filmee24");
-            Console.WriteLine("https://github.com/JoyfulReaper/Geten");
-            Console.WriteLine("----------------------------------------------------\n");
-        }
-    }
+		private static void ShowIntro()
+		{
+			Console.WriteLine("----------------------------------------------------");
+			Console.WriteLine("Geten - General Text Adventure Engine");
+			Console.WriteLine("MIT License Copyright 2020 Kyle Givler and filmee24");
+			Console.WriteLine("https://github.com/JoyfulReaper/Geten");
+			Console.WriteLine("----------------------------------------------------\n");
+		}
+	}
 }
