@@ -66,7 +66,7 @@ namespace Geten.Core.Parsers.Commands
 
 		private ITextCommand ParseDrop()
 		{
-			//drop iron sword
+			//drop iron sword?
 			var sb = new StringBuilder();
 			do
 			{
