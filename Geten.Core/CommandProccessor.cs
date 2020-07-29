@@ -24,6 +24,7 @@ SOFTWARE.
 
 using Geten.Core.Parsers.Commands;
 using System;
+using System.Linq;
 
 namespace Geten.Core
 {
@@ -40,6 +41,16 @@ namespace Geten.Core
 			catch (Exception)
 			{
 				TextEngine.AddMessage("What?");
+			}
+
+			if (parser.Diagnostics.Any())
+			{
+				foreach (var d in parser.Diagnostics)
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine(d);
+					Console.ResetColor();
+				}
 			}
 		}
 	}
