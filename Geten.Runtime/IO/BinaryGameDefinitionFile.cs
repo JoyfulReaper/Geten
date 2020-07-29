@@ -1,4 +1,4 @@
-using Geten.Core;
+﻿using Geten.Core;
 using System.Collections.Generic;
 using System.IO;
 
@@ -34,8 +34,15 @@ namespace Geten.Runtime.IO
             throw new System.Exception("No Section called '{name}' found");
         }
 
-        public void Save(Stream str)
+        public void Save(Stream strm)
         {
+            var bw = new BinaryWriter(strm);
+            bw.Write(0xC0FFEE); // Magic Number
+            bw.Write(Header.SectionCount);
+
+            WriteSections(bw);
+
+            bw.Close();
         }
 
         private static BinaryGameFileHeader ReadHeader(BinaryReader br)
@@ -83,6 +90,24 @@ namespace Geten.Runtime.IO
                 r.Add(ReadSection(br));
             }
             return r;
+        }
+
+        private void WriteSection(BinaryGameSection s, BinaryWriter bw)
+        {
+            // Write Section Header
+            bw.Write(s.Header.Name);
+            bw.Write(s.Header.SectionLength);
+
+            // Write Body
+            bw.Write(s.Body);
+        }
+
+        private void WriteSections(BinaryWriter bw)
+        {
+            foreach (var s in Sections)
+            {
+                WriteSection(s, bw);
+            }
         }
     }
 }
