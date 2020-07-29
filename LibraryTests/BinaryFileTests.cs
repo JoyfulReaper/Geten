@@ -1,5 +1,4 @@
-﻿using Geten.Core.Memory;
-using Geten.Runtime.IO;
+﻿using Geten.Runtime.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
