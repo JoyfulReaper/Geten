@@ -14,15 +14,7 @@ namespace LibraryTests
         [TestInitialize]
         public void Init()
         {
-            bf = new BinaryGameDefinitionFile();
-            bf.Header.SectionCount = 1;
-            var s = new BinaryGameSection();
-            s.Header.Name = "ObjectTable";
-            s.Header.SectionLength = 4;
-
-            s.Body = BitConverter.GetBytes(42);
-
-            bf.Sections.Add(s);
+            bf = GameBinaryBuilder.Build().AddSection("IndexTable", BitConverter.GetBytes(42));
         }
 
         [TestMethod]
