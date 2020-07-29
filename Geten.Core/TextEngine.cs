@@ -30,233 +30,195 @@ using System.Collections.Generic;
 
 namespace Geten.Core
 {
-    /// <summary>
-    /// Represent the directions the player can move in
-    /// </summary>
-    public enum Direction { Invalid, North, South, East, West, Up, Down };
+	/// <summary>
+	/// Represent the directions the player can move in
+	/// </summary>
+	public enum Direction { Invalid, North, South, East, West, Up, Down };
 
-    /// <summary>
-    /// Static class for keeping track of important information
-    /// </summary>
-    public static class TextEngine
-    {
-        private static readonly Queue<string> messages = new Queue<string>();
+	/// <summary>
+	/// Static class for keeping track of important information
+	/// </summary>
+	public static class TextEngine
+	{
+		private static readonly Queue<string> messages = new Queue<string>();
 
-        private static Player player = null;
+		private static Player player = null;
 
-        private static Room startRoom = null;
+		private static Room startRoom = null;
 
-        /// <value>
-        /// Flag indicating if the game has ended
-        /// </value>
-        public static bool GameOver { get; private set; } = true;
+		/// <value>
+		/// Flag indicating if the game has ended
+		/// </value>
+		public static bool GameOver { get; private set; } = true;
 
-        /// <summary>
-        /// The active playable character
-        /// </summary>
-        public static Player Player
-        {
-            get => player;
-            set
-            {
-                if (value == null)
-                    throw (new InvalidCharacterException("Player cannot be null"));
-                player = value;
-            }
-        }
+		/// <summary>
+		/// The active playable character
+		/// </summary>
+		public static Player Player
+		{
+			get => player;
+			set
+			{
+				if (value == null)
+					throw new InvalidCharacterException("Player cannot be null");
+				player = value;
+			}
+		}
 
-        /// <summary>
-        /// The room in which the game should begin
-        /// </summary>
-        public static Room StartRoom
-        {
-            get { return startRoom; }
-            set
-            {
-                if (player == null)
-                    throw new InvalidCharacterException("Player must be set before setting StartRoom");
+		/// <summary>
+		/// The room in which the game should begin
+		/// </summary>
+		public static Room StartRoom
+		{
+			get { return startRoom; }
+			set
+			{
+				if (player == null)
+					throw new InvalidCharacterException("Player must be set before setting StartRoom");
 
-                if (SymbolTable.Contains(value.Name))
-                {
-                    startRoom = value;
-                    Player.Location = startRoom;
-                    startRoom.Enter(Player, Direction.Invalid);
-                }
-                else
-                {
-                    throw new RoomDoesNotExisitException(value.Name + " has not been added to the map");
-                }
-            }
-        }
+				if (SymbolTable.Contains(value.Name))
+				{
+					startRoom = value;
+					Player.Location = startRoom;
+					startRoom.Enter(Player, Direction.Invalid);
+				}
+				else
+				{
+					throw new RoomDoesNotExisitException(value.Name + " has not been added to the map");
+				}
+			}
+		}
 
-        public static void AddMessage(string message) => messages.Enqueue(message);
+		public static void AddMessage(string message) => messages.Enqueue(message);
 
-        /// <summary>
-        /// Get the name of a direction
-        /// </summary>
-        /// <param name="dir">Direction to get the name of</param>
-        /// <param name="shortName">Return short name susch as "N" instead of "North"</param>
-        /// <returns>String containing the name of the direction</returns>
-        public static string DirectionName(Direction dir, bool shortName = false)
-        {
-            switch (dir)
-            {
-                case Direction.North:
-                    if (shortName)
-                        return "N";
-                    return "North";
+		/// <summary>
+		/// Get the name of a direction
+		/// </summary>
+		/// <param name="dir">Direction to get the name of</param>
+		/// <param name="shortName">Return short name susch as "N" instead of "North"</param>
+		/// <returns>String containing the name of the direction</returns>
+		public static string DirectionName(Direction dir, bool shortName = false)
+		{
+			switch (dir)
+			{
+				case Direction.North:
+					if (shortName)
+						return "N";
+					return "North";
 
-                case Direction.East:
-                    if (shortName)
-                        return "E";
-                    return "East";
+				case Direction.East:
+					if (shortName)
+						return "E";
+					return "East";
 
-                case Direction.West:
-                    if (shortName)
-                        return "W";
-                    return "West";
+				case Direction.West:
+					if (shortName)
+						return "W";
+					return "West";
 
-                case Direction.South:
-                    if (shortName)
-                        return "S";
-                    return "South";
+				case Direction.South:
+					if (shortName)
+						return "S";
+					return "South";
 
-                case Direction.Up:
-                    return "Up";
+				case Direction.Up:
+					return "Up";
 
-                case Direction.Down:
-                    return "Down";
+				case Direction.Down:
+					return "Down";
 
-                default:
-                    return "Unknown Direction";
-            }
-        }
+				default:
+					return "Unknown Direction";
+			}
+		}
 
-        public static IEnumerable<Room> GetAllRooms()
-        {
-            return SymbolTable.GetAll<Room>();
-        }
+		public static IEnumerable<Room> GetAllRooms()
+		{
+			return SymbolTable.GetAll<Room>();
+		}
 
-        public static Direction GetDirectionFromChar(char c)
-        {
-            switch (Char.ToUpper(c))
-            {
-                case 'N':
-                    return Direction.North;
+		public static Direction GetDirectionFromChar(char c)
+		{
+			return (char.ToUpper(c)) switch
+			{
+				'N' => Direction.North,
+				'S' => Direction.South,
+				'E' => Direction.East,
+				'W' => Direction.West,
+				'U' => Direction.Up,
+				'D' => Direction.Down,
+				_ => Direction.Invalid,
+			};
+		}
 
-                case 'S':
-                    return Direction.South;
+		public static Direction GetDirectionFromString(string dir)
+		{
+			return (dir.ToLower()) switch
+			{
+				"north" => Direction.North,
+				"south" => Direction.South,
+				"east" => Direction.East,
+				"west" => Direction.West,
+				"up" => Direction.Up,
+				"down" => Direction.Down,
+				_ => Direction.Invalid,
+			};
+		}
 
-                case 'E':
-                    return Direction.East;
+		public static string GetMessage() => messages.Dequeue();
 
-                case 'W':
-                    return Direction.West;
+		public static Direction GetOppositeDirection(Direction dir)
+		{
+			return dir switch
+			{
+				Direction.Down => Direction.Up,
+				Direction.Up => Direction.Down,
+				Direction.North => Direction.South,
+				Direction.South => Direction.North,
+				Direction.East => Direction.West,
+				Direction.West => Direction.East,
+				_ => Direction.Invalid,
+			};
+		}
 
-                case 'U':
-                    return Direction.Up;
+		public static bool HasMessage() => messages.Count > 0;
 
-                case 'D':
-                    return Direction.Down;
+		public static bool IsCommand(string name)
+		{
+			var cmds = new List<string>
+			{
+				"quit", "exit",
+				"go", "n", "s", "e", "w", "up", "down",
+				"look",
+				"pickup",
+				"take",
+				"show",
+				"inv",
+				"drop",
+			};
 
-                default:
-                    return Direction.Invalid;
-            }
-        }
+			return cmds.Contains(name.ToLower());
+		}
 
-        public static Direction GetDirectionFromString(string dir)
-        {
-            switch (dir.ToLower())
-            {
-                case "north":
-                    return Direction.North;
+		public static void ProccessCommand(string command)
+		{
+			CommandProccessor.ProcessCommand(command);
+		}
 
-                case "south":
-                    return Direction.South;
+		/// <summary>
+		/// Preform any setup and prepare fot the game to begin
+		/// </summary>
+		public static void StartGame()
+		{
+			if (!GameOver)
+				throw new InvalidOperationException("A game is in progress");
 
-                case "east":
-                    return Direction.East;
+			if (startRoom == null)
+				throw new InvalidOperationException("The starting room has not been set");
 
-                case "west":
-                    return Direction.West;
+			GameOver = false;
 
-                case "up":
-                    return Direction.Up;
-
-                case "down":
-                    return Direction.Down;
-
-                default:
-                    return Direction.Invalid;
-            }
-        }
-
-        public static string GetMessage() => messages.Dequeue();
-
-        public static Direction GetOppositeDirection(Direction dir)
-        {
-            switch (dir)
-            {
-                case Direction.Down:
-                    return Direction.Up;
-
-                case Direction.Up:
-                    return Direction.Down;
-
-                case Direction.North:
-                    return Direction.South;
-
-                case Direction.South:
-                    return Direction.North;
-
-                case Direction.East:
-                    return Direction.West;
-
-                case Direction.West:
-                    return Direction.East;
-
-                default:
-                    return Direction.Invalid;
-            }
-        }
-
-        public static bool HasMessage() => messages.Count > 0;
-
-        public static bool IsCommand(string name)
-        {
-            var cmds = new List<string>
-            {
-                "quit", "exit",
-                "go", "n", "s", "e", "w", "up", "down",
-                "look",
-                "pickup",
-                "take",
-                "show",
-                "inv",
-            };
-
-            return cmds.Contains(name.ToLower());
-        }
-
-        public static void ProccessCommand(string command)
-        {
-            CommandProccessor.ProcessCommand(command);
-        }
-
-        /// <summary>
-        /// Preform any setup and prepare fot the game to begin
-        /// </summary>
-        public static void StartGame()
-        {
-            if (!GameOver)
-                throw new InvalidOperationException("A game is in progress");
-
-            if (startRoom == null)
-                throw new InvalidOperationException("The starting room has not been set");
-
-            GameOver = false;
-
-            // TODO: Any critical start up such as loading/placing/creating rooms, NPCs, items, ETC
-        }
-    }
+			// TODO: Any critical start up such as loading/placing/creating rooms, NPCs, items, ETC
+		}
+	}
 }
