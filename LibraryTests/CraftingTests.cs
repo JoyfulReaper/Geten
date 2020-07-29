@@ -6,50 +6,50 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LibraryTests
 {
-    [TestClass]
-    public class CraftingTests
-    {
-        private RecipeBook book;
-        private Inventory inventory;
-        private Recipe recipe;
+	[TestClass]
+	public class CraftingTests
+	{
+		private RecipeBook _book;
+		private Inventory _inventory;
+		private Recipe _recipe;
 
-        [TestMethod]
-        public void Craft_Sword_Should_Pass()
-        {
-            var output = CraftingTable.Craft(recipe, inventory);
+		[TestMethod]
+		public void Craft_Sword_Should_Pass()
+		{
+			var output = CraftingTable.Craft(_recipe, _inventory);
 
-            Assert.AreEqual(output.Name, "iron sword");
-        }
+			Assert.AreEqual(output.Name, "iron sword");
+		}
 
-        [TestInitialize]
-        public void Init()
-        {
-            SymbolTable.ClearAllSymbols();
-            if (!ObjectFactory.IsRegisteredFor<GameObject>())
-            {
-                ObjectFactory.Register<GameObjectFactory, GameObject>();
-            }
+		[TestInitialize]
+		public void Init()
+		{
+			SymbolTable.ClearAllSymbols();
+			if (!ObjectFactory.IsRegisteredFor<GameObject>())
+			{
+				ObjectFactory.Register<GameObjectFactory, GameObject>();
+			}
 
-            inventory = new Inventory(10);
-            inventory.AddItem(GameObject.Create<Item>("wood"), 4);
-            inventory.AddItem(GameObject.Create<Item>("iron"), 3);
+			_inventory = new Inventory(10);
+			_inventory.AddItem(GameObject.Create<Item>("wood"), 4);
+			_inventory.AddItem(GameObject.Create<Item>("iron"), 3);
 
-            book = GameObject.Create<RecipeBook>("test");
-            var ingredients = new Ingredients
-            {
-                ["wood"] = 4,
-                ["iron"] = 3
-            };
+			_book = GameObject.Create<RecipeBook>("test");
+			var ingredients = new Ingredients
+			{
+				["wood"] = 4,
+				["iron"] = 3
+			};
 
-            recipe = new Recipe("best sword ever", ingredients, GameObject.Create<Weapon>("iron sword"));
+			_recipe = new Recipe("best sword ever", ingredients, GameObject.Create<Weapon>("iron sword"));
 
-            book.Add(recipe);
-        }
+			_book.Add(_recipe);
+		}
 
-        [TestMethod]
-        public void IsCraftable_Should_Pass()
-        {
-            Assert.IsTrue(CraftingTable.IsCraftable(recipe, inventory));
-        }
-    }
+		[TestMethod]
+		public void IsCraftable_Should_Pass()
+		{
+			Assert.IsTrue(CraftingTable.IsCraftable(_recipe, _inventory));
+		}
+	}
 }

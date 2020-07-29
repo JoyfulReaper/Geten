@@ -15,16 +15,16 @@ namespace Geten.Runtime.Tables
 			var attr = obj.GetType().GetCustomAttribute<GameObjectKindAttribute>();
 			if (attr != null)
 			{
-				Add(attr.Kind, obj.GetAllProperties().ToPropertyList());
+				//Add(attr.Kind, obj.GetAllProperties().ToPropertyList());
 			}
 
 			throw new Exception($"Object '{obj.GetType().Name}' does not have a object kind.");
 		}
 
-		public T GetObjectsByKind<T>(GameObjectKind)
+		/*public T GetObjectsByKind<T>(GameObjectKind)
 					where T : GameObject
 		{
-		}
+		}*/
 
 		public override GameObjectKind ReadKey(BinaryReader br)
 		{
