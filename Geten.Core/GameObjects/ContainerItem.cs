@@ -27,25 +27,26 @@ using System.Collections.Generic;
 
 namespace Geten.Core.GameObjects
 {
-    /// <summary>
-    /// An item that has an inventory (Like a chest)
-    /// </summary>
-    public class ContainerItem : Item
-    {
-        public Inventory Inventory { get; private set; }
+	/// <summary>
+	/// An item that has an inventory (Like a chest)
+	/// </summary>
+	[GameObjectKind(GameObjectKind.Container)]
+	public class ContainerItem : Item
+	{
+		public Inventory Inventory { get; private set; }
 
-        public override List<string> GetPropertyPositionMap()
-        {
-            var map = base.GetPropertyPositionMap();
-            map.Add("inventorySize");
-            return map;
-        }
+		public override List<string> GetPropertyPositionMap()
+		{
+			var map = base.GetPropertyPositionMap();
+			map.Add("inventorySize");
+			return map;
+		}
 
-        public override void Initialize(PropertyList properties)
-        {
-            base.Initialize(properties);
-            AddDefaultValue("inventorysize", 10);
-            Inventory = new Inventory(GetProperty<int>("inventorySize"));
-        }
-    }
+		public override void Initialize(PropertyList properties)
+		{
+			base.Initialize(properties);
+			AddDefaultValue("inventorysize", 10);
+			Inventory = new Inventory(GetProperty<int>("inventorySize"));
+		}
+	}
 }

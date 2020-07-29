@@ -27,45 +27,46 @@ using System.Collections.Generic;
 
 namespace Geten.Core.GameObjects
 {
-    /// <summary>
-    /// Represents a Weapon
-    /// </summary>
-    public class Weapon : Item
-    {
-        /// <summary>
-        /// The maximum amount of Dmage a weapon is capable of inflicting
-        /// </summary>
-        public int MaxDamage
-        {
-            get => GetProperty<int>(nameof(MaxDamage));
-            set
-            {
-                if (value < 0)
-                    throw (new ArgumentOutOfRangeException("MaxDamage must be >= 0"));
-                SetProperty(nameof(MaxDamage), value);
-            }
-        }
+	/// <summary>
+	/// Represents a Weapon
+	/// </summary>
+	[GameObjectKind(GameObjectKind.Weapon)]
+	public class Weapon : Item
+	{
+		/// <summary>
+		/// The maximum amount of Dmage a weapon is capable of inflicting
+		/// </summary>
+		public int MaxDamage
+		{
+			get => GetProperty<int>(nameof(MaxDamage));
+			set
+			{
+				if (value < 0)
+					throw (new ArgumentOutOfRangeException("MaxDamage must be >= 0"));
+				SetProperty(nameof(MaxDamage), value);
+			}
+		}
 
-        /// <summary>
-        /// The minimum amount of Damage a weapon is capable of inflicting
-        /// </summary>
-        public int MinDamage
-        {
-            get => GetProperty<int>(nameof(MinDamage));
-            set
-            {
-                if (value < 0)
-                    throw (new ArgumentOutOfRangeException("MinDamage must be >= 0"));
-                SetProperty(nameof(MinDamage), value);
-            }
-        }
+		/// <summary>
+		/// The minimum amount of Damage a weapon is capable of inflicting
+		/// </summary>
+		public int MinDamage
+		{
+			get => GetProperty<int>(nameof(MinDamage));
+			set
+			{
+				if (value < 0)
+					throw (new ArgumentOutOfRangeException("MinDamage must be >= 0"));
+				SetProperty(nameof(MinDamage), value);
+			}
+		}
 
-        public override List<string> GetPropertyPositionMap()
-        {
-            var map = base.GetPropertyPositionMap();
-            map.Add("minDamage");
-            map.Add("maxDamage");
-            return map;
-        }
-    }
+		public override List<string> GetPropertyPositionMap()
+		{
+			var map = base.GetPropertyPositionMap();
+			map.Add("minDamage");
+			map.Add("maxDamage");
+			return map;
+		}
+	}
 }

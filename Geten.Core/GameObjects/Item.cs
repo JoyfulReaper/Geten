@@ -28,40 +28,41 @@ using System.Collections.Generic;
 
 namespace Geten.Core.GameObjects
 {
-    /// <summary>
-    /// Represents an item
-    /// </summary>
-    public class Item : GameObject
-    {
-        public override List<string> GetPropertyPositionMap()
-        {
-            var map = base.GetPropertyPositionMap();
-            map.Add("pluralName");
-            map.Add("description");
-            map.Add("visible");
-            map.Add("obtainable");
-            return map;
-        }
+	/// <summary>
+	/// Represents an item
+	/// </summary>
+	[GameObjectKind(GameObjectKind.Item)]
+	public class Item : GameObject
+	{
+		public override List<string> GetPropertyPositionMap()
+		{
+			var map = base.GetPropertyPositionMap();
+			map.Add("pluralName");
+			map.Add("description");
+			map.Add("visible");
+			map.Add("obtainable");
+			return map;
+		}
 
-        public override void Initialize(PropertyList properties)
-        {
-            base.Initialize(properties);
+		public override void Initialize(PropertyList properties)
+		{
+			base.Initialize(properties);
 
-            AddDefaultValue("visible", true);
-            AddDefaultValue("obtainable", true);
-            AddDefaultValue("quantity", 1);
+			AddDefaultValue("visible", true);
+			AddDefaultValue("obtainable", true);
+			AddDefaultValue("quantity", 1);
 
-            string pluralName = GetProperty<string>("PluralName");
-            if (pluralName == null || pluralName.Length == 0)
-                SetProperty("PluralName", Name + "s");
-        }
+			string pluralName = GetProperty<string>("PluralName");
+			if (pluralName == null || pluralName.Length == 0)
+				SetProperty("PluralName", Name + "s");
+		}
 
-        /// <summary>
-        /// Use this item
-        /// </summary>
-        public virtual void Use()
-        {
-            throw new NotImplementedException();
-        }
-    }
+		/// <summary>
+		/// Use this item
+		/// </summary>
+		public virtual void Use()
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

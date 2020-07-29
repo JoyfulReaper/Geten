@@ -27,16 +27,17 @@ using System.Security.Cryptography;
 
 namespace Geten.Core.GameObjects
 {
-    /// <summary>
-    /// Represents a non-playable Character
-    /// </summary>
-    public class NPC : Character
-    {
-        public override List<string> GetPropertyPositionMap()
-        {
-            var map = base.GetPropertyPositionMap();
-            map.Add("attackable");
-            return map;
-        }
-    }
+	/// <summary>
+	/// Represents a non-playable Character
+	/// </summary>
+	[GameObjectKind(GameObjectKind.NPC)]
+	public class NPC : Character
+	{
+		public override List<string> GetPropertyPositionMap()
+		{
+			var map = base.GetPropertyPositionMap();
+			map.Add("attackable");
+			return map;
+		}
+	}
 }

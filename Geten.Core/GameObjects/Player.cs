@@ -26,14 +26,15 @@ using System.Collections.Generic;
 
 namespace Geten.Core.GameObjects
 {
-    /// <summary>
-    /// Represents the playable character
-    /// </summary>
-    public class Player : Character
-    {
-        public override List<string> GetPropertyPositionMap()
-        {
-            return base.GetPropertyPositionMap();
-        }
-    }
+	/// <summary>
+	/// Represents the playable character
+	/// </summary>
+	[GameObjectKind(GameObjectKind.Player)]
+	public class Player : Character
+	{
+		public override List<string> GetPropertyPositionMap()
+		{
+			return base.GetPropertyPositionMap();
+		}
+	}
 }
