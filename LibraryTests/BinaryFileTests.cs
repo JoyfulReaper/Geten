@@ -15,9 +15,11 @@ namespace LibraryTests
         [TestInitialize]
         public void Init()
         {
-            var metadata = new MetadataTable();
-            metadata.Add("name", "Fork Zork");
-            metadata.Add("version", "1.0.0.0");
+            var metadata = new MetadataTable
+            {
+                { "name", "Fork Zork" },
+                { "version", "1.0.0.0" }
+            };
 
             bf = GameBinaryBuilder.Build()
                 .AddSection("Awnser", BitConverter.GetBytes(42))

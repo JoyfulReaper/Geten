@@ -19,6 +19,10 @@ namespace Geten.Runtime
             br.Close();
         }
 
+        public void mm()
+        {
+        }
+
         public abstract TKey ReadKey(BinaryReader br);
 
         public abstract TValue ReadValue(BinaryReader br);

@@ -10,7 +10,7 @@ namespace DumbTests
 {
     public static class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             CaseInsensitiveString a = new CaseInsensitiveString("TeSt");
             Console.WriteLine(a);

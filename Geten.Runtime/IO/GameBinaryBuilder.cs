@@ -4,7 +4,7 @@ namespace Geten.Runtime.IO
 {
     public class GameBinaryBuilder : IGameBinaryBuilder
     {
-        private BinaryGameDefinitionFile _file = new BinaryGameDefinitionFile();
+        private readonly BinaryGameDefinitionFile _file = new BinaryGameDefinitionFile();
 
         public static GameBinaryBuilder Build()
         {
