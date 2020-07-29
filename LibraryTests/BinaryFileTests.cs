@@ -1,4 +1,6 @@
-﻿using Geten.Runtime.IO;
+﻿using Geten.Runtime;
+using Geten.Runtime.IO;
+using Geten.Runtime.Tables;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -13,7 +15,14 @@ namespace LibraryTests
         [TestInitialize]
         public void Init()
         {
-            bf = GameBinaryBuilder.Build().AddSection("IndexTable", BitConverter.GetBytes(42));
+            var metadata = new MetadataTable();
+            metadata.Add("name", "Fork Zork");
+            metadata.Add("version", "1.0.0.0");
+
+            bf = GameBinaryBuilder.Build()
+                .AddSection("Awnser", BitConverter.GetBytes(42))
+                .AddTableSection("MetadataTable", metadata)
+                .GetFile();
         }
 
         [TestMethod]
@@ -23,6 +32,7 @@ namespace LibraryTests
             bf.Save(ms);
 
             var tmp = BinaryGameDefinitionFile.Load(new MemoryStream(ms.ToArray()));
+            var metadata = tmp.GetTable<MetadataTable>("MetadataTable");
         }
 
         [TestMethod]
