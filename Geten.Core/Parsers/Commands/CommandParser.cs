@@ -1,103 +1,132 @@
 ﻿using Geten.Core.Commands;
 using Geten.Core.Parsing;
 using System;
+using System.Text;
 
 //N"orth, "S"outh, "E"ast, "W"est, Up, Down, look, go, self, get, inv, drop, say, use (as well as synonyms.)
 
 namespace Geten.Core.Parsers.Commands
 {
-    public class CommandParser : BaseParser<CommandKind, CommandLexer, ITextCommand>
-    {
-        protected override ITextCommand InternalParse()
-        {
-            if (Current.Kind == CommandKind.Direction)
-            {
-                return ParseGoCommand();
-            }
-            if (Current.Kind == CommandKind.Command)
-            {
-                NextToken();
+	public class CommandParser : BaseParser<CommandKind, CommandLexer, ITextCommand>
+	{
+		protected override ITextCommand InternalParse()
+		{
+			ITextCommand command = null;
+			if (Current.Kind == CommandKind.Direction)
+			{
+				command = ParseGoCommand();
+			}
+			if (Current.Kind == CommandKind.Command)
+			{
+				NextToken();
 
-                switch (Peek(-1).Text)
-                {
-                    case "go":
-                        return ParseGoCommand();
+				switch (Peek(-1).Text)
+				{
+					case "go":
+						command = ParseGoCommand();
+						break;
 
-                    case "look":
-                        return ParseLookAt();
+					case "look":
+						command = ParseLookAt();
+						break;
 
-                    case "pickup":
-                        return ParsePickup();
+					case "drop":
+						command = ParseDrop();
+						break;
 
-                    case "quit":
-                    case "exit":
-                        return ParseQuit();
+					case "pickup":
+						command = ParsePickup();
+						break;
 
-                    case "inv":
-                        return new ShowInventoryCommand();
+					case "quit":
+					case "exit":
+						command = ParseQuit();
+						break;
 
-                    case "show":
-                        return ParseShowCommand();
+					case "inv":
+						command = new ShowInventoryCommand();
+						break;
 
-                    default:
-                        return null;
-                }
-            }
-            else
-            {
-                throw new Exception($"'{Current.Kind}' is not a valid Command");
-            }
-        }
+					case "show":
+						command = ParseShowCommand();
+						break;
 
-        private ITextCommand ParseGoCommand()
-        {
-            Direction dir = Direction.Invalid;
-            if (Peek(0).Kind == CommandKind.Direction)
-            {
-                dir = (Direction)Peek(0).Value;
-            }
-            else
-            {
-                dir = (Direction)MatchToken(CommandKind.Direction).Value;
-            }
+					default:
+						return null;
+				}
+			}
+			else
+			{
+				Diagnostics.ReportInvalidCommand(Current.Kind);
+			}
 
-            return new GoCommand(dir);
-        }
+			MatchToken(CommandKind.EOF);
+			return command;
+		}
 
-        private ITextCommand ParseLookAt()
-        {
-            if (Peek(1).Kind != CommandKind.Identifier)
-            {
-                return new LookCommand(null);
-            }
-            else
-            {
-                var id = MatchToken(CommandKind.Identifier);
+		private ITextCommand ParseDrop()
+		{
+			//drop iron sword
+			var sb = new StringBuilder();
+			do
+			{
+				var token = MatchToken(CommandKind.Identifier);
+				sb.Append(token.Text).Append(' ');
+			}
+			while (Peek(1).Kind == CommandKind.Identifier && Peek(1).Kind != CommandKind.EOF);
 
-                return new LookCommand(id.Text);
-            }
-        }
+			return new DropItemCommand(sb.ToString().Trim());
+		}
 
-        private ITextCommand ParsePickup()
-        {
-            return new PickupCommand();
-        }
+		private ITextCommand ParseGoCommand()
+		{
+			Direction dir;
+			if (Peek(0).Kind == CommandKind.Direction)
+			{
+				dir = (Direction)Peek(0).Value;
+			}
+			else
+			{
+				dir = (Direction)MatchToken(CommandKind.Direction).Value;
+			}
 
-        private ITextCommand ParseQuit()
-        {
-            return new QuitCommand();
-        }
+			return new GoCommand(dir);
+		}
 
-        private ITextCommand ParseShowCommand()
-        {
-            var arg = MatchToken(CommandKind.Identifier);
+		private ITextCommand ParseLookAt()
+		{
+			if (Peek(1).Kind != CommandKind.Identifier)
+			{
+				return new LookCommand(null);
+			}
+			else
+			{
+				var id = MatchToken(CommandKind.Identifier);
 
-            if (arg.Text == "inventory" || arg.Text == "inv")
-            {
-                return new ShowInventoryCommand();
-            }
+				return new LookCommand(id.Text);
+			}
+		}
 
-            return null;
-        }
-    }
+		private ITextCommand ParsePickup()
+		{
+			return new PickupCommand();
+		}
+
+		private ITextCommand ParseQuit()
+		{
+			return new QuitCommand();
+		}
+
+		private ITextCommand ParseShowCommand()
+		{
+			var arg = MatchToken(CommandKind.Identifier);
+
+			if (arg.Text == "inventory" || arg.Text == "inv")
+			{
+				return new ShowInventoryCommand();
+			}
+
+			return null;
+		}
+	}
 }
