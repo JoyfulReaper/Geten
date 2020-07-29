@@ -1,5 +1,4 @@
-﻿using Geten.Core;
-using System;
+using Geten.Core;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,7 +6,7 @@ namespace Geten.Runtime.IO
 {
     public class BinaryGameDefinitionFile
     {
-        public BinaryGameFileHeader Header { get; set; }
+        public BinaryGameFileHeader Header { get; set; } = new BinaryGameFileHeader();
         public List<BinaryGameSection> Sections { get; set; } = new List<BinaryGameSection>();
 
         public static BinaryGameDefinitionFile Load(Stream strm)
@@ -16,6 +15,8 @@ namespace Geten.Runtime.IO
             var result = new BinaryGameDefinitionFile();
             result.Header = ReadHeader(br);
             result.Sections = ReadSections(br, result.Header.SectionCount);
+
+            br.Close();
 
             return result;
         }
