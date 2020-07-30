@@ -23,7 +23,7 @@ namespace LibraryTests
 
 			_bf = GameBinaryBuilder.Build()
 				.AddSection("Awnser", BitConverter.GetBytes(42))
-				.AddTableSection("MetadataTable", metadata)
+				.AddTableSection(metadata)
 				.GetFile();
 		}
 
@@ -34,7 +34,8 @@ namespace LibraryTests
 			_bf.Save(ms);
 
 			var tmp = BinaryGameDefinitionFile.Load(new MemoryStream(ms.ToArray()));
-			var metadata = tmp.GetTable<MetadataTable>("MetadataTable");
+			var metadata = tmp.GetTable<MetadataTable>();
+			Assert.AreEqual(metadata.Count, 2);
 		}
 
 		[TestMethod]
@@ -44,6 +45,7 @@ namespace LibraryTests
 			_bf.Save(ms);
 
 			var raw = ms.ToArray();
+			Assert.AreEqual(raw.Length, 73);
 		}
 	}
 }
