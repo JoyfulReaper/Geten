@@ -58,6 +58,19 @@ room "kitchen" with
     end
 end
 
+#What about something like this?
+room "Kitchen"
+	with
+		description "You are now in the kitchen. It also looks clean and modren. There is a shiney silver fridge, a brand new dishwasher, a table with and white table cloth and a pickle randomly sitting on the floor" and
+		lookDescription "You look around very carefully, but don't notice anything out of the ordinary"
+	end
+	on "enter"
+		if "kitchen" contains "item"
+			tell "There is an item on the counter"
+		end
+	end
+end
+
 exit "toDiningRoom" from "kitchen" 
     with
         locked false and
