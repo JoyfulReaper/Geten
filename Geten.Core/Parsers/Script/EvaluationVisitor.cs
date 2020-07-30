@@ -108,21 +108,26 @@ namespace Geten.Core.Parsers.Script
 			{
 				// Add to player inventory
 				TextEngine.Player.Inventory.AddItem(item, i.quantity);
+				return;
 			}
 			else if (SymbolTable.Contains<Room>(i.location))
 			{
 				// Add to Room Inventory
 				SymbolTable.GetInstance<Room>(i.location).Inventory.AddItem(item, i.quantity);
+				return;
 			}
 			else if (SymbolTable.Contains<NPC>(i.location))
 			{
 				// Add to NPC inventory
 				SymbolTable.GetInstance<NPC>(i.location).Inventory.AddItem(item, i.quantity);
+				return;
 			}
 			else if (SymbolTable.Contains<ContainerItem>(i.location))
 			{
 				SymbolTable.GetInstance<ContainerItem>(i.location).Inventory.AddItem(item, i.quantity);
+				return;
 			}
+			Diagnostics.ReportBadTargetInventory(i.location);
 		}
 
 		public void Visit(KeyDefinitionNode node)

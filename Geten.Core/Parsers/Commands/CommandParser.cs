@@ -102,7 +102,7 @@ namespace Geten.Core.Parsers.Commands
 			}
 			else
 			{
-				if (Current.Text == "at")
+				if (Current.Text == "at" || Current.Text == "in")
 				{
 					MatchToken(CommandKind.Identifier);
 					if (Current.Text == "the")
@@ -110,8 +110,13 @@ namespace Geten.Core.Parsers.Commands
 						MatchToken(CommandKind.Identifier);
 					}
 				}
-				var id = MatchToken(CommandKind.Identifier);
-				return new LookCommand(id.Text);
+				var sb = new StringBuilder(); // This should be a method, probably want it a lot
+				do
+				{
+					var token = MatchToken(CommandKind.Identifier);
+					sb.Append(token.Text).Append(' ');
+				} while (Current.Kind == CommandKind.Identifier && Current.Kind != CommandKind.EOF);
+				return new LookCommand(sb.ToString().Trim());
 			}
 		}
 

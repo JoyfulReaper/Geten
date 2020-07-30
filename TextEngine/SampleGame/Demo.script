@@ -59,3 +59,22 @@ item "pickle"
 		location "kitchen" and
 	end
 end
+
+item "Chest"
+	with
+		obtainable false and
+		visible true and
+		description "It looks very heavy" and
+		container true and
+		location "Modren Bathroom"
+	end
+end
+
+item "Plastic coin"
+	with
+		obtainable true and
+		visible true and
+		description "I don't think it is worth very much." and
+		location "Chest"
+	end
+end
