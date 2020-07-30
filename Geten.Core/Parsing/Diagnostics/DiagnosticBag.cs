@@ -24,9 +24,9 @@ namespace Geten.Core.Parsing.Diagnostics
 			Report(location, message);
 		}
 
-		public void ReportInvalidCommand(CommandKind kind)
+		public void ReportInvalidCommand(string command)
 		{
-			var message = $"'{kind}' is not a valid Command";
+			var message = $"'{command}' is not a valid Command";
 			Report(TextSpan.FromBounds(0, 0), message);
 		}
 
