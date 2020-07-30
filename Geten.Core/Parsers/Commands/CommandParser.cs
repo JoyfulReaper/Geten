@@ -55,7 +55,8 @@ namespace Geten.Core.Parsers.Commands
 			}
 			else
 			{
-				Diagnostics.ReportInvalidCommand(Current.Kind);
+				Diagnostics.ReportInvalidCommand(Current.Text);
+				return null;
 			}
 
 			MatchToken(CommandKind.EOF);
@@ -102,6 +103,14 @@ namespace Geten.Core.Parsers.Commands
 			}
 			else
 			{
+				if (Current.Text == "at")
+				{
+					MatchToken(CommandKind.Identifier);
+					if (Current.Text == "the")
+					{
+						MatchToken(CommandKind.Identifier);
+					}
+				}
 				var id = MatchToken(CommandKind.Identifier);
 				return new LookCommand(id.Text);
 			}
