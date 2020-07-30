@@ -58,12 +58,29 @@ namespace Geten
 				}
 
 				ProcessExits(TextEngine.Player.Location);
+				ProccessItems(TextEngine.Player.Location);
 
 				Console.Write("\nEnter command: ");
 				var input = Console.ReadLine();
 				Console.WriteLine();
 
 				TextEngine.ProccessCommand(input);
+			}
+		}
+
+		private static void ProccessItems(Room room)
+		{
+			if (!room.GetProperty<bool>("lookedAt") || room.Inventory.Count == 0)
+			{
+				return;
+			}
+
+			Console.WriteLine("\nItems: ");
+			var items = room.Inventory.GetAll();
+			foreach (var item in items)
+			{
+				if (item.Key.GetProperty<bool>("visible"))
+					Console.Write($"({item.Value}) {(item.Value > 1 ? item.Key.GetProperty<string>("PluralName") : item.Key.Name)} ");
 			}
 		}
 
@@ -83,7 +100,6 @@ namespace Geten
 					Console.Write(side.Key.ToString() + " ");
 				}
 			}
-			Console.WriteLine();
 		}
 
 		private static void ShowIntro()

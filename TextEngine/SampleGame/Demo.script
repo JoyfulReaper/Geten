@@ -27,7 +27,7 @@ end
 room "Kitchen"
 	with
 		description "You are now in the kitchen. It also looks clean and modren. There is a shiney silver fridge, a brand new dishwasher, a table with and white table cloth and a pickle randomly sitting on the floor" and
-		lookDescription "It's not Pickle Rick."
+		lookDescription "You look around very carefully, but don't notice anything out of the ordinary"
 	end
 end
 
@@ -55,7 +55,7 @@ item "pickle"
 	with
 		obtainable false and
 		visible true and
-		description "An old looking pickle" and
+		description "It's not pickle rick" and
 		location "kitchen" and
 	end
 end
