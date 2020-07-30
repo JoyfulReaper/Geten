@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Geten.Core\Geten.Core.csproj" />
+    <ProjectReference Include="..\Geten.Runtime\Geten.Runtime.csproj" />
   </ItemGroup>
 
 </Project>
