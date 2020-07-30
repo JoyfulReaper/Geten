@@ -2,50 +2,52 @@
 
 namespace Geten.Core.Parsers.Script
 {
-    public interface IScriptVisitor
-    {
-        void Visit(BlockNode block);
+	public interface IScriptVisitor
+	{
+		void Visit(BlockNode block);
 
-        void Visit(AddItemNode node);
+		void Visit(AddItemNode node);
 
-        void Visit(CharacterDefinitionNode node);
+		void Visit(CharacterDefinitionNode node);
 
-        void Visit(AskForInputNode node);
+		void Visit(AskForInputNode node);
 
-        void Visit(CommandNode node);
+		void Visit(CommandNode node);
 
-        void Visit(DecreaseNode node);
+		void Visit(RoutineDefinitionNode node);
 
-        void Visit(IncreaseNode node);
+		void Visit(DecreaseNode node);
 
-        void Visit(DialogCallNode node);
+		void Visit(IncreaseNode node);
 
-        void Visit(EventSubscriptionNode node);
+		void Visit(DialogCallNode node);
 
-        void Visit(ItemDefinitionNode node);
+		void Visit(EventSubscriptionNode node);
 
-        void Visit(KeyDefinitionNode node);
+		void Visit(ItemDefinitionNode node);
 
-        void Visit(LiteralNode node);
+		void Visit(KeyDefinitionNode node);
 
-        void Visit(MemorySlotDefinition node);
+		void Visit(LiteralNode node);
 
-        void Visit(PlayNode node);
+		void Visit(MemorySlotDefinition node);
 
-        void Visit(RemoveItemNode node);
+		void Visit(PlayNode node);
 
-        void Visit(RoomDefinitionNode node);
+		void Visit(RemoveItemNode node);
 
-        void Visit(SetPropertyNode node);
+		void Visit(RoomDefinitionNode node);
 
-        void Visit(TellNode node);
+		void Visit(SetPropertyNode node);
 
-        void Visit(WeaponDefinitionNode node);
+		void Visit(TellNode node);
 
-        void Visit(ExitDefinitionNode node);
+		void Visit(WeaponDefinitionNode node);
 
-        void Visit(RecipeBookDefinition node);
+		void Visit(ExitDefinitionNode node);
 
-        void Visit(RecipeDefinitionNode node);
-    }
+		void Visit(RecipeBookDefinition node);
+
+		void Visit(RecipeDefinitionNode node);
+	}
 }
