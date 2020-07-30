@@ -63,7 +63,7 @@ namespace Geten.Runtime.Tables
 						}
 				}
 
-				props.Add(new Token<SyntaxKind>(SyntaxKind.String, 0, key, key), new LiteralNode(new Token<SyntaxKind>(SyntaxKind.BadToken, 0, value.ToString(), value)));
+				props.Add(key, value);
 			}
 
 			return props;
@@ -80,7 +80,7 @@ namespace Geten.Runtime.Tables
 
 			foreach (var prop in props)
 			{
-				bw.Write(prop.Key.Text);
+				bw.Write(prop.Key);
 
 				var typeCode = Type.GetTypeCode(prop.Value.GetType());
 				bw.Write((byte)typeCode);
@@ -89,19 +89,19 @@ namespace Geten.Runtime.Tables
 				{
 					case TypeCode.String:
 						{
-							bw.Write((string)props[prop.Key.Text]);
+							bw.Write((string)props[prop.Key]);
 							break;
 						}
 
 					case TypeCode.Boolean:
 						{
-							bw.Write((bool)props[prop.Key.Text]);
+							bw.Write((bool)props[prop.Key]);
 							break;
 						}
 
 					case TypeCode.Int32:
 						{
-							bw.Write((int)props[prop.Key.Text]);
+							bw.Write((int)props[prop.Key]);
 							break;
 						}
 				}

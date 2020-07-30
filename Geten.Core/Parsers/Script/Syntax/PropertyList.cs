@@ -1,29 +1,27 @@
-﻿using Geten.Core;
-using Geten.Core.Parsing;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Geten.Core.Parsers.Script.Syntax
 {
-    public class PropertyList : Dictionary<Token<SyntaxKind>, SyntaxNode>
-    {
-        public object this[CaseInsensitiveString key]
-        {
-            get
-            {
-                foreach (var kvp in this)
-                {
-                    if (kvp.Key.Text == key)
-                    {
-                        return ((LiteralNode)kvp.Value).ValueToken.Value;
-                    }
-                }
+	public class PropertyList : Dictionary<string, object>
+	{
+		public object this[CaseInsensitiveString key]
+		{
+			get
+			{
+				foreach (var kvp in this)
+				{
+					if (kvp.Key == key)
+					{
+						return kvp.Value;
+					}
+				}
 
-                return null;
-            }
-            set
-            {
-                this[key] = value;
-            }
-        }
-    }
+				return null;
+			}
+			set
+			{
+				this[key] = value;
+			}
+		}
+	}
 }

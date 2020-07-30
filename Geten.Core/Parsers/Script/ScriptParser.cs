@@ -191,12 +191,12 @@ namespace Geten.Core.Parsers.Script
 			return new BlockNode(members);
 		}
 
-		private (Token<SyntaxKind> name, SyntaxNode value) ParseProperty()
+		private (string name, object value) ParseProperty()
 		{
 			var name = MatchToken(SyntaxKind.Keyword);
-			var value = ParseLiteral();
+			var value = (LiteralNode)ParseLiteral();
 
-			return (name, value);
+			return (name.Text, value.ValueToken.Value);
 		}
 
 		private PropertyList ParsePropertyList()

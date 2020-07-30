@@ -103,7 +103,7 @@ namespace Geten.Core
 		{
 			foreach (var item in properties)
 			{
-				SetProperty(item.Key.Text.ToString(), properties[item.Key.Text.ToString()]);
+				SetProperty(item.Key, properties[item.Key]);
 			}
 		}
 
@@ -111,7 +111,7 @@ namespace Geten.Core
 		{
 			foreach (var p in list)
 			{
-				SetProperty(p.Key.Text, list[p.Key.Text]);
+				SetProperty(p.Key, list[p.Key]);
 			}
 		}
 

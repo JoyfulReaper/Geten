@@ -138,6 +138,7 @@ namespace Geten.Core.Parsers.Script
 
 			var bodyKeyword = MatchKeyword("body");
 			var body = ParseProcedureBlock();
+			var end = MatchToken(SyntaxKind.EndToken);
 
 			return new RoutineDefinitionNode(makeKeyword, routineKeyword, name, withKeyword, argumentDefinitions, body);
 		}
