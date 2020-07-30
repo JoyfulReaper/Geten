@@ -14,13 +14,11 @@ namespace Geten.Core.Parsers.Commands
 			ITextCommand command = null;
 			if (Current.Kind == CommandKind.Direction)
 			{
-				command = ParseGoCommand();
+				return ParseGoCommand();
 			}
 			if (Current.Kind == CommandKind.Command)
 			{
-				NextToken();
-
-				switch (Peek(-1).Text)
+				switch (Current.Text)
 				{
 					case "go":
 						command = ParseGoCommand();
@@ -67,13 +65,14 @@ namespace Geten.Core.Parsers.Commands
 		private ITextCommand ParseDrop()
 		{
 			//drop iron sword?
+			MatchToken(CommandKind.Command);
 			var sb = new StringBuilder();
 			do
 			{
 				var token = MatchToken(CommandKind.Identifier);
 				sb.Append(token.Text).Append(' ');
 			}
-			while (Peek(1).Kind == CommandKind.Identifier && Peek(1).Kind != CommandKind.EOF);
+			while (Current.Kind == CommandKind.Identifier && Current.Kind != CommandKind.EOF);
 
 			return new DropItemCommand(sb.ToString().Trim());
 		}
@@ -81,12 +80,13 @@ namespace Geten.Core.Parsers.Commands
 		private ITextCommand ParseGoCommand()
 		{
 			Direction dir;
-			if (Peek(0).Kind == CommandKind.Direction)
+			if (Current.Kind == CommandKind.Direction)
 			{
-				dir = (Direction)Peek(0).Value;
+				dir = (Direction)MatchToken(CommandKind.Direction).Value;
 			}
 			else
 			{
+				MatchToken(CommandKind.Command);
 				dir = (Direction)MatchToken(CommandKind.Direction).Value;
 			}
 
@@ -95,30 +95,33 @@ namespace Geten.Core.Parsers.Commands
 
 		private ITextCommand ParseLookAt()
 		{
-			if (Peek(1).Kind != CommandKind.Identifier)
+			MatchToken(CommandKind.Command);
+			if (Current.Kind != CommandKind.Identifier)
 			{
 				return new LookCommand(null);
 			}
 			else
 			{
 				var id = MatchToken(CommandKind.Identifier);
-
 				return new LookCommand(id.Text);
 			}
 		}
 
 		private ITextCommand ParsePickup()
 		{
+			MatchToken(CommandKind.Command);
 			return new PickupCommand();
 		}
 
 		private ITextCommand ParseQuit()
 		{
+			MatchToken(CommandKind.Command);
 			return new QuitCommand();
 		}
 
 		private ITextCommand ParseShowCommand()
 		{
+			MatchToken(CommandKind.Command);
 			var arg = MatchToken(CommandKind.Identifier);
 
 			if (arg.Text == "inventory" || arg.Text == "inv")
