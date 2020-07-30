@@ -36,11 +36,18 @@ namespace Geten.Core
 			try
 			{
 				var result = parser.Parse(command);
-				result.Invoke();
+				if (result != null)
+				{
+					result.Invoke();
+				}
+				else
+				{
+					TextEngine.AddMessage("What?");
+				}
 			}
 			catch (Exception)
-			{
-				TextEngine.AddMessage("What?");
+			{ // TODO Better debugging
+				TextEngine.AddMessage("(exception)What?");
 			}
 
 			if (parser.Diagnostics.Any())
