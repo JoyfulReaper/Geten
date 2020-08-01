@@ -71,5 +71,27 @@ namespace Geten.Core.Repositorys
 			}
 			return result;
 		}
+
+		public async Task<IEnumerable<string>> Search(string query)
+		{
+			var resource = await repository.GetResourceAsync<PackageSearchResource>();
+			var searchFilter = new SearchFilter(true);
+
+			var searchResult = await resource.SearchAsync(
+				query,
+				searchFilter,
+				skip: 0,
+				take: 20,
+				logger,
+				cancellationToken);
+			var filteredResult = searchResult.Where(_ => _.Tags == "geten");
+
+			var result = new List<string>();
+			foreach (var p in filteredResult)
+			{
+				result.Add(p.Identity.Id + ":" + p.Identity.Version.ToNormalizedString());
+			}
+			return result;
+		}
 	}
 }

@@ -8,5 +8,7 @@ namespace Geten.Core
 		public Task DownloadGame(string id);
 
 		public Task<IEnumerable<string>> GetAvailableGames();
+
+		public Task<IEnumerable<string>> Search(string query);
 	}
 }
