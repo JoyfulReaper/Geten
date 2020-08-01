@@ -15,7 +15,7 @@ namespace Geten.Core.Repositorys
 {
 	public class NugetRepository : IGameRepository
 	{
-		public async Task DownloadGame(string id)
+		public async Task DownloadGame(string id, string outputPath)
 		{
 			var cancellationToken = CancellationToken.None;
 			var logger = NullLogger.Instance;
@@ -31,7 +31,7 @@ namespace Geten.Core.Repositorys
 			var packageVersion = new NuGetVersion(spl[1]);
 			using var packageStream = new MemoryStream();
 			var downloader = await resource.GetPackageDownloaderAsync(new PackageIdentity(packageId, packageVersion), cache, logger, cancellationToken);
-			//var items = await downloader.ContentReader.GetContentItemsAsync(CancellationToken.None);
+
 			await resource.CopyNupkgToStreamAsync(
 				packageId,
 				packageVersion,
@@ -42,10 +42,9 @@ namespace Geten.Core.Repositorys
 
 			using var packageReader = new PackageArchiveReader(packageStream);
 			var items = (await packageReader.GetContentItemsAsync(CancellationToken.None)).ToArray();
-			//ToDo: make Installer for Game Files
 			var gameFile = items.First().Items.First();
 
-			packageReader.ExtractFile(gameFile, Environment.CurrentDirectory + "\\" + Path.GetFileName(gameFile), logger);
+			packageReader.ExtractFile(gameFile, outputPath, logger);
 		}
 
 		public async Task<IEnumerable<string>> GetAvailableGames()

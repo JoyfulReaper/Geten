@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Geten.Core;
 using Geten.Core.Repositorys;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,7 +15,15 @@ namespace LibraryTests
 			var repo = new NugetRepository();
 			var result = repo.GetAvailableGames().Result.ToArray();
 
-			repo.DownloadGame(result[0]).Wait();
+			repo.DownloadGame(result[0], Environment.CurrentDirectory).Wait();
+		}
+
+		[TestMethod]
+		public void Install_Game_Should_Pass()
+		{
+			GameRepository.InstallGame("TestGame", new NugetRepository());
+
+			Assert.IsTrue(GameRepository.IsInstalled("TestGame"));
 		}
 	}
 }
