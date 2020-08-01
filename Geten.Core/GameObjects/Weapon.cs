@@ -32,6 +32,10 @@ namespace Geten.Core.GameObjects
 	/// </summary>
 	public class Weapon : Item
 	{
+		public Weapon() //needed for serialisation
+		{
+		}
+
 		/// <summary>
 		/// The maximum amount of Dmage a weapon is capable of inflicting
 		/// </summary>

@@ -1,29 +1,44 @@
 ﻿using Geten.Core;
+using Polenter.Serialization;
 using System.IO;
 
 namespace Geten.Runtime.Tables
 {
-	public class GameObjectTable : BinaryTable<string, GameObject> //ToDo: need to rethink
+	public class GameObjectTable : BinaryTable<CaseInsensitiveString, GameObject> //ToDo: need to rethink
 	{
-		public override string ReadKey(BinaryReader br)
+		private SharpSerializer _serializer;
+
+		public GameObjectTable()
+		{
+			_serializer = new SharpSerializer(true);
+		}
+
+		public override CaseInsensitiveString ReadKey(BinaryReader br)
 		{
 			return br.ReadString();
 		}
 
 		public override GameObject ReadValue(BinaryReader br)
 		{
-			//ToDo: deserialize GameObject
+			var byteCount = br.ReadInt32();
+			var raw = br.ReadBytes(byteCount);
 
-			return null;
+			return (GameObject)_serializer.Deserialize(new MemoryStream(raw));
 		}
 
-		public override void WriteKey(BinaryWriter bw, string key)
+		public override void WriteKey(BinaryWriter bw, CaseInsensitiveString key)
 		{
 			bw.Write(key);
 		}
 
-		public override void WriteValue(BinaryWriter bw, GameObject props)
+		public override void WriteValue(BinaryWriter bw, GameObject obj)
 		{
+			var ms = new MemoryStream();
+			_serializer.Serialize(obj, ms);
+			var raw = ms.ToArray();
+
+			bw.Write(raw.Length);
+			bw.Write(raw);
 			//ToDo: serialize GameObject
 		}
 	}

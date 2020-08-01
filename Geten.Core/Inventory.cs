@@ -42,6 +42,10 @@ namespace Geten.Core
 
 		private int _capacity;
 
+		public Inventory() //needed for serialisation
+		{
+		}
+
 		/// <summary>
 		/// Construct an Inventory
 		/// </summary>

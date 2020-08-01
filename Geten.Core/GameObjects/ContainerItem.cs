@@ -32,6 +32,10 @@ namespace Geten.Core.GameObjects
 	/// </summary>
 	public class ContainerItem : Item
 	{
+		public ContainerItem() //needed for serialisation
+		{
+		}
+
 		public Inventory Inventory { get; private set; }
 
 		public override List<string> GetPropertyPositionMap()

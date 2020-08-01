@@ -33,6 +33,10 @@ namespace Geten.Core.GameObjects
 	/// </summary>
 	public class Item : GameObject
 	{
+		public Item() //needed for serialisation
+		{
+		}
+
 		public override List<string> GetPropertyPositionMap()
 		{
 			var map = base.GetPropertyPositionMap();

@@ -31,6 +31,10 @@ namespace Geten.Core.GameObjects
 	/// </summary>
 	public class Player : Character
 	{
+		public Player() //needed for serialisation
+		{
+		}
+
 		public override List<string> GetPropertyPositionMap()
 		{
 			return base.GetPropertyPositionMap();
