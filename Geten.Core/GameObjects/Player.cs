@@ -29,7 +29,6 @@ namespace Geten.Core.GameObjects
 	/// <summary>
 	/// Represents the playable character
 	/// </summary>
-	[GameObjectKind(GameObjectKind.Player)]
 	public class Player : Character
 	{
 		public override List<string> GetPropertyPositionMap()

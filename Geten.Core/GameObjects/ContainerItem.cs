@@ -30,7 +30,6 @@ namespace Geten.Core.GameObjects
 	/// <summary>
 	/// An item that has an inventory (Like a chest)
 	/// </summary>
-	[GameObjectKind(GameObjectKind.Container)]
 	public class ContainerItem : Item
 	{
 		public Inventory Inventory { get; private set; }

@@ -31,7 +31,6 @@ namespace Geten.Core.GameObjects
 	/// <summary>
 	/// Represents an item
 	/// </summary>
-	[GameObjectKind(GameObjectKind.Item)]
 	public class Item : GameObject
 	{
 		public override List<string> GetPropertyPositionMap()

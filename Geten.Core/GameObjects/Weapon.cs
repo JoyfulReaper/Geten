@@ -30,7 +30,6 @@ namespace Geten.Core.GameObjects
 	/// <summary>
 	/// Represents a Weapon
 	/// </summary>
-	[GameObjectKind(GameObjectKind.Weapon)]
 	public class Weapon : Item
 	{
 		/// <summary>

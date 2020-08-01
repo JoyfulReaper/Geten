@@ -30,7 +30,6 @@ namespace Geten.Core.GameObjects
 	/// <summary>
 	/// Represents a non-playable Character
 	/// </summary>
-	[GameObjectKind(GameObjectKind.NPC)]
 	public class NPC : Character
 	{
 		public override List<string> GetPropertyPositionMap()
