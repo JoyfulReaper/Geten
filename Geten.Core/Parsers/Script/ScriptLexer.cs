@@ -61,6 +61,7 @@ namespace Geten.Core.Parsers.Script
 
 				case '[': { _kind = SyntaxKind.OpenSquare; break; }
 				case ']': { _kind = SyntaxKind.CloseSquare; break; }
+				case ',': { _kind = SyntaxKind.Comma; break; }
 
 				case '0':
 				case '1':
