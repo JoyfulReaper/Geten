@@ -11,9 +11,9 @@ namespace LibraryTests
 		public void GetPackages_Should_Pass()
 		{
 			var repo = new NugetRepository();
-			var result = repo.GetAvailableGames().Result;
+			var result = repo.GetAvailableGames().Result.ToArray();
 
-			repo.DownloadGame(result.First()).Wait();
+			repo.DownloadGame(result[0]).Wait();
 		}
 	}
 }

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Common;
 using NuGet.Packaging;
+using NuGet.Packaging.Core;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
@@ -13,20 +15,13 @@ namespace Geten.Core.Repositorys
 {
 	public class NugetRepository : IGameRepository
 	{
-		private CancellationToken cancellationToken;
-		private ILogger logger;
-		private SourceRepository repository;
-
-		public NugetRepository()
-		{
-			cancellationToken = CancellationToken.None;
-			logger = NullLogger.Instance;
-
-			repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
-		}
-
 		public async Task DownloadGame(string id)
 		{
+			var cancellationToken = CancellationToken.None;
+			var logger = NullLogger.Instance;
+
+			var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
+
 			var spl = id.Split(':');
 
 			var cache = new SourceCacheContext();
@@ -35,23 +30,29 @@ namespace Geten.Core.Repositorys
 			var packageId = spl[0];
 			var packageVersion = new NuGetVersion(spl[1]);
 			using var packageStream = new MemoryStream();
-
+			var downloader = await resource.GetPackageDownloaderAsync(new PackageIdentity(packageId, packageVersion), cache, logger, cancellationToken);
+			//var items = await downloader.ContentReader.GetContentItemsAsync(CancellationToken.None);
 			await resource.CopyNupkgToStreamAsync(
 				packageId,
 				packageVersion,
 				packageStream,
 				cache,
 				logger,
-				cancellationToken);
+				CancellationToken.None);
 
 			using var packageReader = new PackageArchiveReader(packageStream);
-			var nuspecReader = await packageReader.GetNuspecReaderAsync(cancellationToken);
-
-			var files = nuspecReader.GetContentFiles().ToArray();
+			var items = (await packageReader.GetContentItemsAsync(CancellationToken.None)).ToArray();
+			//ToDo: make Installer for Game Files
+			packageReader.ExtractFile(items.First().Items.First(), Environment.CurrentDirectory + "\\helloworld.script", logger);
 		}
 
 		public async Task<IEnumerable<string>> GetAvailableGames()
 		{
+			var cancellationToken = CancellationToken.None;
+			var logger = NullLogger.Instance;
+
+			var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
+
 			var resource = await repository.GetResourceAsync<PackageSearchResource>();
 			var searchFilter = new SearchFilter(true);
 
@@ -74,6 +75,11 @@ namespace Geten.Core.Repositorys
 
 		public async Task<IEnumerable<string>> Search(string query)
 		{
+			var cancellationToken = CancellationToken.None;
+			var logger = NullLogger.Instance;
+
+			var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
+
 			var resource = await repository.GetResourceAsync<PackageSearchResource>();
 			var searchFilter = new SearchFilter(true);
 
