@@ -48,12 +48,18 @@ namespace Geten
 			*/
 
 			//ToDo: ask user which game to start, when no game is installed display message and suggest some random games
+			// when only 1 game is installed, start this game
 			if (!GameRepository.IsAnyGameInstalled())
 			{
 				Console.WriteLine("No Games are installed. Please try:");
 				Console.WriteLine("install game <gamename>");
 				Console.WriteLine("or");
 				Console.WriteLine("suggest games");
+			}
+			else
+			{
+				var games = GameRepository.GetInstalledGames();
+				Console.WriteLine("Installed Games: " + string.Join(',', games));
 			}
 
 			var wrapper = new GreedyWrap(Console.WindowWidth);

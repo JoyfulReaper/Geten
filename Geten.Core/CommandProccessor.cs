@@ -45,9 +45,10 @@ namespace Geten.Core
 					TextEngine.AddMessage("What?");
 				}
 			}
-			catch (Exception)
-			{ // TODO Better debugging
-				TextEngine.AddMessage("(exception)What?");
+			catch (Exception e)
+			{
+				TextEngine.AddMessage($"({e.Message})What?");
+				TextEngine.AddMessage(string.Join('\n', parser.Diagnostics));
 			}
 
 			if (parser.Diagnostics.Any())

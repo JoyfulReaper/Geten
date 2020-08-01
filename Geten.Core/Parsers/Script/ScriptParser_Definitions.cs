@@ -107,7 +107,7 @@ namespace Geten.Core.Parsers.Script
 
 			var endToken = MatchToken(SyntaxKind.EndToken);
 
-			return new RecipeBookDefinition(recipeKeyword, name, members, endToken); //ToDo: add members to recipebook
+			return new RecipeBookDefinition(recipeKeyword, name, members, endToken);
 		}
 
 		private BlockNode ParseRecipes()
