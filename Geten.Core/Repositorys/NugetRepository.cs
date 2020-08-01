@@ -43,7 +43,9 @@ namespace Geten.Core.Repositorys
 			using var packageReader = new PackageArchiveReader(packageStream);
 			var items = (await packageReader.GetContentItemsAsync(CancellationToken.None)).ToArray();
 			//ToDo: make Installer for Game Files
-			packageReader.ExtractFile(items.First().Items.First(), Environment.CurrentDirectory + "\\helloworld.script", logger);
+			var gameFile = items.First().Items.First();
+
+			packageReader.ExtractFile(gameFile, Environment.CurrentDirectory + "\\" + Path.GetFileName(gameFile), logger);
 		}
 
 		public async Task<IEnumerable<string>> GetAvailableGames()
