@@ -21,7 +21,7 @@ namespace LibraryTests
 		[TestMethod]
 		public void Install_Game_Should_Pass()
 		{
-			GameRepository.InstallGame("TestGame", new NugetRepository());
+			GameRepository.InstallGameAsync("TestGame", new NugetRepository()).Wait();
 
 			Assert.IsTrue(GameRepository.IsInstalled("TestGame"));
 		}

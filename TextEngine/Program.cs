@@ -26,6 +26,7 @@ using Geten.Core;
 using Geten.Core.Factories;
 using Geten.Core.MapItems;
 using Geten.Core.Parsers.Script;
+using Geten.Core.Repositorys;
 using System;
 using System.IO;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using CrossPlattformUtils;
 using Geten.Core.OSSpecific;
 
@@ -25,7 +26,7 @@ namespace Geten.Core
 			return Array.Empty<string>();
 		}
 
-		public static async void InstallGame(string name, IGameRepository repo)
+		public static async Task InstallGameAsync(string name, IGameRepository repo)
 		{
 			var path = Allocator.New<IDefaultPaths>().GameDirectory;
 

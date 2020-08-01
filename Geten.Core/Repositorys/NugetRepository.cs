@@ -15,25 +15,22 @@ namespace Geten.Core.Repositorys
 {
 	public class NugetRepository : IGameRepository
 	{
-		public async Task DownloadGame(string id, string outputPath)
+		public async Task DownloadGame(string name, string outputPath)
 		{
 			var cancellationToken = CancellationToken.None;
 			var logger = NullLogger.Instance;
 
 			var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
 
-			var spl = id.Split(':');
-
 			var cache = new SourceCacheContext();
 			var resource = await repository.GetResourceAsync<FindPackageByIdResource>();
 
-			var packageId = spl[0];
-			var packageVersion = new NuGetVersion(spl[1]);
+			var packageVersion = new NuGetVersion(await GetVersion(name));
 			using var packageStream = new MemoryStream();
-			var downloader = await resource.GetPackageDownloaderAsync(new PackageIdentity(packageId, packageVersion), cache, logger, cancellationToken);
+			var downloader = await resource.GetPackageDownloaderAsync(new PackageIdentity(name, packageVersion), cache, logger, cancellationToken);
 
 			await resource.CopyNupkgToStreamAsync(
-				packageId,
+				name,
 				packageVersion,
 				packageStream,
 				cache,
@@ -44,7 +41,7 @@ namespace Geten.Core.Repositorys
 			var items = (await packageReader.GetContentItemsAsync(CancellationToken.None)).ToArray();
 			var gameFile = items.First().Items.First();
 
-			packageReader.ExtractFile(gameFile, outputPath, logger);
+			packageReader.ExtractFile(gameFile, Path.Combine(outputPath, Path.GetFileName(gameFile)), logger);
 		}
 
 		public async Task<IEnumerable<string>> GetAvailableGames()
@@ -99,6 +96,28 @@ namespace Geten.Core.Repositorys
 				result.Add(p.Identity.Id + ":" + p.Identity.Version.ToNormalizedString());
 			}
 			return result;
+		}
+
+		private async Task<string> GetVersion(string name)
+		{
+			var cancellationToken = CancellationToken.None;
+			var logger = NullLogger.Instance;
+
+			var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
+
+			var resource = await repository.GetResourceAsync<PackageSearchResource>();
+			var searchFilter = new SearchFilter(true);
+
+			var searchResult = await resource.SearchAsync(
+				name,
+				searchFilter,
+				skip: 0,
+				take: 20,
+				logger,
+				cancellationToken);
+			var filteredResult = searchResult.FirstOrDefault(_ => _.Tags == "geten");
+
+			return filteredResult.Identity.Version.ToNormalizedString();
 		}
 	}
 }
