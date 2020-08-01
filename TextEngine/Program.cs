@@ -38,17 +38,26 @@ namespace Geten
 			//needed to create new instances of all kind of gameobjects
 			ObjectFactory.Register<GameObjectFactory, GameObject>();
 
-			Directory.SetCurrentDirectory(@"..\..\..\SampleGame");
-			//Console.WriteLine(Directory.GetCurrentDirectory());
 			ShowIntro();
 
-			var script = System.IO.File.ReadAllText("Demo.script");
+			/*var script = System.IO.File.ReadAllText("Demo.script");
 			var scriptParser = new ScriptParser();
 			var result = scriptParser.Parse(script);
 			result.Accept(new EvaluationVisitor(scriptParser.Diagnostics));
+			*/
+
+			//ToDo: ask user which game to start, when no game is installed display message and suggest some random games
+			if (!GameRepository.IsAnyGameInstalled())
+			{
+				Console.WriteLine("No Games are installed. Please try:");
+				Console.WriteLine("install game <gamename>");
+				Console.WriteLine("or");
+				Console.WriteLine("suggest games");
+			}
 
 			var wrapper = new GreedyWrap(Console.WindowWidth);
 			TextEngine.StartGame();
+
 			while (!TextEngine.GameOver)
 			{
 				wrapper.LineWidth = Console.WindowWidth;
