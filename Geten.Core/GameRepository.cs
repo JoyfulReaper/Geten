@@ -15,7 +15,7 @@ namespace Geten.Core
 
 			if (Directory.Exists(path))
 			{
-				return Directory.EnumerateFiles(path, "*.*").Where(_ => Path.GetExtension(_) == "script" || Path.GetExtension(_) == "bingame");
+				return GetInstalledGames(path);
 			}
 			else
 			{
@@ -32,11 +32,21 @@ namespace Geten.Core
 			await repo.DownloadGame(name, Path.Combine(path, name));
 		}
 
+		public static bool IsAnyGameInstalled()
+		{
+			return GetInstalledGames().Any();
+		}
+
 		public static bool IsInstalled(string name)
 		{
 			var path = Allocator.New<IDefaultPaths>().GameDirectory;
 
 			return File.Exists(Path.Combine(path, name));
+		}
+
+		private static IEnumerable<string> GetInstalledGames(string path)
+		{
+			return Directory.EnumerateFiles(path, "*.*").Where(_ => Path.GetExtension(_) == "script" || Path.GetExtension(_) == "bingame");
 		}
 	}
 }
