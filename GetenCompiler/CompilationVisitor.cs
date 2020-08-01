@@ -1,19 +1,32 @@
-﻿using Geten.Core.Parsers.Script;
+﻿using Geten.Core;
+using Geten.Core.Crafting;
+using Geten.Core.GameObjects;
+using Geten.Core.MapItems;
+using Geten.Core.Parsers.Script;
 using Geten.Core.Parsers.Script.Syntax;
 using Geten.Core.Parsing.Diagnostics;
 using Geten.Runtime.IO;
+using Geten.Runtime.Tables;
 
 namespace GetenCompiler
 {
 	internal class CompilationVisitor : IScriptVisitor
 	{
-		private readonly GameBinaryBuilder _binary;
+		private readonly GameBinaryBuilder _binaryBuilder;
 		private readonly DiagnosticBag diagnostics;
+
+		private GameObjectTable _objects;
 
 		public CompilationVisitor(DiagnosticBag diagnostics)
 		{
 			this.diagnostics = diagnostics;
-			_binary = GameBinaryBuilder.Build();
+			_binaryBuilder = GameBinaryBuilder.Build();
+			_objects = new GameObjectTable();
+		}
+
+		public BinaryGameDefinitionFile GetBinary()
+		{
+			return _binaryBuilder.GetFile();
 		}
 
 		public void Visit(BlockNode block)
@@ -31,7 +44,7 @@ namespace GetenCompiler
 
 		public void Visit(CharacterDefinitionNode node)
 		{
-			throw new System.NotImplementedException();
+			AddGameObjectToTable<Character>(node);
 		}
 
 		public void Visit(AskForInputNode node)
@@ -71,7 +84,7 @@ namespace GetenCompiler
 
 		public void Visit(ItemDefinitionNode node)
 		{
-			throw new System.NotImplementedException();
+			AddGameObjectToTable<Item>(node);
 		}
 
 		public void Visit(KeyDefinitionNode node)
@@ -101,7 +114,7 @@ namespace GetenCompiler
 
 		public void Visit(RoomDefinitionNode node)
 		{
-			throw new System.NotImplementedException();
+			AddGameObjectToTable<Room>(node);
 		}
 
 		public void Visit(SetPropertyNode node)
@@ -116,22 +129,29 @@ namespace GetenCompiler
 
 		public void Visit(WeaponDefinitionNode node)
 		{
-			throw new System.NotImplementedException();
+			AddGameObjectToTable<Weapon>(node);
 		}
 
 		public void Visit(ExitDefinitionNode node)
 		{
-			throw new System.NotImplementedException();
+			AddGameObjectToTable<Exit>(node);
 		}
 
 		public void Visit(RecipeBookDefinition node)
 		{
-			throw new System.NotImplementedException();
+			AddGameObjectToTable<RecipeBook>(node);
 		}
 
 		public void Visit(RecipeDefinitionNode node)
 		{
-			throw new System.NotImplementedException();
+		}
+
+		private void AddGameObjectToTable<T>(dynamic node)
+			where T : GameObject
+		{
+			var obj = GameObject.Create<Character>(node.NameToken.Text, node.Properties);
+
+			_objects.Add(obj);
 		}
 	}
 }
