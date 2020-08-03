@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Geten.Runtime\Geten.Runtime.csproj" />
+    <ProjectReference Include="..\Geten.TextProcessing\Geten.TextProcessing.csproj" />
     <ProjectReference Include="..\TextEngine\Geten.csproj" />
   </ItemGroup>
 

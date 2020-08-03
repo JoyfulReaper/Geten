@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using Geten.Core.Parsers.Script;
-using Geten.Runtime;
 
 namespace GetenCompiler
 {
