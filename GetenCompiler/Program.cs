@@ -12,7 +12,7 @@ namespace GetenCompiler
 		{
 			if (args.Length > 0)
 			{
-				var filename = args.First();
+				var filename = args[0];
 
 				var p = new ScriptParser();
 				var result = p.Parse(File.ReadAllText(filename));
