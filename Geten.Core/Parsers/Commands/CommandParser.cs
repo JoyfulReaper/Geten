@@ -11,11 +11,11 @@ namespace Geten.Core.Parsers.Commands
 	{
 		protected override ITextCommand InternalParse()
 		{
-			ITextCommand command = null;
 			if (Current.Kind == CommandKind.Direction)
 			{
 				return ParseGoCommand();
 			}
+			ITextCommand command;
 			if (Current.Kind == CommandKind.Command)
 			{
 				switch (Current.Text)
