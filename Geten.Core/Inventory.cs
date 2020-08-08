@@ -42,7 +42,7 @@ namespace Geten.Core
 
 		private int _capacity;
 
-		public Inventory() //needed for serialisation
+		public Inventory() : this(1) //needed for serialisation
 		{
 		}
 
