@@ -21,6 +21,7 @@ namespace Geten.Core.Commands
 				dynamic loc = TextEngine.Player?.Location;
 				loc.lookedAt = true;
 				TextEngine.AddMessage(loc.LookDescription);
+				return;
 			}
 			else
 			{ // Check room, then check containers in room, then check player, then check containers in player...
