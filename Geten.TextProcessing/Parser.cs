@@ -90,7 +90,7 @@ namespace Geten.TextProcessing
 
 						var noun = ProcessNoun(word, ParserStatesEnum.Preposition);
 
-						if (noun == string.Empty) continue;
+						if (noun?.Length == 0) continue;
 						_command.Noun = noun;
 						break;
 
@@ -110,7 +110,7 @@ namespace Geten.TextProcessing
 
 						var noun2 = ProcessNoun(word, ParserStatesEnum.Preposition2);
 
-						if (noun2 == string.Empty) continue;
+						if (noun2?.Length == 0) continue;
 						_command.Noun2 = noun2;
 						break;
 
@@ -129,7 +129,7 @@ namespace Geten.TextProcessing
 
 						var noun3 = ProcessNoun(word, ParserStatesEnum.None);
 
-						if (noun3 == string.Empty) continue;
+						if (noun3?.Length == 0) continue;
 						_command.Noun3 = noun3;
 						break;
 				}

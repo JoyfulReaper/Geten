@@ -8,7 +8,7 @@ namespace Geten.TextProcessing
 {
 	public static class CommandHandler
 	{
-		private static Dictionary<VerbCodes, ICommandHandler> handlers = new Dictionary<VerbCodes, ICommandHandler>();
+		private static readonly Dictionary<VerbCodes, ICommandHandler> handlers = new Dictionary<VerbCodes, ICommandHandler>();
 
 		public static void Collect()
 		{

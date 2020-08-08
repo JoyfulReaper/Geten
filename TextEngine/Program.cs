@@ -44,6 +44,11 @@ namespace Geten
 
 			ShowIntro();
 
+			Console.Write("\nEnter command: ");
+			var c = Console.ReadLine();
+			Console.WriteLine();
+			CommandHandler.Invoke(c);
+
 			var script = System.IO.File.ReadAllText(".\\SampleGame\\Demo.script");
 			var scriptParser = new ScriptParser();
 			var result = scriptParser.Parse(script);
