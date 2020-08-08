@@ -10,6 +10,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Geten.Core\Geten.Core.csproj" />
+    <ProjectReference Include="..\Geten.TextProcessing\Geten.TextProcessing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="SampleGame\Demo.script">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

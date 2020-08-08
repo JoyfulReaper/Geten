@@ -27,8 +27,10 @@ using Geten.Core.Factories;
 using Geten.Core.MapItems;
 using Geten.Core.Parsers.Script;
 using Geten.Core.Repositorys;
+using Geten.TextProcessing;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Geten
 {
@@ -38,18 +40,26 @@ namespace Geten
 		{
 			//needed to create new instances of all kind of gameobjects
 			ObjectFactory.Register<GameObjectFactory, GameObject>();
+			CommandHandler.Collect();
 
 			ShowIntro();
 
-			/*var script = System.IO.File.ReadAllText("Demo.script");
+			var script = System.IO.File.ReadAllText(".\\SampleGame\\Demo.script");
 			var scriptParser = new ScriptParser();
 			var result = scriptParser.Parse(script);
 			result.Accept(new EvaluationVisitor(scriptParser.Diagnostics));
-			*/
+
+			if (scriptParser.Diagnostics.Any())
+			{
+				foreach (var d in scriptParser.Diagnostics)
+				{
+					Console.WriteLine(d);
+				}
+			}
 
 			//ToDo: ask user which game to start, when no game is installed display message and suggest some random games
 			// when only 1 game is installed, start this game
-			if (!GameRepository.IsAnyGameInstalled())
+			/*if (!GameRepository.IsAnyGameInstalled())
 			{
 				Console.WriteLine("No Games are installed. Please try:");
 				Console.WriteLine("install game <gamename>");
@@ -60,7 +70,7 @@ namespace Geten
 			{
 				var games = GameRepository.GetInstalledGames();
 				Console.WriteLine("Installed Games: " + string.Join(',', games));
-			}
+			}*/
 
 			var wrapper = new GreedyWrap(Console.WindowWidth);
 			TextEngine.StartGame();
@@ -79,8 +89,9 @@ namespace Geten
 				Console.Write("\nEnter command: ");
 				var input = Console.ReadLine();
 				Console.WriteLine();
+				CommandHandler.Invoke(input);
 
-				TextEngine.ProccessCommand(input);
+				//TextEngine.ProccessCommand(input);
 			}
 		}
 
