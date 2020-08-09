@@ -87,7 +87,8 @@ namespace Geten.TextProcessing
 				return noun;
 			}
 
-			return string.Empty;
+			//return string.Empty;
+			return word;
 		}
 
 		protected PropositionEnum ProcessPreposition(string word, ParserStatesEnum nextState)
