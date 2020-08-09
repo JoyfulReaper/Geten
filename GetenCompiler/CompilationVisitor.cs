@@ -13,13 +13,13 @@ namespace GetenCompiler
 	internal class CompilationVisitor : IScriptVisitor
 	{
 		private readonly GameBinaryBuilder _binaryBuilder;
-		private readonly DiagnosticBag diagnostics;
+		private readonly DiagnosticBag _diagnostics;
 
-		private GameObjectTable _objects;
+		private readonly GameObjectTable _objects;
 
 		public CompilationVisitor(DiagnosticBag diagnostics)
 		{
-			this.diagnostics = diagnostics;
+			_diagnostics = diagnostics;
 			_binaryBuilder = GameBinaryBuilder.Build();
 			_objects = new GameObjectTable();
 		}

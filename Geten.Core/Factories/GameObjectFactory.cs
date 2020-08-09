@@ -5,70 +5,70 @@ using System.Linq;
 
 namespace Geten.Core.Factories
 {
-    public class GameObjectFactory : IObjectFactory
-    {
-        public object Create<T>(params object[] args)
-        {
-            GameObject instance = null;
-            if (typeof(GameObject).IsAssignableFrom(typeof(T)))
-            {
-                if (args.Length > 2)
-                {
-                    instance = (GameObject)Activator.CreateInstance(typeof(T));
-                    var map = instance.GetPropertyPositionMap();
-                    if (map == null)
-                    {
-                        throw new ObjectFactoryException($"No property map exists for type: {instance.GetType().Name}");
-                    }
+	public class GameObjectFactory : IObjectFactory
+	{
+		public object Create<T>(params object[] args)
+		{
+			if (typeof(GameObject).IsAssignableFrom(typeof(T)))
+			{
+				GameObject instance;
+				if (args.Length > 2)
+				{
+					instance = (GameObject)Activator.CreateInstance(typeof(T));
+					var map = instance.GetPropertyPositionMap();
+					if (map == null)
+					{
+						throw new ObjectFactoryException($"No property map exists for type: {instance.GetType().Name}");
+					}
 
-                    if (args.Length > map.Count)
-                    {
-                        throw new ArgumentOutOfRangeException("More arguments supplied than expected.");
-                    }
+					if (args.Length > map.Count)
+					{
+						throw new ArgumentOutOfRangeException("More arguments supplied than expected.");
+					}
 
-                    for (int i = 0; i < map.Count; i++)
-                    {
-                        if (i == args.Length)
-                            break;
+					for (var i = 0; i < map.Count; i++)
+					{
+						if (i == args.Length)
+							break;
 
-                        instance.SetProperty(map[i], args[i]);
-                    }
-                }
-                else
-                {
-                    instance = (GameObject)Activator.CreateInstance(typeof(T));
+						instance.SetProperty(map[i], args[i]);
+					}
+				}
+				else
+				{
+					instance = (GameObject)Activator.CreateInstance(typeof(T));
 
-                    if (args.Length == 2)
-                    {
-                        var name = args.First();
-                        var props = (PropertyList)args.Last();
+					if (args.Length == 2)
+					{
+						var name = args[0];
+						var props = (PropertyList)args.Last();
 
-                        instance.SetProperty("name", name);
-                        instance.MatchPropertyList(props);
-                    }
-                    else
-                    {
-                        var first = args.First();
-                        if (first is string s)
-                        {
-                            instance.SetProperty("name", first);
-                        }
-                        else if (first is PropertyList pl)
-                        {
-                            instance.MatchPropertyList(pl);
-                        }
-                        else
-                        {
-                            throw new ObjectFactoryException("Ctors are only defined for string and ProperyList");
-                        }
-                    }
-                }
+						instance.SetProperty("name", name);
+						instance.MatchPropertyList(props);
+					}
+					else
+					{
+						var first = args[0];
+						if (first is string)
+						{
+							instance.SetProperty("name", first);
+						}
+						else if (first is PropertyList pl)
+						{
+							instance.MatchPropertyList(pl);
+						}
+						else
+						{
+							throw new ObjectFactoryException("Ctors are only defined for string and ProperyList");
+						}
+					}
+				}
 
-                SymbolTable.Add(instance.Name, instance);
-                return instance;
-            }
+				SymbolTable.Add(instance.Name, instance);
+				return instance;
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 }
