@@ -69,6 +69,8 @@ namespace Geten.TextProcessing
 
 		private void MultiWordCommand(string[] commandList)
 		{
+			// This doesn't appear to be working, try:
+			// look at the hat
 			foreach (var word in commandList)
 			{
 				switch (_parserStates)

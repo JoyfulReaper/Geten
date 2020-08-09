@@ -98,7 +98,8 @@ namespace Geten.Core.Parsers.Commands
 			MatchToken(CommandKind.Command);
 			if (Current.Kind != CommandKind.Identifier)
 			{
-				return new LookCommand(null);
+				//return new LookCommand(null);
+				return new LookCommand();
 			}
 			else
 			{
@@ -116,7 +117,8 @@ namespace Geten.Core.Parsers.Commands
 					var token = MatchToken(CommandKind.Identifier);
 					sb.Append(token.Text).Append(' ');
 				} while (Current.Kind == CommandKind.Identifier && Current.Kind != CommandKind.EOF);
-				return new LookCommand(sb.ToString().Trim());
+				//return new LookCommand(sb.ToString().Trim());
+				return new LookCommand();
 			}
 		}
 

@@ -1,22 +1,28 @@
-﻿using System.Text;
-using System.Xml;
+﻿using System;
+using System.Text;
 using Geten.Core.GameObjects;
-using Geten.Core.MapItems;
+using Geten.TextProcessing;
+using Geten.TextProcessing.Interfaces;
+using Geten.TextProcessing.Synonyms;
 
 namespace Geten.Core.Commands
 {
-	internal class LookCommand : ITextCommand
+	[CommandHandler(VerbCodes.Look)]
+	internal class LookCommand : ICommandHandler, ITextCommand
 	{
-		public LookCommand(string lookAt)
+		public LookCommand()
 		{
-			LookAt = lookAt;
 		}
-
-		private string LookAt { get; }
 
 		public void Invoke()
 		{
-			if (LookAt == null)
+			throw new NotImplementedException();
+		}
+
+		public void Invoke(Command cmd)
+		{
+			var lookAt = cmd.Noun;
+			if (string.IsNullOrEmpty(lookAt))
 			{
 				dynamic loc = TextEngine.Player?.Location;
 				loc.lookedAt = true;
@@ -32,10 +38,10 @@ namespace Geten.Core.Commands
 				var items = room.Inventory.GetAll();
 				foreach (var i in items)
 				{
-					if (i.Key.Name.ToLower() == LookAt.ToLower()) // check the room
+					if (i.Key.Name.ToLower() == lookAt.ToLower()) // check the room
 					{
 						TextEngine.AddMessage(i.Key.Description);
-						if (SymbolTable.GetInstance<ContainerItem>(LookAt) is ContainerItem container)
+						if (SymbolTable.GetInstance<ContainerItem>(lookAt) is ContainerItem container)
 						{
 							container.SetProperty("lookedAt", true);
 							TextEngine.AddMessage($"The {container.Name} contains: ");
@@ -52,7 +58,7 @@ namespace Geten.Core.Commands
 					{
 						foreach (var ciItem in ci.Inventory.GetAll())
 						{
-							if (ciItem.Key.Name.ToLower() == LookAt.ToLower() && ci.GetProperty<bool>("lookedAt"))
+							if (ciItem.Key.Name.ToLower() == lookAt.ToLower() && ci.GetProperty<bool>("lookedAt"))
 							{
 								TextEngine.AddMessage(ciItem.Key.Description);
 								return;
@@ -61,7 +67,7 @@ namespace Geten.Core.Commands
 					}
 				}
 			}
-			TextEngine.AddMessage($"You look very carefully, but you don't see {LookAt}.");
+			TextEngine.AddMessage($"You look very carefully, but you don't see {lookAt}.");
 		}
 	}
 }
