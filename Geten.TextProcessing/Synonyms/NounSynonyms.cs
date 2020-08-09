@@ -22,6 +22,8 @@ namespace Geten.TextProcessing.Synonyms
 			Add("s", "south");
 			Add("e", "east");
 			Add("w", "west");
+			Add("u", "up");
+			Add("d", "down");
 
 			Add("ne", "northeast");
 			Add("se", "southeast");
@@ -37,6 +39,8 @@ namespace Geten.TextProcessing.Synonyms
 			Add("south", "south");
 			Add("east", "east");
 			Add("west", "west");
+			Add("up", "up");
+			Add("down", "down");
 
 			Add("forward", "north");
 			Add("backward", "south");
