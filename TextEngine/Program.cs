@@ -89,9 +89,9 @@ namespace Geten
 				Console.Write("\nEnter command: ");
 				var input = Console.ReadLine();
 				Console.WriteLine();
-				//CommandHandler.Invoke(input);
+				CommandHandler.Invoke(input);
 
-				TextEngine.ProccessCommand(input);
+				//TextEngine.ProccessCommand(input);
 			}
 		}
 

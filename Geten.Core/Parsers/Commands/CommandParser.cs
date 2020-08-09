@@ -90,7 +90,7 @@ namespace Geten.Core.Parsers.Commands
 				dir = (Direction)MatchToken(CommandKind.Direction).Value;
 			}
 
-			return new GoCommand(dir);
+			return new GoCommand();
 		}
 
 		private ITextCommand ParseLookAt()

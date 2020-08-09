@@ -1,24 +1,25 @@
-﻿using Geten.Core.MapItems;
+﻿using Geten.TextProcessing;
+using Geten.TextProcessing.Synonyms;
 
 namespace Geten.Core.Commands
 {
-	internal class GoCommand : ITextCommand
+	[CommandHandler(VerbCodes.Go)]
+	internal class GoCommand : ICommandHandler, ITextCommand
 	{
-		public GoCommand(Direction direction)
-		{
-			Direction = direction;
-		}
-
 		public GoCommand()
 		{
 		}
 
-		public Direction Direction { get; }
-
 		public void Invoke()
 		{
-			var location = TextEngine.Player.Location.GetSide(Direction);
-			location.Enter(TextEngine.Player, Direction);
+		}
+
+		public void Invoke(Command cmd)
+		{
+			var dir = TextEngine.GetDirectionFromString(cmd.Noun);
+
+			var location = TextEngine.Player.Location.GetSide(dir);
+			location.Enter(TextEngine.Player, dir);
 		}
 	}
 }
