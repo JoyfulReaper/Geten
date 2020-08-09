@@ -11,7 +11,7 @@ namespace Geten.TextProcessing
 	/// verb - noun
 	/// verb - noun - preposition - noun
 	/// </summary>
-	public class Parser : ParserBase, IParser
+	public class Parser : ParserBase
 	{
 		/// <summary>
 		/// Default constructor that sets the default initial state of the parser.
@@ -49,11 +49,11 @@ namespace Geten.TextProcessing
 		/// </summary>
 		/// <param name="command">A string representing the command types in by the user.</param>
 		/// <returns>An instance of a command that is passed back to the controlling room for processing.</returns>
-		public ICommand ParseCommand(string command)
+		public Command ParseCommand(string command)
 		{
 			if (string.IsNullOrEmpty(command))
 			{
-				ICommand toReturn = new Command
+				var toReturn = new Command
 				{
 					FullTextCommand = string.Empty
 				};
@@ -138,7 +138,7 @@ namespace Geten.TextProcessing
 			_parserStates = ParserStatesEnum.Verb;
 		}
 
-		private ICommand ReduceInputToCommand(string lowerCase, string[] wordList)
+		private Command ReduceInputToCommand(string lowerCase, string[] wordList)
 		{
 			switch (wordList.Length)
 			{

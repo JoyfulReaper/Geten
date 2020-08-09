@@ -1,4 +1,4 @@
-﻿namespace Geten.TextProcessing
+﻿namespace Geten.TextProcessing.Interfaces
 {
 	public interface ICommandHandler
 	{

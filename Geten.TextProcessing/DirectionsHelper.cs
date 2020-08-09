@@ -13,7 +13,7 @@ namespace Geten.TextProcessing
 		/// </summary>
 		/// <param name="command">A text representation of a direction to follow, such as north, south, east or west.</param>
 		/// <returns>An instance of an ICommand that is a valid game command for the engine to process.</returns>
-		public static ICommand GetDirectionCommand(string command)
+		public static Command GetDirectionCommand(string command)
 		{
 			var toReturn = new Command();
 			var lowerCaseCommand = command.ToLower();

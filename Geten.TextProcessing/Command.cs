@@ -8,7 +8,7 @@ namespace Geten.TextProcessing
 	/// command are used to drive how decisions are made in the game logic. By the time this object is populated the
 	/// users input has already been sanitized and all synonyms mapped down to their base verb, noun and preposition forms.
 	/// </summary>
-	public class Command : ICommand
+	public class Command
 	{
 		/// <summary>
 		/// Constructor to setup a default empty command.

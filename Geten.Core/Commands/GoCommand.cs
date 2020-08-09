@@ -1,4 +1,5 @@
 ﻿using Geten.TextProcessing;
+using Geten.TextProcessing.Interfaces;
 using Geten.TextProcessing.Synonyms;
 
 namespace Geten.Core.Commands

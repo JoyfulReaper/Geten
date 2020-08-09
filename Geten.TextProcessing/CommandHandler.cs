@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Geten.TextProcessing.Interfaces;
 using Geten.TextProcessing.Synonyms;
 
 namespace Geten.TextProcessing

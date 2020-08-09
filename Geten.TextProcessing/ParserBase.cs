@@ -8,7 +8,7 @@ namespace Geten.TextProcessing
 	{
 		protected readonly IProfanityFilter ProfanityFilter = new ProfanityFilter();
 
-		protected ICommand _command;
+		protected Command _command;
 
 		protected ParserStatesEnum _parserStates = ParserStatesEnum.Verb;
 
@@ -130,8 +130,7 @@ namespace Geten.TextProcessing
 				{
 					result.Append(" ");
 				}
-				else if (!char.IsLetter(s[i]) && !char.IsNumber(s[i])) { }
-				else
+				else if (char.IsLetter(s[i]) || char.IsNumber(s[i]))
 				{
 					result.Append(s[i]);
 				}

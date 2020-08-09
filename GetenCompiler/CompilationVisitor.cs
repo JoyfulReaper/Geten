@@ -151,7 +151,7 @@ namespace GetenCompiler
 		{
 			var obj = GameObject.Create<Character>(node.NameToken.Text, node.Properties);
 
-			_objects.Add(obj);
+			_objects.Add(obj.Name, obj);
 		}
 	}
 }
