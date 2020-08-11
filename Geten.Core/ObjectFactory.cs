@@ -6,7 +6,7 @@ namespace Geten.Core
 {
 	public static class ObjectFactory
 	{
-		private static Dictionary<Type, IObjectFactory> factories = new Dictionary<Type, IObjectFactory>();
+		private static readonly Dictionary<Type, IObjectFactory> factories = new Dictionary<Type, IObjectFactory>();
 
 		public static T Create<T>(params object[] args)
 		{
