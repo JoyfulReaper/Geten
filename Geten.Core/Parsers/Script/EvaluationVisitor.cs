@@ -33,6 +33,7 @@ namespace Geten.Core.Parsers.Script
 		{
 			var asWhat = node.AsWhatToken.Text?.ToString();
 			var name = node.NameToken.Value?.ToString();
+			var location = node.Properties["location"]?.ToString();
 
 			Character character = null;
 
@@ -44,7 +45,18 @@ namespace Geten.Core.Parsers.Script
 			}
 			else if (asWhat == "npc") // It's an NPC
 			{
+				if (location == null)
+				{
+					//Diagnostics.ReportBadCharacter(??, name); // What do I put for location?
+					throw new Exception("NPCs Location not set: " + name);
+				}
+				Room room = SymbolTable.GetInstance<Room>(location);
+				if (room == null)
+				{
+					throw new Exception($"Location: {location} does not exist for NPC: {name}");
+				}
 				character = GameObject.Create<NPC>(name, node.Properties);
+				character.Location = room;
 			}
 			else
 			{
