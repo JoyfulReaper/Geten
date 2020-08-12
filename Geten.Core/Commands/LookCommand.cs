@@ -27,6 +27,7 @@ namespace Geten.Core.Commands
 				// Look around the room
 				dynamic loc = TextEngine.Player?.Location;
 				loc.lookedAt = true;
+				TextEngine.AddMessage(loc.Description);
 				TextEngine.AddMessage(loc.LookDescription);
 				return;
 			}

@@ -19,6 +19,12 @@ namespace Geten.Core.Commands
 		{
 			var dir = TextEngine.GetDirectionFromString(cmd.Noun);
 
+			if (dir == Direction.Invalid)
+			{
+				TextEngine.AddMessage($"You don't know how to go {cmd.Noun}");
+				return;
+			}
+
 			var location = TextEngine.Player.Location.GetSide(dir);
 			location.Enter(TextEngine.Player, dir);
 		}
