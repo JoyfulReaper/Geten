@@ -24,10 +24,12 @@ SOFTWARE.
 
 using Geten.Core;
 using Geten.Core.Factories;
+using Geten.Core.GameObjects;
 using Geten.Core.MapItems;
 using Geten.Core.Parsers.Script;
 using Geten.TextProcessing;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace Geten
@@ -83,6 +85,7 @@ namespace Geten
 
 				ProcessExits(TextEngine.Player.Location);
 				ProccessItems(TextEngine.Player.Location);
+				ProccessNPCS(TextEngine.Player.Location);
 
 				Console.Write("\nEnter command: ");
 				var input = Console.ReadLine();
@@ -100,13 +103,35 @@ namespace Geten
 				return;
 			}
 
-			Console.WriteLine("\nItems: ");
+			Console.WriteLine("Items: ");
 			var items = room.Inventory.GetAll();
 			foreach (var item in items)
 			{
 				if (item.Key.GetProperty<bool>("visible"))
 					Console.Write($"({item.Value}) {(item.Value > 1 ? item.Key.GetProperty<string>("PluralName") : item.Key.Name)} ");
 			}
+		}
+
+		private static void ProccessNPCS(Room room)
+		{
+			if (!room.GetProperty<bool>("lookedAt"))
+			{
+				return;
+			}
+
+			var npcs = SymbolTable.GetAll<NPC>();
+			if (npcs.Count() != 0)
+			{
+				Console.Write("Characters: ");
+			}
+			foreach (NPC npcInstance in npcs)
+			{
+				if (npcInstance.Location == room)
+				{
+					Console.Write(npcInstance.Name + " ");
+				}
+			}
+			Console.WriteLine();
 		}
 
 		private static void ProcessExits(Room room)
@@ -125,6 +150,7 @@ namespace Geten
 					Console.Write(side.Key.ToString() + " ");
 				}
 			}
+			Console.WriteLine();
 		}
 
 		private static void ShowIntro()
