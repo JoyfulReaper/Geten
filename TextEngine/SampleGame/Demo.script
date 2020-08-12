@@ -87,3 +87,13 @@ item "Pebble"
 		location "Chest"
 	end
 end
+
+character "Frank" as npc
+	with
+		health 100 and
+		maxHealth 100 and
+		description "He looks weathered but friendly" and
+		inventorySize 10 and
+		location "Short Hallway"
+	end
+end
