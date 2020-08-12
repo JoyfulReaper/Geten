@@ -1,10 +1,9 @@
-﻿using Geten.Core.Parsers.Script.Syntax;
-using System;
+﻿using Geten.Core.Event;
+using Geten.Core.Parsers.Script.Syntax;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace Geten.Core
@@ -23,6 +22,8 @@ namespace Geten.Core
 			get { return GetProperty<string>(nameof(Description)); }
 			set { SetProperty(nameof(Description), value); }
 		}
+
+		public EventHub Events { get; set; } = new EventHub();
 
 		public string Name
 		{
