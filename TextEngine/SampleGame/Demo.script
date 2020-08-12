@@ -78,3 +78,12 @@ item "Plastic coin"
 		location "Chest"
 	end
 end
+
+item "Pebble"
+	with
+		obtainable true and
+		visible true and
+		description "It looks pretty dull." and
+		location "Chest"
+	end
+end
