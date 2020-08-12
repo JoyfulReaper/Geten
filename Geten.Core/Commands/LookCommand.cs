@@ -24,6 +24,7 @@ namespace Geten.Core.Commands
 			var lookAt = cmd.Noun;
 			if (string.IsNullOrEmpty(lookAt))
 			{
+				// Look around the room
 				dynamic loc = TextEngine.Player?.Location;
 				loc.lookedAt = true;
 				TextEngine.AddMessage(loc.LookDescription);
@@ -34,27 +35,29 @@ namespace Geten.Core.Commands
 			  // Then check NPCs in the room. Anything else?
 			  // I think I need to re-think this need a way to look in Container items also
 			  // This is super ugly need to re-think once it all works....
+
 				var room = TextEngine.Player.Location;
 				var items = room.Inventory.GetAll();
-				foreach (var i in items)
+				foreach (var item in items)
 				{
-					if (i.Key.Name.ToLower() == lookAt.ToLower()) // check the room
+					if (item.Key.Name.ToLower() == lookAt.ToLower()) // Look for the target in the room
 					{
-						TextEngine.AddMessage(i.Key.Description);
-						if (SymbolTable.GetInstance<ContainerItem>(lookAt) is ContainerItem container)
+						item.Key.SetProperty("lookedAt", true);
+						TextEngine.AddMessage(item.Key.Description);
+						if (item.Key is ContainerItem container)
 						{
-							container.SetProperty("lookedAt", true);
 							TextEngine.AddMessage($"The {container.Name} contains: ");
 							var sb = new StringBuilder();
 							foreach (var itemInContainer in container.Inventory.GetAll())
 							{
 								sb.Append($"({itemInContainer.Value}) {itemInContainer.Key.Name}\n");
 							}
+
 							TextEngine.AddMessage(sb.ToString());
 						}
 						return;
 					}
-					if (i.Key is ContainerItem ci) // Check containers in the room
+					if (item.Key is ContainerItem ci) // Check containers in the room
 					{
 						foreach (var ciItem in ci.Inventory.GetAll())
 						{
