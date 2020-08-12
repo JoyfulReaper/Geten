@@ -37,6 +37,9 @@ namespace Geten.TextProcessing
 			}
 			else
 			{
+				// Why can't I use TextEngine.AddMessage here?
+				// using Geten.Core can't be added?
+				// TextEngine.AddMessage($"You don't know how to {cmd.Verb}");
 				throw new Exception($"No Handler for Verb '{cmd.Verb}' found");
 			}
 		}
