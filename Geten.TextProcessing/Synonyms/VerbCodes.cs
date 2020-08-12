@@ -15,6 +15,7 @@
 		Hint = 6,
 		Attack = 7,
 		Visit = 8,
-		Eat = 9
+		Eat = 9,
+		Quit = 10
 	}
 }

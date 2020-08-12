@@ -135,6 +135,9 @@ namespace Geten.TextProcessing.Synonyms
 			Add("munch", VerbCodes.Eat);
 			Add("gulp", VerbCodes.Eat);
 			Add("swallow", VerbCodes.Eat);
+
+			Add("quit", VerbCodes.Quit);
+			Add("exit", VerbCodes.Quit);
 		}
 
 		/// <summary>
