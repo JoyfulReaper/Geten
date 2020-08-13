@@ -1,4 +1,5 @@
 ﻿using Geten.Core.Exceptions;
+using Geten.Core.MapItems;
 using Geten.Core.Parsers.Script.Syntax;
 using System;
 using System.Linq;
@@ -64,7 +65,10 @@ namespace Geten.Core.Factories
 					}
 				}
 
-				SymbolTable.Add(instance.Name, instance);
+				if (!(instance is Exit))
+				{
+					SymbolTable.Add(instance.Name, instance);
+				}
 				return instance;
 			}
 
