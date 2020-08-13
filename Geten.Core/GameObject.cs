@@ -10,10 +10,11 @@ namespace Geten.Core
 {
 	public abstract class GameObject : DynamicObject, IEnumerable
 	{
-		private readonly ConcurrentDictionary<CaseInsensitiveString, object> _defaultValues = new ConcurrentDictionary<CaseInsensitiveString, object>();
+		public EventHub Events = new EventHub();
+		private readonly ConcurrentDictionary<CaseSensisitiveString, object> _defaultValues = new ConcurrentDictionary<CaseSensisitiveString, object>();
 
 		//property bag for mutable properties by script
-		private readonly ConcurrentDictionary<CaseInsensitiveString, object> _properties = new ConcurrentDictionary<CaseInsensitiveString, object>();
+		private readonly ConcurrentDictionary<CaseSensisitiveString, object> _properties = new ConcurrentDictionary<CaseSensisitiveString, object>();
 
 		private readonly List<string> _propertyMap = new List<string>();
 
@@ -22,8 +23,6 @@ namespace Geten.Core
 			get { return GetProperty<string>(nameof(Description)); }
 			set { SetProperty(nameof(Description), value); }
 		}
-
-		public EventHub Events { get; set; } = new EventHub();
 
 		public string Name
 		{
@@ -64,7 +63,7 @@ namespace Geten.Core
 			_defaultValues.TryAdd(name, value);
 		}
 
-		public ConcurrentDictionary<CaseInsensitiveString, object> GetAllProperties() => _properties;
+		public ConcurrentDictionary<CaseSensisitiveString, object> GetAllProperties() => _properties;
 
 		public override IEnumerable<string> GetDynamicMemberNames()
 		{

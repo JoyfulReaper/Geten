@@ -1,12 +1,14 @@
 ﻿using Geten.Core;
 using Geten.Core.Factories;
 using Geten.Core.GameObjects;
+using Geten.Core.Parsers.Script.Syntax;
 using Geten.Runtime;
 using Geten.Runtime.IO;
 using Geten.Runtime.Tables;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.Text;
 
 namespace LibraryTests
 {
@@ -28,16 +30,11 @@ namespace LibraryTests
 				["name"] = "Fork Zork",
 				["version"] = "1.0.0.0"
 			};
-			var objects = new GameObjectTable
-			{
-				["Tim"] = GameObject.Create<NPC>("Tim"),
-				["Chest"] = GameObject.Create<ContainerItem>("Chest"),
-			};
 
 			_bf = GameBinaryBuilder.Build()
 				.AddSection("Awnser", BitConverter.GetBytes(42))
 				.AddTableSection(metadata)
-				.AddTableSection(objects)
+				.AddStringSection("Definitions", File.ReadAllText("base.script"))
 				.GetFile();
 		}
 
@@ -49,10 +46,10 @@ namespace LibraryTests
 
 			var tmp = BinaryGameDefinitionFile.Load(new MemoryStream(ms.ToArray()));
 			var metadata = tmp.GetTable<MetadataTable>();
-			var objs = tmp.GetTable<GameObjectTable>();
+			var objs = tmp.GetBodyOfSection("Definitions");
+			var script = Encoding.ASCII.GetString(objs);
 
 			Assert.AreEqual(metadata.Count, 2);
-			Assert.AreEqual(objs.Count, 2);
 		}
 
 		[TestMethod]

@@ -5,48 +5,48 @@ using System.Linq;
 
 namespace Geten.Core
 {
-    public static class SymbolTable
-    {
-        private static readonly ConcurrentDictionary<CaseInsensitiveString, object> _objects = new ConcurrentDictionary<CaseInsensitiveString, object>();
+	public static class SymbolTable
+	{
+		private static readonly ConcurrentDictionary<CaseSensisitiveString, object> objects = new ConcurrentDictionary<CaseSensisitiveString, object>();
 
-        public static void Add(CaseInsensitiveString name, object instance)
-        {
-            if (_objects.ContainsKey(name)) throw new Exception($"'{name}' is already declared");
+		public static void Add(CaseSensisitiveString name, object instance)
+		{
+			if (objects.ContainsKey(name)) throw new Exception($"'{name}' is already declared");
 
-            _objects.TryAdd(name, instance);
-        }
+			objects.TryAdd(name, instance);
+		}
 
-        public static bool Contains(CaseInsensitiveString name) => _objects.ContainsKey(name);
+		public static void ClearAllSymbols() => objects.Clear();
 
-        public static bool Contains<T>(CaseInsensitiveString name)
-        {
-            if (_objects.ContainsKey(name))
-            {
-                var obj = _objects[name]; //get instance without casting
-                return obj.GetType() == typeof(T);
-            }
+		public static bool Contains(CaseSensisitiveString name) => objects.ContainsKey(name);
 
-            return false;
-        }
+		public static bool Contains<T>(CaseSensisitiveString name)
+		{
+			if (objects.ContainsKey(name))
+			{
+				var obj = objects[name]; //get instance without casting
+				return obj.GetType() == typeof(T);
+			}
 
-        public static bool ContainsGameObject(GameObject obj) => _objects.Contains(new KeyValuePair<CaseInsensitiveString, object>(obj.Name, obj));
+			return false;
+		}
 
-        public static T GetInstance<T>(CaseInsensitiveString name)
-        {
-            if (!_objects.ContainsKey(name)) throw new Exception($"'{name}' is not declared");
+		public static bool ContainsGameObject(GameObject obj) => objects.Contains(new KeyValuePair<CaseSensisitiveString, object>(obj.Name, obj));
 
-            return (T)_objects[name];
-        }
+		public static IEnumerable<T> GetAll<T>()
+		{
+			foreach (var item in objects)
+			{
+				if (item.Value is T t)
+					yield return t;
+			}
+		}
 
-        public static IEnumerable<T> GetAll<T>()
-        {
-            foreach (var item in _objects)
-            {
-                if (item.Value is T)
-                    yield return (T)item.Value;
-            }
-        }
+		public static T GetInstance<T>(CaseSensisitiveString name)
+		{
+			if (!objects.ContainsKey(name)) throw new Exception($"'{name}' is not declared");
 
-        public static void ClearAllSymbols() => _objects.Clear();
-    }
+			return (T)objects[name];
+		}
+	}
 }

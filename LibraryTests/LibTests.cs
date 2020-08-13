@@ -39,7 +39,7 @@ namespace LibraryTests
 		[TestMethod]
 		public void Compare_CaseInsensitiveString_Should_Pass()
 		{
-			Assert.IsTrue("hElLO WoRld" == (CaseInsensitiveString)"hello world");
+			Assert.IsTrue("hElLO WoRld" == (CaseSensisitiveString)"hello world");
 		}
 
 		[TestMethod]

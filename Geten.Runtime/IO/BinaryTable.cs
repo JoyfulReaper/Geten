@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Geten.Runtime
+namespace Geten.Runtime.IO
 {
 	public abstract class BinaryTable<TKey, TValue> : Dictionary<TKey, TValue>, IBinaryTable
 	{

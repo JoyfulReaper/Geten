@@ -1,4 +1,6 @@
 ﻿using Geten.Core;
+using Geten.Core.Factories;
+using Geten.Core.GameObjects;
 using Geten.Core.Parsers.Script;
 using Geten.Core.Parsers.Script.Syntax;
 using Geten.Core.Parsing;
@@ -12,7 +14,14 @@ namespace DumbTests
 	{
 		private static void Main()
 		{
-			var a = new CaseInsensitiveString("TeSt");
+			ObjectFactory.Register<GameObjectFactory, GameObject>();
+
+			var tim = GameObject.Create<NPC>("Tim", new Geten.Core.Parsers.Script.Syntax.PropertyList
+			{
+				["hello"] = true
+			});
+
+			var a = new CaseSensisitiveString("TeSt");
 			Console.WriteLine(a);
 
 			Console.WriteLine(a.Equals("test")); // False

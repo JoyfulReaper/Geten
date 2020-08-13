@@ -1,12 +1,21 @@
-﻿using Geten.Core;
+﻿using System.Text;
+using Geten.Core;
+using Geten.Runtime.Binary;
 using Geten.Runtime.IO;
 
-namespace Geten.Runtime
+namespace Geten.Runtime.IO
 {
 	public static class TableExtensions
 	{
-		public static IGameBinaryBuilder AddTableSection<T>(this IGameBinaryBuilder builder, CaseInsensitiveString name, T table)
-			where T : IBinaryTable, new()
+		public static IGameBinaryBuilder AddStringSection(this IGameBinaryBuilder builder, CaseSensisitiveString name, string table)
+		{
+			builder.AddSection(name, Encoding.ASCII.GetBytes(table));
+
+			return builder;
+		}
+
+		public static IGameBinaryBuilder AddTableSection<T>(this IGameBinaryBuilder builder, CaseSensisitiveString name, T table)
+					where T : IBinaryTable, new()
 		{
 			builder.AddSection(name, table.Save());
 
@@ -30,7 +39,7 @@ namespace Geten.Runtime
 			return instance;
 		}
 
-		public static T GetTable<T>(this BinaryGameDefinitionFile f, CaseInsensitiveString name)
+		public static T GetTable<T>(this BinaryGameDefinitionFile f, CaseSensisitiveString name)
 		   where T : IBinaryTable, new()
 		{
 			return f[name].GetTable<T>();

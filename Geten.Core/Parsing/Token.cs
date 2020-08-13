@@ -15,7 +15,7 @@ namespace Geten.Core.Parsing
         /// <param name="position">The startposition of the Token</param>
         /// <param name="text">The resulting Text</param>
         /// <param name="value">The Value. Can be Null</param>
-        public Token(TokenType kind, int position, CaseInsensitiveString text, object value)
+        public Token(TokenType kind, int position, CaseSensisitiveString text, object value)
         {
             Kind = kind;
             Position = position;
@@ -41,7 +41,7 @@ namespace Geten.Core.Parsing
         /// <summary>
         ///  The Token Text
         /// </summary>
-        public CaseInsensitiveString Text { get; }
+        public CaseSensisitiveString Text { get; }
 
         /// <summary>
         ///  The Token Value

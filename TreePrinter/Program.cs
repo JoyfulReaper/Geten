@@ -13,7 +13,7 @@ namespace TreePrinter
 			while (true)
 			{
 				Console.Write(">> ");
-				var input = (CaseInsensitiveString)Console.ReadLine();
+				var input = (CaseSensisitiveString)Console.ReadLine();
 
 				if (input == "quit")
 					Environment.Exit(0);
