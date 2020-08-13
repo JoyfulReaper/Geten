@@ -53,6 +53,12 @@ namespace Geten.Core.Parsing.Diagnostics
 			return _diagnostics.GetEnumerator();
 		}
 
+		internal void ReportBadMapSite(string name)
+		{
+			var message = $"MapSite '{name}' is not valid";
+			Report(TextSpan.FromBounds(0, 0), message);
+		}
+
 		internal void ReportBadNPC(string name)
 		{
 			var message = $"NPC '{name}' is not valid";
