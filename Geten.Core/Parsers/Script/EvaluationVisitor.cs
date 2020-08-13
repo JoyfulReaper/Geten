@@ -200,6 +200,7 @@ namespace Geten.Core.Parsers.Script
 			var side = node.Properties["side"]?.ToString();
 			string fromRoom = null;
 			string toRoom = null;
+			var oneWay = false;
 			if (node.Properties.ContainsKey("fromroom"))
 			{
 				fromRoom = node.Properties["fromroom"]?.ToString();
@@ -208,13 +209,24 @@ namespace Geten.Core.Parsers.Script
 			{
 				toRoom = node.Properties["toroom"]?.ToString();
 			}
+			if (node.Properties.ContainsKey("oneway"))
+			{
+				oneWay = (bool)node.Properties["oneway"];
+			}
 			var dirSide = TextEngine.GetDirectionFromChar(char.ToUpper(side[0]));
 
 			var from = SymbolTable.GetInstance<Room>(fromRoom);
-			var to = SymbolTable.GetInstance<Room>(toRoom);
-
 			var exit = GameObject.Create<Exit>(name, node.Properties);
-			// Need an exit in the opposite direction to go back, but can't have the same name.... TODO
+
+			if (!oneWay)
+			{
+				var opposite = TextEngine.GetOppositeDirection(dirSide);
+				node.Properties["toroom"] = fromRoom;
+				node.Properties["fromroom"] = toRoom;
+				var oppositeExit = GameObject.Create<Exit>(name, node.Properties);
+				var to = SymbolTable.GetInstance<Room>(toRoom);
+				to.SetSide(opposite, oppositeExit);
+			}
 
 			from.SetSide(dirSide, exit);
 		}
