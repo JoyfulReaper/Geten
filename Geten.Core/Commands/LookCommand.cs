@@ -34,44 +34,69 @@ namespace Geten.Core.Commands
 			else
 			{ // Check room, then check containers in room, then check player, then check containers in player...
 			  // Then check NPCs in the room. Anything else?
-			  // I think I need to re-think this need a way to look in Container items also
-			  // This is super ugly need to re-think once it all works....
 
-				var room = TextEngine.Player.Location;
-				var items = room.Inventory.GetAll();
-				foreach (var item in items)
+				// Check all items in the room and containers in the room
+				if (SearchInventory(TextEngine.Player.Location.Inventory, lookAt))
 				{
-					if (item.Key.Name.ToLower() == lookAt.ToLower()) // Look for the target in the room
-					{
-						item.Key.SetProperty("lookedAt", true);
-						TextEngine.AddMessage(item.Key.Description);
-						if (item.Key is ContainerItem container)
-						{
-							TextEngine.AddMessage($"The {container.Name} contains: ");
-							var sb = new StringBuilder();
-							foreach (var itemInContainer in container.Inventory.GetAll())
-							{
-								sb.Append($"({itemInContainer.Value}) {itemInContainer.Key.Name}\n");
-							}
+					return;
+				}
 
-							TextEngine.AddMessage(sb.ToString());
-						}
-						return;
-					}
-					if (item.Key is ContainerItem ci) // Check containers in the room
+				// Check in the players inventory
+				if (SearchInventory(TextEngine.Player.Inventory, lookAt))
+				{
+					return;
+				}
+
+				// Check for NPCs in the same room
+				var npcs = SymbolTable.GetAll<NPC>();
+				foreach (var npcInstance in npcs)
+				{
+					if (npcInstance.Name.ToLower() == lookAt.ToLower())
 					{
-						foreach (var ciItem in ci.Inventory.GetAll())
-						{
-							if (ciItem.Key.Name.ToLower() == lookAt.ToLower() && ci.GetProperty<bool>("lookedAt"))
-							{
-								TextEngine.AddMessage(ciItem.Key.Description);
-								return;
-							}
-						}
+						TextEngine.AddMessage(npcInstance.Description);
+						return;
 					}
 				}
 			}
 			TextEngine.AddMessage($"You look very carefully, but you don't see {lookAt}.");
+		}
+
+		private bool SearchInventory(Inventory inv, string target)
+		{
+			var items = inv.GetAll();
+			foreach (var item in items)
+			{
+				if (item.Key.Name.ToLower() == target.ToLower()) // Check inventory
+				{
+					item.Key.SetProperty("lookedAt", true);
+					TextEngine.AddMessage(item.Key.Description);
+					if (item.Key is ContainerItem container)
+					{
+						TextEngine.AddMessage($"The {container.Name} contains: ");
+						var sb = new StringBuilder();
+						foreach (var itemInContainer in container.Inventory.GetAll())
+						{
+							sb.Append($"({itemInContainer.Value}) {itemInContainer.Key.Name}\n");
+						}
+
+						TextEngine.AddMessage(sb.ToString());
+						return true;
+					}
+				}
+
+				if (item.Key is ContainerItem ci) // Check containers in inventory
+				{
+					foreach (var ciItem in ci.Inventory.GetAll())
+					{
+						if (ciItem.Key.Name.ToLower() == target.ToLower() && ci.GetProperty<bool>("lookedAt"))
+						{
+							TextEngine.AddMessage(ciItem.Key.Description);
+							return true;
+						}
+					}
+				}
+			}
+			return false; // Target not found
 		}
 	}
 }
