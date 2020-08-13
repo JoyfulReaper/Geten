@@ -120,11 +120,11 @@ namespace Geten
 			}
 
 			var npcs = SymbolTable.GetAll<NPC>();
-			if (npcs.Count() != 0)
+			if (npcs.Any())
 			{
 				Console.Write("Characters: ");
 			}
-			foreach (NPC npcInstance in npcs)
+			foreach (var npcInstance in npcs)
 			{
 				if (npcInstance.Location == room)
 				{

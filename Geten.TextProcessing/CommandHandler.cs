@@ -39,7 +39,9 @@ namespace Geten.TextProcessing
 			{
 				// Why can't I use TextEngine.AddMessage here?
 				// using Geten.Core can't be added?
-				// TextEngine.AddMessage($"You don't know how to {cmd.Verb}");
+				// because Geten.Core references Geten.TextProcessing, if you would add it as reference there will be a infinite loop of references and the runtime cant start the program
+				// we need a different assembly or we design the api new. this could be easily done
+				//TextEngine.AddMessage($"You don't know how to {cmd.Verb}");
 				throw new Exception($"No Handler for Verb '{cmd.Verb}' found");
 			}
 		}

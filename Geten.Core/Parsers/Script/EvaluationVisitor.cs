@@ -47,10 +47,10 @@ namespace Geten.Core.Parsers.Script
 			{
 				if (location == null)
 				{
-					//Diagnostics.ReportBadCharacter(??, name); // What do I put for location?
+					//Diagnostics.ReportBadCharacter(??, name); // What do I put for location? this is used for parsing, cou could simple use TextSpan.From(0,0)
 					throw new Exception("NPCs Location not set: " + name);
 				}
-				Room room = SymbolTable.GetInstance<Room>(location);
+				var room = SymbolTable.GetInstance<Room>(location);
 				if (room == null)
 				{
 					throw new Exception($"Location: {location} does not exist for NPC: {name}");
