@@ -33,7 +33,11 @@ namespace Geten.Core.Parsers.Script
 		{
 			var asWhat = node.AsWhatToken.Text?.ToString();
 			var name = node.NameToken.Value?.ToString();
-			var location = node.Properties["location"]?.ToString();
+			string location = null;
+			if (node.Properties.ContainsKey("location"))
+			{
+				location = node.Properties["location"]?.ToString();
+			}
 
 			Character character = null;
 
@@ -41,19 +45,28 @@ namespace Geten.Core.Parsers.Script
 			{
 				character = GameObject.Create<Player>(name, node.Properties);
 
-				TextEngine.Player = (Player)character;
+				if (character == null)
+				{
+					Diagnostics.ReportBadPlayerCharacter(name);
+					return;
+				}
+				else
+				{
+					TextEngine.Player = (Player)character;
+				}
 			}
 			else if (asWhat == "npc") // It's an NPC
 			{
 				if (location == null)
 				{
-					//Diagnostics.ReportBadCharacter(??, name); // What do I put for location? this is used for parsing, cou could simple use TextSpan.From(0,0)
-					throw new Exception("NPCs Location not set: " + name);
+					Diagnostics.ReportBadNPC(name);
+					return;
 				}
 				var room = SymbolTable.GetInstance<Room>(location);
 				if (room == null)
 				{
-					throw new Exception($"Location: {location} does not exist for NPC: {name}");
+					Diagnostics.ReportBadMapSite(location);
+					return;
 				}
 				character = GameObject.Create<NPC>(name, node.Properties);
 				character.Location = room;
@@ -61,6 +74,7 @@ namespace Geten.Core.Parsers.Script
 			else
 			{
 				Diagnostics.ReportBadPlayerCharacter(name);
+				return;
 			}
 
 			character.Inventory.Capacity = character.GetProperty<int>("inventorysize");
@@ -99,7 +113,11 @@ namespace Geten.Core.Parsers.Script
 		public void Visit(ItemDefinitionNode node)
 		{
 			var name = node.NameToken.Value?.ToString();
-			var container = (bool)(node.Properties["container"] ?? false);
+			var container = false;
+			if (node.Properties.ContainsKey("container"))
+			{
+				container = (bool)(node.Properties["container"] ?? false);
+			}
 
 			Item item;
 			if (container)
@@ -180,9 +198,16 @@ namespace Geten.Core.Parsers.Script
 		{
 			var name = node.NameToken.Value.ToString();
 			var side = node.Properties["side"]?.ToString();
-			var fromRoom = node.Properties["fromRoom"]?.ToString();
-			var toRoom = node.Properties["toRoom"]?.ToString();
-
+			string fromRoom = null;
+			string toRoom = null;
+			if (node.Properties.ContainsKey("fromroom"))
+			{
+				fromRoom = node.Properties["fromroom"]?.ToString();
+			}
+			if (node.Properties.ContainsKey("toroom"))
+			{
+				toRoom = node.Properties["toroom"]?.ToString();
+			}
 			var dirSide = TextEngine.GetDirectionFromChar(char.ToUpper(side[0]));
 
 			var from = SymbolTable.GetInstance<Room>(fromRoom);
