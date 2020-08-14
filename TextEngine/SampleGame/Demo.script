@@ -70,7 +70,7 @@ item "Chest"
 	end
 end
 
-item "Plastic coin"
+item "coin"
 	with
 		obtainable true and
 		visible true and

@@ -61,6 +61,24 @@ namespace Geten.Core.Commands
 			TextEngine.AddMessage($"You look very carefully, but you don't see {lookAt}.");
 		}
 
+		private bool SearchContainerItem(ContainerItem ci, string target)
+		{
+			foreach (var ciItem in ci.Inventory.GetAll())
+			{
+				if (ciItem.Key.Name.ToLower() == target.ToLower() && ci.GetProperty<bool>("lookedAt"))
+				{
+					TextEngine.AddMessage(ciItem.Key.Description);
+					return true;
+				}
+				if (ciItem.Key is ContainerItem c)
+				{
+					return SearchContainerItem(c, target);
+				}
+			}
+
+			return false;
+		}
+
 		private bool SearchInventory(Inventory inv, string target)
 		{
 			var items = inv.GetAll();
@@ -84,16 +102,9 @@ namespace Geten.Core.Commands
 					}
 				}
 
-				if (item.Key is ContainerItem ci) // Check containers in inventory
+				if (item.Key is ContainerItem ci)
 				{
-					foreach (var ciItem in ci.Inventory.GetAll())
-					{
-						if (ciItem.Key.Name.ToLower() == target.ToLower() && ci.GetProperty<bool>("lookedAt"))
-						{
-							TextEngine.AddMessage(ciItem.Key.Description);
-							return true;
-						}
-					}
+					return SearchContainerItem(ci, target);
 				}
 			}
 			return false; // Target not found
