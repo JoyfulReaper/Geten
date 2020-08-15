@@ -24,7 +24,7 @@ namespace Geten.Core
 			set { SetProperty(nameof(Description), value); }
 		}
 
-		public string Name
+		public CaseSensisitiveString Name
 		{
 			get { return GetProperty<string>(nameof(Name)); }
 			set { SetProperty(nameof(Name), value); }

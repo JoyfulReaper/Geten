@@ -29,6 +29,7 @@ namespace Geten.Core.Commands
 				loc.lookedAt = true;
 				TextEngine.AddMessage(loc.Description);
 				TextEngine.AddMessage(loc.LookDescription);
+
 				return;
 			}
 			else
@@ -51,7 +52,7 @@ namespace Geten.Core.Commands
 				var npcs = SymbolTable.GetAll<NPC>();
 				foreach (var npcInstance in npcs)
 				{
-					if (npcInstance.Name.ToLower() == lookAt.ToLower())
+					if (npcInstance.Name == lookAt)
 					{
 						TextEngine.AddMessage(npcInstance.Description);
 						return;
@@ -65,7 +66,7 @@ namespace Geten.Core.Commands
 		{
 			foreach (var ciItem in ci.Inventory.GetAll())
 			{
-				if (ciItem.Key.Name.ToLower() == target.ToLower() && ci.GetProperty<bool>("lookedAt"))
+				if (ciItem.Key.Name == target && ci.GetProperty<bool>("lookedAt"))
 				{
 					TextEngine.AddMessage(ciItem.Key.Description);
 					return true;
@@ -84,7 +85,7 @@ namespace Geten.Core.Commands
 			var items = inv.GetAll();
 			foreach (var item in items)
 			{
-				if (item.Key.Name.ToLower() == target.ToLower()) // Check inventory
+				if (item.Key.Name == target) // Check inventory
 				{
 					item.Key.SetProperty("lookedAt", true);
 					TextEngine.AddMessage(item.Key.Description);
