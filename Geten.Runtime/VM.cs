@@ -34,9 +34,12 @@ namespace Geten.Runtime
 		private Instruction EncodeInstruction(BinaryReader br)
 		{
 			var op = (OpCode)br.ReadByte();
+
 			if (op.IsDefinition())
 			{
-				//Read properties
+				var props = ""; //ReadProperties(br);
+
+				return Instruction.Create(op, props);
 			}
 			else
 			{

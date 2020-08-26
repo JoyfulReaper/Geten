@@ -108,7 +108,7 @@ namespace Geten
 			foreach (var item in items)
 			{
 				if (item.Key.GetProperty<bool>("visible"))
-					Console.Write($"({item.Value}) {(item.Value > 1 ? item.Key.GetProperty<string>("PluralName") : item.Key.Name)} ");
+					Console.Write($"({item.Value}) {(item.Value > 1 ? item.Key.GetProperty<string>("PluralName") : item.Key.Name.ToString())} ");
 			}
 		}
 

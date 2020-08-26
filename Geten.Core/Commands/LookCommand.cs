@@ -4,6 +4,7 @@ using Geten.Core.GameObjects;
 using Geten.TextProcessing;
 using Geten.TextProcessing.Interfaces;
 using Geten.TextProcessing.Synonyms;
+using System.Linq;
 
 namespace Geten.Core.Commands
 {
@@ -50,13 +51,12 @@ namespace Geten.Core.Commands
 
 				// Check for NPCs in the same room
 				var npcs = SymbolTable.GetAll<NPC>();
-				foreach (var npcInstance in npcs)
+				foreach (var npcInstance in from npcInstance in npcs
+											where npcInstance.Name == lookAt
+											select npcInstance)
 				{
-					if (npcInstance.Name == lookAt)
-					{
-						TextEngine.AddMessage(npcInstance.Description);
-						return;
-					}
+					TextEngine.AddMessage(npcInstance.Description);
+					return;
 				}
 			}
 			TextEngine.AddMessage($"You look very carefully, but you don't see {lookAt}.");
