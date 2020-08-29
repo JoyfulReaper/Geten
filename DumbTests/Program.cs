@@ -7,6 +7,7 @@ using Geten.Core.Parsing;
 using Geten.Core.Parsing.Text;
 using System;
 using System.Collections.Generic;
+using Geten.Core.Activation;
 
 namespace DumbTests
 {
@@ -14,9 +15,11 @@ namespace DumbTests
 	{
 		private static void Main()
 		{
+			var ci = DefaultActivator.Instance.CreateInstance<CaseSensisitiveString>(new object[] { "hello world" });
+
 			ObjectFactory.Register<GameObjectFactory, GameObject>();
 
-			var tim = GameObject.Create<NPC>("Tim", new Geten.Core.Parsers.Script.Syntax.PropertyList
+			var tim = GameObject.Create<NPC>("Tim", new PropertyList
 			{
 				["hello"] = true
 			});

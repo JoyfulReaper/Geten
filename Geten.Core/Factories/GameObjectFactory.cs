@@ -1,10 +1,9 @@
-﻿using Geten.Core.Exceptions;
+using Geten.Core.Activation;
+using Geten.Core.Exceptions;
 using Geten.Core.MapItems;
 using Geten.Core.Parsers.Script.Syntax;
 using System;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace Geten.Core.Factories
 {
@@ -18,7 +17,7 @@ namespace Geten.Core.Factories
 
 				if (args.Length > 2)
 				{
-					instance = (GameObject)GetInstance(typeof(T));
+					instance = (GameObject)DefaultActivator.Instance.CreateInstance(typeof(T));
 					var map = instance.GetPropertyPositionMap();
 					if (map == null)
 					{
@@ -40,7 +39,7 @@ namespace Geten.Core.Factories
 				}
 				else
 				{
-					instance = (GameObject)GetInstance(typeof(T));
+					instance = (GameObject)DefaultActivator.Instance.CreateInstance(typeof(T));
 
 					if (args.Length == 2)
 					{
@@ -76,24 +75,6 @@ namespace Geten.Core.Factories
 			}
 
 			return null;
-		}
-
-		private static ConstructorInfo GetDefaultConstructor(Type type)
-		{
-			return type.GetConstructor(Array.Empty<Type>());
-		}
-
-		private static object GetInstance(Type type)
-		{
-			var ctor = GetDefaultConstructor(type);
-			var dm = new DynamicMethod("GetInstance", type, Array.Empty<Type>());
-
-			var il = dm.GetILGenerator();
-			il.Emit(OpCodes.Newobj, ctor);
-			il.Emit(OpCodes.Ret);
-
-			var del = dm.CreateDelegate(typeof(Func<object>));
-			return del.DynamicInvoke();
 		}
 	}
 }
