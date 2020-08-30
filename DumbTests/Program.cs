@@ -15,7 +15,7 @@ namespace DumbTests
 	{
 		private static void Main()
 		{
-			var ci = DefaultActivator.Instance.CreateInstance<CaseSensisitiveString>(new object[] { "hello world" });
+			var ci = DefaultActivator.Instance.CreateInstance<string>(new char[] { 'c' });
 
 			ObjectFactory.Register<GameObjectFactory, GameObject>();
 
