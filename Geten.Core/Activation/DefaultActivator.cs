@@ -2,7 +2,7 @@
 
 namespace Geten.Core.Activation
 {
-	public class DefaultActivator : Activator<SlowActivation>
+	public class DefaultActivator : Activator<DynamicDelegateActivation>
 	{
 	}
 }
