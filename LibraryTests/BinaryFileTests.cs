@@ -1,10 +1,8 @@
 ﻿using Geten.Core;
 using Geten.Core.Factories;
-using Geten.Core.GameObjects;
-using Geten.Core.Parsers.Script.Syntax;
-using Geten.Runtime;
+using Geten.Runtime.Binary;
 using Geten.Runtime.IO;
-using Geten.Runtime.Tables;
+using Geten.Runtime.IO.Tables;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
