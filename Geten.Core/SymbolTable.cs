@@ -42,6 +42,11 @@ namespace Geten.Core
 			}
 		}
 
+		public static CaseSensisitiveString[] GetAllNames()
+		{
+			return objects.Keys.ToArray();
+		}
+
 		public static T GetInstance<T>(CaseSensisitiveString name)
 		{
 			if (!objects.ContainsKey(name)) throw new Exception($"'{name}' is not declared");
